@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class GameEnemyManager : MonoBehaviour
 {
-    public GameObject Player;
+    public GameManager GM;
     public List<GameObject> spawnedEnemies = new List<GameObject>();
     public int EnemiesLeftInWave = 0;
 
@@ -36,15 +36,14 @@ public class GameEnemyManager : MonoBehaviour
     private SpriteRenderer _OffScreenDeathRend;
     private float _OffScreenSpriteWidth;
     private float _OffScreenSpriteHeight;
-    private Camera _Camera;
 
     void Awake() {
-        Player = GameObject.FindGameObjectWithTag("Player");
-        _Camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-        _OffScreenDeathRend = EnemyOffScreenDeathPrefab.GetComponent<SpriteRenderer>();
+        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
     // Start is called before the first frame update
     void Start() {
+        _OffScreenDeathRend = EnemyOffScreenDeathPrefab.GetComponent<SpriteRenderer>();
+
         var bounds = _OffScreenDeathRend.bounds;
         _OffScreenSpriteWidth = bounds.size.x / 2f;
         _OffScreenSpriteHeight = bounds.size.y / 2f;
@@ -165,7 +164,7 @@ public class GameEnemyManager : MonoBehaviour
     private void SpawnEnemy(Transform spawnPoint) {
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         Enemy enemyRef = newEnemy.GetComponent<Enemy>();
-        enemyRef.Player = Player;
+        enemyRef.Player = GM.Player;
         enemyRef.GameEnemyManager = this;
 
         // adding current stats
@@ -187,6 +186,7 @@ public class GameEnemyManager : MonoBehaviour
 
     // if enemy is offscreen, then spawn offscreen arrow pointing at them, otherwise normal death fx
     private void DeathIndication(GameObject enemy) {
+        Camera _Camera = GM.Camera.GetComponent<Camera>();
         Vector3 screenPos = _Camera.WorldToViewportPoint(enemy.transform.position);
         bool isOffScreen = screenPos.x <= 0 || screenPos.x >= 1 || screenPos.y <= 0 || screenPos.y >= 1;
         

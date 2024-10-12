@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class GameManager : MonoBehaviour
+public class GameManager : TheSceneManager
 {
     [Header("General")]
     public GameEnemyManager GameEnemyManager;
@@ -26,9 +26,9 @@ public class GameManager : MonoBehaviour
     public DeckController deckController;
     public float cardCDTime = 5.0f, cardCDTimer = 0;
     public bool cardIsOnCD = false;
-    private Image UICard;
-    private Image CooldownImg;
-    private StatusEffectManager StatusEffectManager;
+    protected Image UICard;
+    protected Image CooldownImg;
+    protected StatusEffectManager StatusEffectManager;
 
     [Header("Health")]
     public int healthCurrent;       // Current health of the player
@@ -37,8 +37,7 @@ public class GameManager : MonoBehaviour
     public Slider healthBar;       // UI Slider for health bar
 
     [Header("Money")]
-    public float wager = 500;
-    public float multiplier = 1f; 
+    public float money = 500;
     public float quota;
 
     [Header("Mobile")]
@@ -51,17 +50,17 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public PlayerController playerController;
 
-    public TextMeshProUGUI wager_text;
-    private TextMeshProUGUI quota_text; 
+    public TextMeshProUGUI money_text;
+    protected TextMeshProUGUI quota_text;
 
-    private GameObject PlayScreen;
-    private GameObject WagerScreen;
-    private GameObject PauseScreen;
-    private GameObject DeathScreen;
-    private GameObject WinScreen;
-    private GameObject IBuild;
+    protected GameObject PlayScreen;
+    protected GameObject WagerScreen;
+    protected GameObject PauseScreen;
+    protected GameObject DeathScreen;
+    protected GameObject WinScreen;
+    protected GameObject IBuild;
 
-    private bool paused = false;
+    protected bool paused = false;
 
     [Header("FX")]
     // hit fx
@@ -132,21 +131,22 @@ public class GameManager : MonoBehaviour
 
         if (PlayScreen)
         {
-            wager_text = PlayScreen.transform.Find("Wager")?.gameObject.GetComponent<TextMeshProUGUI>();
+            Debug.Log("PLAY SCREEN" + PlayScreen);
+            money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
             quota_text = PlayScreen.transform.Find("Quota")?.gameObject.GetComponent<TextMeshProUGUI>();
             UICard = PlayScreen.transform.Find("Card")?.gameObject.GetComponent<Image>();
             CooldownImg = PlayScreen.transform.Find("Card")?.gameObject.GetComponentInChildren<Image>();
             StatusEffectManager = PlayScreen.transform.Find("Card")?.GetComponent<StatusEffectManager>();
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
 
-            wager_text.text = "Wager:" + wager.ToString();
+            money_text.text = " " + money.ToString();
         }
 
         if (DeathScreen || WinScreen || PauseScreen)
         {
             if (DeathScreen)
             {
-                AssignButton(WinScreen.transform, "Map", OpenMap);
+                AssignButton(DeathScreen.transform, "Map", OpenMap);
                 AssignButton(DeathScreen.transform, "Restart", Restart);
             }
 
@@ -158,7 +158,7 @@ public class GameManager : MonoBehaviour
 
             if (PauseScreen)
             {
-                AssignButton(WinScreen.transform, "Map", OpenMap);
+                AssignButton(PauseScreen.transform, "Map", OpenMap);
                 AssignButton(PauseScreen.transform, "Resume", Pause);
             }
         }
@@ -176,8 +176,7 @@ public class GameManager : MonoBehaviour
     {
         if (GameEnemyManager.currentWave == GameEnemyManager.waveConfigurations.Count)
         {
-            int total_score = ((int)(wager * multiplier));
-            if (total_score >= quota)
+            if (money >= quota)
             {
                 Win();
             }
@@ -186,10 +185,12 @@ public class GameManager : MonoBehaviour
                 Death();
             }
         }
-        if (cardIsOnCD)
+
+        if (cardIsOnCD && UICard)
         {
             ApplyCooldown();
         }
+
         updateWager();
     }
 
@@ -261,10 +262,9 @@ public class GameManager : MonoBehaviour
     }
     public void updateWager()
     {
-        int total_score = ((int)(wager * multiplier));
-        if (wager_text != null)
+        if (money_text != null)
         {
-            wager_text.text = "Wager:" + total_score.ToString();
+            money_text.text = " " + money.ToString();
         }
     }
     public void Wager()
@@ -276,7 +276,7 @@ public class GameManager : MonoBehaviour
     public void WagerChoice(int value)
     {
         freeze(false);
-        wager = value;
+        money = value;
         PlayScreen.SetActive(true);
         WagerScreen.SetActive(false);
     }
@@ -303,40 +303,17 @@ public class GameManager : MonoBehaviour
     {
         playerController.SetControls(false);
         // animate death here
-        int final_payout = (int)(wager * multiplier - quota);
         DeathScreen.SetActive(true);
         TextMeshProUGUI ScoreText = DeathScreen.GetComponentInChildren<TextMeshProUGUI>();
-        ScoreText.text = "Final Payout: " + final_payout.ToString();
+        ScoreText.text = "Final Payout: " + money.ToString();
     }
     public void Win()
     {
         playerController.SetControls(false);
         // animate win here (gangnam style)
-        int final_payout = (int)(wager * multiplier - quota);
         WinScreen.SetActive(true);
         TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
-        ScoreText.text = "Final Payout: " + final_payout.ToString();
-    }
-    public void Restart()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void OpenMap()
-    {
-        SceneManager.LoadScene("MAP");
-    }
-    public void OpenMenu()
-    {
-        SceneManager.LoadScene("MENU");
-    }
-    public void OpenShop()
-    {
-        SceneManager.LoadScene("SHOP");
-    }
-
-    void OnDestroy()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+        ScoreText.text = "Final Payout: " + money.ToString();
     }
 
     #region FX

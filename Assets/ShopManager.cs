@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopManager : MonoBehaviour
+public class ShopManager : TheSceneManager
 {
     public List<Card> allPurchasableCards;
     public Button card0Button;
     public Button card1Button;
     public Button card2Button;
-    public GameManager GM;
     public Button duplicateButton;
     public Button destroyButton;
     public GameObject Options; // Panel containing the player's current deck of cards
     public GameObject deckDisplayPanel; // Panel containing the player's current deck of cards
     public GameObject cardButtonPrefab; // Prefab to create buttons for each card in the deck
+    public Button exitButton; // Prefab to create buttons for each card in the deck
     public float dupPrice;
     public float destPrice;
+
+    private GameManager GM;
 
     private void Awake()
     {
         // Buttons should be assigned in the Inspector, no need to assign them here unless necessary
+        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
 
     // Start is called before the first frame update
@@ -29,6 +32,7 @@ public class ShopManager : MonoBehaviour
         SetUpShop();
         duplicateButton.onClick.AddListener(DisplayDeckForDuplication);
         destroyButton.onClick.AddListener(DisplayDeckForDestruction);
+        exitButton.onClick.AddListener(OpenMap);
     }
 
     /*
@@ -56,16 +60,16 @@ public class ShopManager : MonoBehaviour
     private void PurchaseCard(int _cardIndex, Button button)
     {
         Card selectedCard = allPurchasableCards[_cardIndex];
-        if (GM.wager < selectedCard.price)
+        if (GM.money < selectedCard.price)
         {
             // Feedback for insufficient funds (e.g., play a sound or display a message)
-            Debug.Log("Player doesn't have enough money to buy this card!");
+            Debug.Log("Player doesn't have enough money to buy this card!, MONEY: " + GM.money);
             return;
         }
         else
         {
             // Player buys the card
-            GM.wager -= selectedCard.price;
+            GM.money -= selectedCard.price;
             GM.deckController.DeckAdd(selectedCard, GM.deckController.currentDeck);
             button.gameObject.SetActive(false); // Hide the button after purchase
         }
@@ -114,28 +118,28 @@ public class ShopManager : MonoBehaviour
 
     void DuplicateCard(Card card)
     {
-        if (GM.wager < dupPrice)
+        if (GM.money < dupPrice)
         {
             Debug.Log("Not enough money to duplicate this card!");
             return;
         }
         else
         {
-            GM.wager -= dupPrice;
+            GM.money -= dupPrice;
             GM.deckController.DeckAdd(card, GM.deckController.currentDeck);
         }
     }
 
     void DestroyCard(Card card)
     {
-        if (GM.wager < destPrice)
+        if (GM.money < destPrice)
         {
             Debug.Log("Not enough money to destroy this card!");
             return;
         }
         else
         {
-            GM.wager -= destPrice;
+            GM.money -= destPrice;
             GM.deckController.DeckRemove(card, GM.deckController.currentDeck); // Correcting to remove the card
         }
     }

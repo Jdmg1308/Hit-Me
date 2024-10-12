@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MapScript : MonoBehaviour
+public class MapScript : TheSceneManager
 {
-    private GameObject Canvas;
     private GameManager GM;
     private GameObject MapScreen;
 
@@ -19,7 +18,6 @@ public class MapScript : MonoBehaviour
     private void AssignReferences()
     {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
-        Canvas = GameObject.FindGameObjectWithTag("Canvas");
 
         MapScreen = this.gameObject;
 
@@ -34,30 +32,5 @@ public class MapScript : MonoBehaviour
             GM.AssignButton(MapScreen.transform, "Final Level", FinalLvl);
         }
 
-    }
-        
-    public void PlayTutorial()
-    {
-        SceneManager.LoadScene("TUTORIAL");
-    }
-
-    public void PlayLvl1()
-    {
-        SceneManager.LoadScene("LEVEL_1");
-    }
-
-    public void PlayLvl2()
-    {
-        SceneManager.LoadScene("LEVEL_2");
-    }
-
-    public void PlayLvl3()
-    {
-        SceneManager.LoadScene("LEVEL_3");
-    }
-
-    public void FinalLvl()
-    {
-        SceneManager.LoadScene("FINALE");
     }
 }
