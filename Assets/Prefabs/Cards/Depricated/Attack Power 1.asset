@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17180e4e86acd51429c8c93eef7a5787, type: 3}
-  m_Name: Attack Power Card 1
+  m_Name: Attack Power 1
   m_EditorClassIdentifier: 
   cardName: Attack Power Card 1
   cardDescription: Attack +
@@ -19,4 +19,4 @@ MonoBehaviour:
   effectValue: 5
   id: 0
   cardUserAnim: 
-  price: 400
+  price: 100

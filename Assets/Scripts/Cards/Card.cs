@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //public enum CardType {Attack, Huma, Mani, Nihtee, Heal, Utility };
-public enum CardType {Multiplier, Additor, EnemyBuff, PlayerBuff};
+public enum CardType {Multiplier, Additor, EnemyBuff, PlayerBuff, Heal};
 
 public abstract class Card : ScriptableObject 
 {

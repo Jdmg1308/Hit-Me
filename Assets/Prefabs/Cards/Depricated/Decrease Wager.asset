@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c19ce646c025ff4ebde4f2a3c507d15, type: 3}
-  m_Name: Decrease Wager Card
+  m_Name: Decrease Wager
   m_EditorClassIdentifier: 
   cardName: Decrease Wager Card
   cardDescription: ' Wager '

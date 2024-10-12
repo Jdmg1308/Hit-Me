@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 69ffb39a732052d4487a63b40a246aad, type: 3}
-  m_Name: New Enemy Buff Card Data
+  m_Name: Enemy Buff
   m_EditorClassIdentifier: 
   cardName: Enemy Buff Card
   cardDescription: Enemy Dmg +20 & Enemy Health +
