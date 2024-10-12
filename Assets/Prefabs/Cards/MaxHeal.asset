@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13c35894ee8c3bd4180760487cec11f7, type: 3}
   m_Name: MaxHeal
   m_EditorClassIdentifier: 
-  cardName: 
-  cardDescription: 
+  cardName: Max Heal 25
+  cardDescription: Increases the players HP by 25 and fully heals player
   cardImage: {fileID: 0}
   effectImage: {fileID: 0}
-  effectValue: 0
+  effectValue: 25
   id: 0
   cardUserAnim: 
-  price: 0
+  price: 100

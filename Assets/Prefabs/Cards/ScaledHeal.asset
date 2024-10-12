@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5adc42a8ffffc449a55336e5fa4e9ab, type: 3}
   m_Name: ScaledHeal
   m_EditorClassIdentifier: 
-  cardName: 
-  cardDescription: 
+  cardName: Scaled heal
+  cardDescription: Heals the player for 1/2 of their missing HP
   cardImage: {fileID: 0}
   effectImage: {fileID: 0}
-  effectValue: 0
+  effectValue: 2
   id: 0
   cardUserAnim: 
-  price: 0
+  price: 100
