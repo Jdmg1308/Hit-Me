@@ -26,6 +26,8 @@ public class GameManager : TheSceneManager
     public DeckController deckController;
     public float cardCDTime = 5.0f, cardCDTimer = 0;
     public bool cardIsOnCD = false;
+    public Card statusCard;
+    public bool statusApplied = false;
     protected Image UICard;
     protected Image CooldownImg;
     protected StatusEffectManager StatusEffectManager;
@@ -207,8 +209,14 @@ public class GameManager : TheSceneManager
             Card card = deckController.infinDrawCard(deckController.currentDeck);
             StartCoroutine(playCardSound(card));
             card.use(this);
+            if(card.cardType == CardType.StatusEffect)
+            {
+                statusCard = card;
+                statusApplied = true;
+            }
             CooldownImg.sprite = card.cardImage;
             StatusEffectManager.AddStatusEffect(card.effectImage);
+            updateHealth();
         }
     }
 
@@ -218,6 +226,14 @@ public class GameManager : TheSceneManager
 
         if (cardCDTimer < 0)
         {
+            //call the use function to unapply the status effect if it exists
+            if (statusCard)
+            {
+                statusCard.use(this);
+                statusCard = null;
+                statusApplied = false;
+                updateHealth();
+            }
             cardIsOnCD = false;
             cardCDTimer = 0;
             UICard.GetComponentInChildren<TextMeshProUGUI>().text = " ";
@@ -260,6 +276,19 @@ public class GameManager : TheSceneManager
             Time.timeScale = 1f;
         }   
     }
+
+    //method to update UI for health + check death condition
+    //if the player dies, returns true, otherwise false 
+    public void updateHealth()
+    {
+        if (healthCurrent > healthMax) healthCurrent = healthMax;
+        healthBar.value = healthCurrent;
+        if (healthCurrent <= 0) 
+        {
+            Death();
+        }
+    }
+
     public void updateWager()
     {
         if (money_text != null)
@@ -267,12 +296,14 @@ public class GameManager : TheSceneManager
             money_text.text = " " + money.ToString();
         }
     }
+
     public void Wager()
     {
         freeze(true);
         PlayScreen.SetActive(false);
         WagerScreen.SetActive(true);
     }
+
     public void WagerChoice(int value)
     {
         freeze(false);
@@ -280,6 +311,7 @@ public class GameManager : TheSceneManager
         PlayScreen.SetActive(true);
         WagerScreen.SetActive(false);
     }
+
     public void Pause()
     {
         if (!paused)
@@ -299,6 +331,7 @@ public class GameManager : TheSceneManager
             PauseScreen.SetActive(false);
         }
     }
+
     public void Death()
     {
         playerController.SetControls(false);
@@ -307,6 +340,7 @@ public class GameManager : TheSceneManager
         TextMeshProUGUI ScoreText = DeathScreen.GetComponentInChildren<TextMeshProUGUI>();
         ScoreText.text = "Final Payout: " + money.ToString();
     }
+    
     public void Win()
     {
         playerController.SetControls(false);

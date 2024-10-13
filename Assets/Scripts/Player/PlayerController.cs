@@ -471,7 +471,6 @@ public class PlayerController : MonoBehaviour
         if (!p.isHit) {
             p.isHit = true;
             GM.healthCurrent -= damage;
-            GM.healthBar.value = GM.healthCurrent;
             p.anim.SetBool("isHurt", true);
 
             // if you get hurt, cancel kick
@@ -482,13 +481,12 @@ public class PlayerController : MonoBehaviour
             p.rb.velocity = Vector2.zero; // so previous velocity doesn't interfere (would super stop player momentum tho? maybe change in future)
             p.rb.AddForce(force, ForceMode2D.Impulse);
 
-            if (GM.healthCurrent <= 0) {
-                GM.Death();
-            } else {
-                yield return new WaitForSeconds(p.iFrames);
-                p.isHit = false;
-                p.anim.SetBool("isHurt", false);
-            }
+            GM.updateHealth();
+            //player didn't die, yay!
+            yield return new WaitForSeconds(p.iFrames);
+            p.isHit = false;
+            p.anim.SetBool("isHurt", false);
+        
         }
     }
 
