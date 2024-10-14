@@ -2040,6 +2040,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1402335156, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 1402335156, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 1916012013, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -2103,6 +2111,18 @@ PrefabInstance:
     - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: p.GameManager
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.punchRadius
+      value: 0.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.uppercutRadius
+      value: 0.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.uppercutForce.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: p.ButtonsAndClickScript
@@ -4197,7 +4217,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9bb749336b0cf334f896fd52a1d47058, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.285
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0

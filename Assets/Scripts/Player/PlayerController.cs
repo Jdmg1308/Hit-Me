@@ -110,38 +110,36 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if (p.anim.GetBool("canMove")) { // lock movement if attacking
-            // if grapping, lower grav
-            // otherwise, if falling set higher grav for snappiness
-            p.rb.gravityScale = (p.rb.velocity.y < 0) ? p.fallingGravity : p.defaultGravity;
-            if (p.grapplingGun.isGrappling) p.rb.gravityScale = 1f;
+        // if grapping, lower grav
+        // otherwise, if falling set higher grav for snappiness
+        p.rb.gravityScale = (p.rb.velocity.y < 0) ? p.fallingGravity : p.defaultGravity;
+        if (p.grapplingGun.isGrappling) p.rb.gravityScale = 1f;
 
-            // if !isGrounded and !isGrappling
-            float adjustAirControl = 1;
-            if (!p.isGrounded && !p.grapplingGun.isGrappling) {
-                adjustAirControl = p.airControl;
-            } else if (!p.isGrounded && p.grapplingGun.isGrappling) {
-                adjustAirControl = p.grappleAirControl;
-            }
-            // if in air/grappling, maintain prev x for momentum (else add ground friction), add directed movement with air control restrictions
-            float xVelocity = (p.rb.velocity.x * (!p.isGrounded || p.grapplingGun.isGrappling ? 1 : p.friction))
-                + (p.moveDirection * p.moveSpeed * adjustAirControl);
-            p.rb.velocity = new Vector2(Mathf.Clamp(xVelocity, -p.XMaxSpeed, p.XMaxSpeed),
-                Mathf.Min(p.rb.velocity.y, p.YMaxSpeed));
-
-            if (p.isGrounded)
-            {
-                p.anim.SetBool("isWalking", Mathf.Abs(p.rb.velocity.x) > 0.1f);
-            }
-
-            if (p.isJumping)
-            {
-                p.rb.velocity = new Vector2(p.rb.velocity.x, 0f);
-                p.rb.AddForce(new Vector2(0f, p.jumpForce));
-                p.midJump = true;
-            }
-            p.isJumping = false;
+        // if !isGrounded and !isGrappling
+        float adjustAirControl = 1;
+        if (!p.isGrounded && !p.grapplingGun.isGrappling) {
+            adjustAirControl = p.airControl;
+        } else if (!p.isGrounded && p.grapplingGun.isGrappling) {
+            adjustAirControl = p.grappleAirControl;
         }
+        // if in air/grappling, maintain prev x for momentum (else add ground friction), add directed movement with air control restrictions
+        float xVelocity = (p.rb.velocity.x * (!p.isGrounded || p.grapplingGun.isGrappling ? 1 : p.friction))
+            + (p.moveDirection * p.moveSpeed * adjustAirControl);
+        p.rb.velocity = new Vector2(Mathf.Clamp(xVelocity, -p.XMaxSpeed, p.XMaxSpeed),
+            Mathf.Min(p.rb.velocity.y, p.YMaxSpeed));
+
+        if (p.isGrounded)
+        {
+            p.anim.SetBool("isWalking", Mathf.Abs(p.rb.velocity.x) > 0.1f);
+        }
+
+        if (p.isJumping)
+        {
+            p.rb.velocity = new Vector2(p.rb.velocity.x, 0f);
+            p.rb.AddForce(new Vector2(0f, p.jumpForce));
+            p.midJump = true;
+        }
+        p.isJumping = false;
     }
 
     private void directionPlayerFaces()
@@ -179,20 +177,23 @@ public class PlayerController : MonoBehaviour
     {
         // Normal Movement Input
         // scale of -1 -> 1
-        p.moveDirection = Input.GetAxis("Horizontal");
-        if (Input.GetButtonDown("Jump") && p.isGrounded && p.anim.GetBool("canMove"))
-        {
-            p.isJumping = true;
-        }
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (p.currentOneWayPlatform != null)
+        if (p.anim.GetBool("canMove")) {
+            p.moveDirection = Input.GetAxis("Horizontal");
+            if (Input.GetButtonDown("Jump") && p.isGrounded)
             {
-                StartCoroutine(DisableCollision());
+                p.isJumping = true;
             }
-
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                if (p.currentOneWayPlatform != null)
+                {
+                    StartCoroutine(DisableCollision());
+                }
+            }
+        } else {
+            p.moveDirection = 0;
         }
-
+        
         // attacks
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.K) && !p.isHit) {
             p.anim.SetBool("isPunching", true);
@@ -439,7 +440,7 @@ public class PlayerController : MonoBehaviour
     public void FlipCharacter(bool right)
     {
         // storing whether object is already facingRight to avoid double flipping
-        if (right != p.facingRight && p.anim.GetBool("canMove")) {
+        if (right != p.facingRight) {
             p.facingRight = !p.facingRight;
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }

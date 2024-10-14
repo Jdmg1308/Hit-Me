@@ -4,36 +4,59 @@ using UnityEngine;
 
 public class SetBoolBehavior : StateMachineBehaviour
 {
+
     public string boolName;
+    public bool updateOnState;
+    public bool updateOnStateMachine;
     public bool valueOnEnter, valueOnExit;
 
-    // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
+    // OnStateEnter is called before OnStateEnter is called on any state inside this state machine
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(boolName, valueOnEnter);
+        if (updateOnState) {
+            animator.SetBool(boolName, valueOnEnter);
+        }
     }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
+    // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
     //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
     //    
     //}
 
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
+    // OnStateExit is called before OnStateExit is called on any state inside this state machine
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.SetBool(boolName, valueOnExit);
+        if (updateOnState) {
+            animator.SetBool(boolName, valueOnExit);
+        }
     }
 
-    // OnStateMove is called right after Animator.OnAnimatorMove()
+    // OnStateMove is called before OnStateMove is called on any state inside this state machine
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
-    //    // Implement code that processes and affects root motion
+    //    
     //}
 
-    // OnStateIK is called right after Animator.OnAnimatorIK()
+    // OnStateIK is called before OnStateIK is called on any state inside this state machine
     //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
+    //    
     //}
+
+    // OnStateMachineEnter is called when entering a state machine via its Entry Node
+    override public void OnStateMachineEnter(Animator animator, int stateMachinePathHash)
+    {
+       if (updateOnStateMachine) {
+            animator.SetBool(boolName, valueOnEnter);
+        }
+    }
+
+    // OnStateMachineExit is called when exiting a state machine via its Exit Node
+    override public void OnStateMachineExit(Animator animator, int stateMachinePathHash)
+    {
+       if (updateOnStateMachine) {
+            animator.SetBool(boolName, valueOnExit);
+        }
+    }
 }
