@@ -215,7 +215,7 @@ public class GameManager : TheSceneManager
                 statusApplied = true;
             }
             CooldownImg.sprite = card.cardImage;
-            StatusEffectManager.AddStatusEffect(card.effectImage);
+            StatusEffectManager.AddStatusEffect(card);
             updateHealth();
         }
     }
