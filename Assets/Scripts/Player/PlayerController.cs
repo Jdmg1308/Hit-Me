@@ -324,7 +324,8 @@ public class PlayerController : MonoBehaviour
                 // apply damage + force to enemy 
                 IDamageable iDamageable = enemyObject.GetComponent<IDamageable>();
                 if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) {
-                    iDamageable.TakeKick(p.kickDamage, force);
+                    int extraDamage = (int)(p.kickCharge * p.kickChargeMaxDamage);
+                    iDamageable.TakeKick(p.kickDamage + extraDamage, force);
                     iDamageable.StopAttack(); // cancel enemy attack
                     iDamageableSet.Add(iDamageable);
                 }
@@ -488,6 +489,7 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(p.iFrames);
             p.isHit = false;
             p.anim.SetBool("isHurt", false);
+            p.anim.SetBool("canMove", true);
         }
     }
 

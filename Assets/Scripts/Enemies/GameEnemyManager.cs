@@ -87,7 +87,6 @@ public class GameEnemyManager : MonoBehaviour
         }
     }
 
-    // NOTE: need to redo buff enemies so it applies to current AND FUTURE enemies
     public void BuffEnemies(int ExtraHealth, int ExtraDamage, float ExtraSpeed)
     {
         foreach(GameObject enemy in spawnedEnemies) {

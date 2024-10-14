@@ -109,6 +109,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     private LineRenderer _lineRenderer;
     private Vector3 _lastRecordedPosition;  // Last recorded position to avoid redundant points
     #endregion
+
+    [Header("VFX")]
+    public GameObject weakPowPrefab;
+    public GameObject strongPowPrefab;
+    public float fxRadius;
+    public float strongFXThreshold;
+    public float damageToSizeScaling; // dmg = size of vfx
     // #region Enable Gizmos
     // public bool IdleDetection = true;
     // #endregion
@@ -322,6 +329,15 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         CurrentHealth -= damage;
         Anim.SetTrigger("ImpactTrigger");
         Anim.SetBool("ImpactBool", true);
+
+        // spawning damage vfx        
+        Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * fxRadius;
+        Vector3 spawnPosition = new Vector3(randomPoint.x, randomPoint.y, 0) + transform.position;
+        GameObject newVFX = Instantiate(damage >= strongFXThreshold ? strongPowPrefab : weakPowPrefab, spawnPosition, Quaternion.identity);
+        Vector3 newSize = newVFX.transform.localScale;
+        newSize.x += damage * damageToSizeScaling;
+        newSize.y += damage * damageToSizeScaling;
+        newVFX.transform.localScale = newSize;
 
         if (CurrentHealth <= 0) {
             if (!gameObject.IsDestroyed())

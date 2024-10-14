@@ -78,6 +78,7 @@ public class Player
     [Range(0, 1)] public float chargeUpForceMultiplier; // how much charge affects upforce amount (grounded attack)
     public LayerMask enemyLayer;
     public int kickDamage = 1;
+    public float kickChargeMaxDamage; // damage of non-extended max charge 
     public GameObject playerChargeMeter;
     public GameObject playerExtendedChargeMeter; 
     public float extendedChargeRadius; // max radius when in grapple state
@@ -93,6 +94,7 @@ public class Player
     [Range(0, 1)] public float velocityMod; // how much normal punches slow down enemy
 
     // fx
+    [Header("VFX")]
     [Range(0, 1)] public float hitStopScaling; // how much force affects level of hit stop
     public float screenShakeScaling; // how much force affects level of screen shake
     public float hitStopForceThreshold; // force threshold required before hit stop + screenshake is applied

@@ -31,6 +31,6 @@ public class DeathFXExpire : MonoBehaviour
             yield return null;
         }
         
-        Destroy(this);
+        Destroy(gameObject);
     }
 }
