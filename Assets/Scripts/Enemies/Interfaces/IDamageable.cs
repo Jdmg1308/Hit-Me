@@ -10,6 +10,8 @@ public interface IDamageable
     Animator Anim { get; set; }
     object DeathLock { get; set; }
     bool IsDead { get; set; }
+    bool InHitStun { get; set; }
+    float HitStunTime { get; set; }
 
     void Damage(int damage);
     void Die();

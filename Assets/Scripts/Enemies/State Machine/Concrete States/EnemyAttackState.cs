@@ -30,7 +30,8 @@ public class EnemyAttackState : EnemyState
     public override void FrameUpdate()
     {
         // must finish punch animation before considering next action
-        if (!e.IsPaused && !e.InImpact) {
+        // InImpact = taking collisions, ImpactBool = damage hit stun state?
+        if (!e.IsPaused && !e.InImpact && !e.Anim.GetBool("ImpactBool") && !e.InHitStun) {
             if (!e.Anim.GetBool("isPunching") && !e.InAttackRange) {
                 if (!e.InChaseRange) {
                     enemyStateMachine.changeState(e.IdleState);

@@ -192,20 +192,17 @@ public class PlayerController : MonoBehaviour
         }
 
         // attacks
-        // if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.K)) {
-        //     if (p.anim.GetBool("isPunching")) {
-        //         p.anim.SetTrigger("punch");
-        //     }
-
-        //     p.anim.SetBool("isPunching", true);
-        // }
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.K) && !p.isHit) {
+            p.anim.SetBool("isPunching", true);
+            p.anim.SetTrigger("punch");
+            p.anim.SetBool("isKicking", false);
+        }
         // can buffer kick
-        if (Input.GetMouseButton(0) || Input.GetKey(KeyCode.K) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching"))
-        {
+        if (Input.GetKey(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit) {
             p.anim.SetBool("isKicking", true);
         }
         // while not holding down button, set back to normal
-        if ((Input.GetMouseButton(0) || Input.GetKey(KeyCode.K)) && p.charging && !p.isHit && p.anim.GetBool("isKicking")) {
+        if (Input.GetKey(KeyCode.Q) && p.charging && !p.isHit && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching")) {
             p.playerChargeMeter.SetActive(true);
             p.anim.speed = 0; // pause anim
         } else {
@@ -473,8 +470,9 @@ public class PlayerController : MonoBehaviour
             GM.healthCurrent -= damage;
             p.anim.SetBool("isHurt", true);
 
-            // if you get hurt, cancel kick
+            // if you get hurt, cancel attacks
             p.anim.SetBool("isKicking", false); 
+            p.anim.SetBool("isPunching", false);
             EndShouldBeDamaging();
             p.playerChargeMeter.SetActive(false);
 
@@ -486,7 +484,6 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(p.iFrames);
             p.isHit = false;
             p.anim.SetBool("isHurt", false);
-        
         }
     }
 

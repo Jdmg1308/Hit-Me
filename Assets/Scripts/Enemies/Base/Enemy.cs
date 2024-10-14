@@ -30,6 +30,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     [field: SerializeField] public bool InChaseRange { get; set; }
     [field: SerializeField] public bool InAttackRange { get; set; }
 
+    // IDamageable Variables
+    [field: SerializeField] public bool InHitStun { get; set; } = false;
+
     // State Machine Variables
     public EnemyStateMachine.EnemyStates enemyState;
 
@@ -55,6 +58,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     [field: SerializeField] public int CurrentHealth { get; set; }
     public object DeathLock { get; set; } = new object();
     [field: SerializeField] public bool IsDead { get; set; } = false;
+    [field: SerializeField] public float HitStunTime { get; set; } = 1f;
 
     // IMoveable Variables
     // components
@@ -317,8 +321,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void Damage(int damage) {
         CurrentHealth -= damage;
         Anim.SetTrigger("ImpactTrigger");
-        ShouldBeDamaging = false;
-        Anim.SetBool("isPunching", false);
+        Anim.SetBool("ImpactBool", true);
 
         if (CurrentHealth <= 0) {
             if (!gameObject.IsDestroyed())
@@ -326,6 +329,15 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
                 Die();
             }
         }
+
+        StartCoroutine(HitStun(HitStunTime));
+    }
+
+    // specific hit state (for punches), if in this state then temp can't attack
+    private IEnumerator HitStun(float time) {
+        InHitStun = true;
+        yield return new WaitForSeconds(time);
+        InHitStun = false;
     }
 
     public void Die() {
@@ -342,7 +354,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void TakeKick(int damage, Vector2 force) {
         Damage(damage);
         InImpact = true;
-        Anim.SetBool("ImpactBool", true);
 
         if (force.x < 0) {
             FlipCharacter(true);
@@ -359,13 +370,12 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     public void TakePunch(int damage, float velocityMod) {
         Damage(damage);
-        InImpact = true;
-        Anim.SetBool("ImpactBool", true);
         RB.velocity = RB.velocity * velocityMod;
     }
 
     public void StopAttack() {
         Anim.SetBool("isPunching", false);
+        EndShouldBeDamaging();
     }
     #endregion
 
@@ -426,7 +436,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     // punch active frames
     public IEnumerator Punch() {
         ShouldBeDamaging = true;
-        while (ShouldBeDamaging) {
+        while (ShouldBeDamaging && !InHitStun) {
             Collider2D player = Physics2D.OverlapCircle(DetectAttack.transform.position, AttackRadius, 1 << Player.layer);
             if (player != null) {
                 Vector2 force = new Vector2((FacingRight ? 1 : -1) * Math.Abs(PunchForce.x), PunchForce.y);
