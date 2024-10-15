@@ -59,14 +59,13 @@ MonoBehaviour:
   BadPullAudio: {fileID: 8300000, guid: 93e66970dea988a48b790a371ec086a4, type: 3}
   DeckShuffle: {fileID: 8300000, guid: 8557bd154fdbcf0459775d05282aed72, type: 3}
   deckController: {fileID: 5376063832437897329}
-  cardCDTime: 5
-  cardCDTimer: 0
-  cardIsOnCD: 0
+  statusCard: {fileID: 0}
+  statusApplied: 0
+  cardButtonPrefab: {fileID: 7681925040830748014, guid: 9a2382570e344a94285c5965cf8ec476, type: 3}
   healthCurrent: 100
   healthMax: 100
   healthBar: {fileID: 0}
-  wager: 500
-  multiplier: 1
+  money: 500
   quota: 2300
   mobile: 0
   iOSPanel: {fileID: 0}
@@ -124,14 +123,23 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     kickDamage: 1
+    kickChargeMaxDamage: 0
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
+    extendedChargeRadius: 0
     charging: 0
+    punchPoint: {fileID: 0}
+    punchRadius: 0
+    uppercutRadius: 0
+    punchDamage: 0
+    uppercutDamage: 0
+    uppercutForce: {x: 0, y: 0}
+    velocityMod: 0
     hitStopScaling: 0
     screenShakeScaling: 0
     hitStopForceThreshold: 0
   playerController: {fileID: 0}
-  wager_text: {fileID: 0}
+  money_text: {fileID: 0}
   InHitStop: 0
   Curve:
     serializedVersion: 2
@@ -163,6 +171,13 @@ MonoBehaviour:
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  totalHurtFlashTime: 0
+  hurtFlashCurve:
+    serializedVersion: 2
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -467,7 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4475c1130409e284c8c2b5fdf12abfd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 0}
+  GM: {fileID: 0}
   spawnedEnemies: []
   EnemiesLeftInWave: 0
   spawnPoints:
@@ -480,6 +495,7 @@ MonoBehaviour:
   SpawnDelay: 3
   waveConfigurations: 030000000400000006000000
   currentWave: 0
+  isDoubleDamage: 0
   EnemyOnScreenDeathPrefab: {fileID: 7508921488299735724, guid: eb53a49b64c63cc49bb88adbdcf8fde3, type: 3}
   EnemyOffScreenDeathPrefab: {fileID: 7508921488299735724, guid: 7f84a877937bfea40ad9fdb8d477e6fd, type: 3}
 --- !u!1 &5376063832384337724

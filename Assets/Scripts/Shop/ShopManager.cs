@@ -13,7 +13,6 @@ public class ShopManager : TheSceneManager
     public Button destroyButton;
     public GameObject Options; // Panel containing the player's current deck of cards
     public GameObject deckDisplayPanel; // Panel containing the player's current deck of cards
-    public GameObject cardButtonPrefab; // Prefab to create buttons for each card in the deck
     public Button exitButton; // Prefab to create buttons for each card in the deck
     public float dupPrice;
     public float destPrice;
@@ -77,15 +76,15 @@ public class ShopManager : TheSceneManager
 
     void DisplayDeckForDuplication()
     {
-        DisplayDeck(true);
+        ShopDisplayDeck(true);
     }
 
     void DisplayDeckForDestruction()
     {
-        DisplayDeck(false);
+        ShopDisplayDeck(false);
     }
 
-    void DisplayDeck(bool duplicateCard)
+    void ShopDisplayDeck(bool duplicateCard)
     {
         deckDisplayPanel.SetActive(true);
         Options.SetActive(false);
@@ -98,7 +97,7 @@ public class ShopManager : TheSceneManager
 
         foreach (Card card in GM.deckController.currentDeck)
         {
-            GameObject cardButton = Instantiate(cardButtonPrefab, deckDisplayPanel.transform);
+            GameObject cardButton = Instantiate(GM.cardButtonPrefab, deckDisplayPanel.transform);
             cardButton.GetComponent<Image>().sprite = card.cardImage;
             cardButton.GetComponent<Button>().onClick.AddListener(() =>
             {

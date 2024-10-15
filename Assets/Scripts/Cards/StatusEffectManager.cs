@@ -6,7 +6,8 @@ using System.Collections;
 public class StatusEffectManager : MonoBehaviour
 {
     public RectTransform canvasRectTransform;
-    public GameObject statusEffectPrefab;
+    public GameObject ImagestatusEffectPrefab;
+    public GameObject SpritestatusEffectPrefab;
     public float spacing = 10;
     public GameManager GM;
 
@@ -19,12 +20,13 @@ public class StatusEffectManager : MonoBehaviour
 
     public void AddStatusEffect(Card card)
     {
+        // Debug.LogError("Card is " + card.name);
         Sprite EffectImage = card.effectImage;
         // Create a new status effect image from the prefab
-        GameObject newStatusEffect = Instantiate(statusEffectPrefab, canvasRectTransform);
-        newStatusEffect.GetComponent<Image>().sprite = EffectImage;
+        GameObject imgNewStatusEffect = Instantiate(ImagestatusEffectPrefab, canvasRectTransform);
+        imgNewStatusEffect.GetComponent<Image>().sprite = EffectImage;
         
-        RectTransform rectTransform = newStatusEffect.GetComponent<RectTransform>();
+        RectTransform rectTransform = imgNewStatusEffect.GetComponent<RectTransform>();
 
 
         float totalWidth = rectTransform.rect.width + spacing;
@@ -36,7 +38,7 @@ public class StatusEffectManager : MonoBehaviour
         rectTransform.anchoredPosition = new Vector2(xOffset - 330, -48); // Adjust -200 for padding from top edge
 
         // Add the new image to the list
-        statusEffects.Add(newStatusEffect);
+        statusEffects.Add(imgNewStatusEffect);
 
         GameObject targetObject;
 
@@ -45,26 +47,19 @@ public class StatusEffectManager : MonoBehaviour
             targetObject = GM.Player;
         } else if (card.cardType == CardType.EnemyBuff || card.cardType == CardType.StatusEffect)
         {
-            targetObject = GM.GameEnemyManager.spawnedEnemies[0];
+            targetObject = GM.Player; //GM.GameEnemyManager.spawnedEnemies[0];
         } else
         {
             Debug.LogError("Card has no recognizable set type L bozo");
-            targetObject = null;
+            targetObject = GM.Player;
         }
 
         // Create a new status effect image for the target object (e.g., player or enemy)
-        GameObject statusEffectOnTarget = Instantiate(statusEffectPrefab, targetObject.transform);
-        statusEffectOnTarget.GetComponent<Image>().sprite = EffectImage;
-
-        // Adjust position for the target object (e.g., on top of the player's or enemy's head)
-        RectTransform targetRectTransform = statusEffectOnTarget.GetComponent<RectTransform>();
-        targetRectTransform.anchorMax = new Vector2(0.5f, 1); // Center-top
-        targetRectTransform.anchorMin = new Vector2(0.5f, 1);
-        targetRectTransform.pivot = new Vector2(0.5f, 1);
-        targetRectTransform.anchoredPosition = new Vector2(0, 50); // Adjust for the position above the target
+        GameObject statusEffectOnTarget = Instantiate(SpritestatusEffectPrefab, GM.Player.transform);
+        statusEffectOnTarget.GetComponent<SpriteRenderer>().sprite = EffectImage;
 
         // Optionally, you can destroy the status effect after some time
-        StartCoroutine(RemoveStatusEffectAfterTime(newStatusEffect, statusEffectOnTarget, 5f)); // Remove after 5 seconds
+        StartCoroutine(RemoveStatusEffectAfterTime(imgNewStatusEffect, statusEffectOnTarget, 5f)); // Remove after 5 seconds
     }
 
     private IEnumerator RemoveStatusEffectAfterTime(GameObject statusEffectUI, GameObject statusEffectOnTarget, float duration)

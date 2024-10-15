@@ -3802,6 +3802,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     kickDamage: 1
+    kickChargeMaxDamage: 0
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
     extendedChargeRadius: 0
@@ -4464,8 +4465,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasRectTransform: {fileID: 3768005602822016125}
-  statusEffectPrefab: {fileID: 8179967470403479882, guid: 91dbfc50d002b76439a4a056c73951eb, type: 3}
+  statusEffectPrefab: {fileID: 4488178202975426522, guid: c3144a5bc9dc10a4b8124e629976ec8f, type: 3}
   spacing: 10
+  GM: {fileID: 0}
 --- !u!1 &3768005603464584101
 GameObject:
   m_ObjectHideFlags: 0

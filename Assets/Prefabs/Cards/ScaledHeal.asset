@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Scaled heal
   cardDescription: Heals the player for 1/2 of their missing HP
-  cardImage: {fileID: 0}
-  effectImage: {fileID: 0}
+  cardImage: {fileID: 21300000, guid: c63094c6209d00b43b4bbeb1e061eb1a, type: 3}
+  effectImage: {fileID: 21300000, guid: daba7e1bc0963fa43828534de13051b5, type: 3}
   effectValue: 2
   id: 0
   cardUserAnim: 

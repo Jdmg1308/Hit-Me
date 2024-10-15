@@ -24,13 +24,16 @@ public class GameManager : TheSceneManager
 
     [Header("Cards")]
     public DeckController deckController;
-    public float cardCDTime = 5.0f, cardCDTimer = 0;
-    public bool cardIsOnCD = false;
+    protected float cardCDTime = 5.0f, cardCDTimer = 0;
+    protected bool cardIsOnCD = false;
     public Card statusCard;
     public bool statusApplied = false;
+    public GameObject cardButtonPrefab; // Prefab to create buttons for each card in the deck
     protected Image UICard;
     protected Image CooldownImg;
     protected StatusEffectManager StatusEffectManager;
+    protected bool deckShowing = false;
+    protected GameObject deckDisplayPanel;
 
     [Header("Health")]
     public int healthCurrent;       // Current health of the player
@@ -146,6 +149,10 @@ public class GameManager : TheSceneManager
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
+
+            deckDisplayPanel = PlayScreen.transform.Find("DeckDisplayPanel")?.gameObject;
+            AssignButton(PlayScreen.transform, "DeckButton", currentCardDeck);
+
             money_text.text = " " + money.ToString();
         }
 
@@ -199,6 +206,39 @@ public class GameManager : TheSceneManager
         }
 
         updateWager();
+    }
+
+    public void currentCardDeck()
+    {
+        if (deckShowing)
+        {
+            // close deck
+            deckDisplayPanel.SetActive(false);
+            deckShowing = false;
+
+
+        } else
+        {
+            // open deck
+            deckDisplayPanel.SetActive(true);
+            displayDeck();
+            deckShowing = true;
+        }
+    }
+
+    public void displayDeck()
+    {
+        // Clear previous buttons
+        foreach (Transform child in deckDisplayPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Card card in deckController.currentDeck)
+        {
+            GameObject cardButton = Instantiate(cardButtonPrefab, deckDisplayPanel.transform);
+            cardButton.GetComponent<Image>().sprite = card.cardImage;
+        }
     }
 
     public void useCard()
