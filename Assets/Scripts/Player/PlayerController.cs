@@ -474,6 +474,7 @@ public class PlayerController : MonoBehaviour
         if (!p.isHit && damage > 0) {
             p.isHit = true;
             GM.healthCurrent -= damage;
+            StartCoroutine(GM.HurtFlash());
             p.anim.SetBool("isHurt", true);
 
             // if you get hurt, cancel attacks

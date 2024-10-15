@@ -68,6 +68,11 @@ public class GameManager : TheSceneManager
     // hit fx
     public bool InHitStop = false;
     public AnimationCurve Curve;
+    // hurt fx
+    public float totalHurtFlashTime;
+    public AnimationCurve hurtFlashCurve;
+    private Image hurtFlashImage;
+
 
     private static GameManager instance;
 
@@ -83,7 +88,6 @@ public class GameManager : TheSceneManager
         {
             Destroy(gameObject); // Prevent duplicate instances
         }
-
     }
 
     public static GameManager GetInstance()
@@ -140,6 +144,7 @@ public class GameManager : TheSceneManager
             CooldownImg = PlayScreen.transform.Find("Card")?.gameObject.GetComponentInChildren<Image>();
             StatusEffectManager = PlayScreen.transform.Find("Card")?.GetComponent<StatusEffectManager>();
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
+            hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
             money_text.text = " " + money.ToString();
         }
@@ -373,6 +378,20 @@ public class GameManager : TheSceneManager
         }
 
         Camera.transform.position = startPos;
+    }
+
+    // in future can prob do the outline ring like in CoD or smth, and can have its min alpha increase as player hp lowers
+    public IEnumerator HurtFlash() {
+        float elapsedTime = 0f;
+        while (elapsedTime < totalHurtFlashTime) {
+            float strength = hurtFlashCurve.Evaluate(elapsedTime / totalHurtFlashTime);
+            elapsedTime += Time.deltaTime;
+            Color c = hurtFlashImage.color;
+            c.a = strength;
+            hurtFlashImage.color = c;
+            Debug.Log("current alpha: " + strength);
+            yield return null;
+        }
     }
     #endregion
 }

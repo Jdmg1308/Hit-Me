@@ -163,13 +163,11 @@ public class GameEnemyManager : MonoBehaviour
     private IEnumerator DoubleDamageTimerHelper(float timeAmount) {
         float currentTime = 0f;
         isDoubleDamage = true;
-        Debug.Log("dd on");
         while (currentTime < timeAmount) {
             currentTime += Time.deltaTime;
             yield return null;
         }
         isDoubleDamage = false;
-        Debug.Log("dd off");
     }
 
     // spawns clones of each enemy beside them
