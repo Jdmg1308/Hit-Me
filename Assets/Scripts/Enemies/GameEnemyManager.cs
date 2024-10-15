@@ -14,7 +14,7 @@ public class GameEnemyManager : MonoBehaviour
     [Header("Spawn Settings")]
     public List<Transform> spawnPoints;  // List of possible spawn points
     public GameObject enemyPrefab;
-    public float SpawnDelay = 3f;
+    public float SpawnDelay = 3f; // first wave spawn delay
 
     [Header("Wave Settings")]
     public List<int> waveConfigurations; // List of enemy count per wave
@@ -26,8 +26,9 @@ public class GameEnemyManager : MonoBehaviour
         public float ChaseSpeed;
         public int PunchDamage;
     }
-    [Header("Enemy Buffs")]
+    [Header("Enemy Effects")]
     public EnemyStats enemyStats;
+    public bool isDoubleDamage = false;
 
     [Header("FX")]
     // death fx
@@ -65,12 +66,30 @@ public class GameEnemyManager : MonoBehaviour
                 StartCoroutine(StartWaves(enemiesToSpawn));
             }
         }
+
+        // testing methods
+        if (Input.GetKeyDown(KeyCode.T)) {
+            // SpawnExtraEnemies(5);
+            // DestroyExtraEnemies(5);
+            // HealEnemies(15);
+            // DoubleDamageTimer(10f);
+            SpawnHallucinationClones(1);
+        }
     }
 
     public IEnumerator StartWaves(int enemiesToSpawn) {
         _WaveInprogress = true;
         yield return new WaitForSeconds(SpawnDelay);
         SpawnWave(enemiesToSpawn);
+    }
+
+    // this exists to handle damage mods
+    public void Damage(Enemy enemy, int damage) {
+        if (isDoubleDamage) {
+            enemy.DamageHelper(2 * damage);
+        } else {
+            enemy.DamageHelper(damage);
+        }
     }
 
     public void Death(GameObject enemy)
@@ -87,6 +106,7 @@ public class GameEnemyManager : MonoBehaviour
         }
     }
 
+    #region Card Effects
     public void BuffEnemies(int ExtraHealth, int ExtraDamage, float ExtraSpeed)
     {
         foreach(GameObject enemy in spawnedEnemies) {
@@ -105,13 +125,73 @@ public class GameEnemyManager : MonoBehaviour
         enemyStats.PunchDamage += ExtraDamage;
     }
 
-    private void SpawnWave(int enemiesToSpawn) {
+    // spawn x enemies, chooses random spawn points from list
+    public void SpawnExtraEnemies(int enemiesToSpawn) {
         // Choose a random number of spawn points, capped by the total spawn points available
         int randomSpawnPoints = Mathf.Min(enemiesToSpawn, spawnPoints.Count);
         List<Transform> selectedSpawnPoints = GetRandomSpawnPoints(randomSpawnPoints);
 
         // Spawn enemies equally spread out among the selected spawn points
         SpawnEnemies(enemiesToSpawn, selectedSpawnPoints);
+    }
+
+    // destroy x num of enemies from existing list
+    public void DestroyExtraEnemies(int enemiesToDestroy) {
+        // Make sure we do not try to destroy more enemies than we have
+        enemiesToDestroy = Mathf.Min(enemiesToDestroy, spawnedEnemies.Count);
+
+        // Loop through the specified number of enemies to destroy
+        for (int i = 0; i < enemiesToDestroy; i++) {
+            GameObject enemy = spawnedEnemies[0];
+            Death(enemy);
+        }
+    }
+
+    // heal all enemies
+    public void HealEnemies(int healAmount) {
+        for (int i = 0; i < spawnedEnemies.Count; i++) {
+            Enemy enemy = spawnedEnemies[i].GetComponent<Enemy>();
+            enemy.CurrentHealth += healAmount;
+        }
+    }
+
+    // temporarily all enemies take double damage
+    public void DoubleDamageTimer(float timeAmount) {
+        StartCoroutine(DoubleDamageTimerHelper(timeAmount));
+    }
+
+    private IEnumerator DoubleDamageTimerHelper(float timeAmount) {
+        float currentTime = 0f;
+        isDoubleDamage = true;
+        Debug.Log("dd on");
+        while (currentTime < timeAmount) {
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        isDoubleDamage = false;
+        Debug.Log("dd off");
+    }
+
+    // spawns clones of each enemy beside them
+    public void SpawnHallucinationClones(int health) {
+        foreach (GameObject t in spawnedEnemies) {
+            GameObject newEnemy = Instantiate(enemyPrefab, t.transform.position, Quaternion.identity);
+            Enemy enemyRef = newEnemy.GetComponent<Enemy>();
+            enemyRef.Player = GM.Player;
+            enemyRef.GameEnemyManager = this;
+
+            // modded stats for hallucination clones
+            enemyRef.PunchDamage = 0;
+            enemyRef.MaxHealth = health;
+            enemyRef.CurrentHealth = health;
+            enemyRef.initialSpawnDelay = 0f;
+        }
+    }
+    #endregion
+
+    #region Spawn Helpers
+    private void SpawnWave(int enemiesToSpawn) {
+        SpawnExtraEnemies(enemiesToSpawn);
 
         // Move to the next wave
         ++currentWave;
@@ -136,6 +216,7 @@ public class GameEnemyManager : MonoBehaviour
         return selectedPoints;
     }
 
+    // spawn x number of enemies using a list of spawn points
     private void SpawnEnemies(int totalEnemies, List<Transform> spawnPoints)
     {
         int enemiesPerPoint = totalEnemies / spawnPoints.Count;   // Divide enemies equally
@@ -156,7 +237,7 @@ public class GameEnemyManager : MonoBehaviour
             }
         }
 
-         // Update total number of enemies after spawning
+        // Update total number of enemies after spawning
         EnemiesLeftInWave += totalEnemies;
     }
 
@@ -173,6 +254,7 @@ public class GameEnemyManager : MonoBehaviour
 
         spawnedEnemies.Add(newEnemy);
     }
+    #endregion
 
     #region FX
     IEnumerator WaitForSpawn(GameObject enemy) {

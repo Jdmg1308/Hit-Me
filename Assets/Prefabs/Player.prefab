@@ -1197,7 +1197,8 @@ MonoBehaviour:
     enemyLayer:
       serializedVersion: 2
       m_Bits: 512
-    kickDamage: 10
+    kickDamage: 5
+    kickChargeMaxDamage: 17
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
     extendedChargeRadius: 1.8
@@ -1664,6 +1665,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     kickDamage: 1
+    kickChargeMaxDamage: 0
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
     extendedChargeRadius: 0

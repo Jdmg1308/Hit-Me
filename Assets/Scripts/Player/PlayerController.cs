@@ -218,11 +218,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.J)) 
         { 
             p.grapplingGun.SetGrapplePoint(); 
-            //p.anim.SetBool("midJump", true); 
         }
         if (Input.GetKey(KeyCode.Mouse1) || Input.GetKey(KeyCode.J)) {
             p.grapplingGun.pull();
-            p.playerExtendedChargeMeter.SetActive(true);
+            if (p.charging) {
+                p.playerExtendedChargeMeter.SetActive(true);
+            }
         } else if (Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.J)) { 
             p.grapplingGun.stopGrappling(); 
             //p.anim.SetBool("midJump", false); 
@@ -305,10 +306,10 @@ public class PlayerController : MonoBehaviour
         force.y = ((p.isGrounded || p.rb.velocity.y > 0) ? 1 : -1) * weightedYForce;
 
         float kickRadius = p.kickRadius;
-        if (p.kickCharge > 1f) { // during grapple
-            float t = Mathf.Clamp((p.kickCharge - 1f) / (p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue - 1f), 0f, 1f);
-            kickRadius = Mathf.Lerp(p.kickRadius, p.extendedChargeRadius, t);
-        }
+        // if (p.kickCharge > 1f) { // during grapple
+        //     float t = Mathf.Clamp((p.kickCharge - 1f) / (p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue - 1f), 0f, 1f);
+        //     kickRadius = Mathf.Lerp(p.kickRadius, p.extendedChargeRadius, t);
+        // }
 
         while (shouldBeDamaging) {
             Collider2D[] enemyList = Physics2D.OverlapCircleAll(p.kickPoint.transform.position, kickRadius, p.enemyLayer);
@@ -470,7 +471,7 @@ public class PlayerController : MonoBehaviour
     // Function to take damage + iframes + knockback
     public IEnumerator TakeDamage(int damage, Vector2 force)
     {
-        if (!p.isHit) {
+        if (!p.isHit && damage > 0) {
             p.isHit = true;
             GM.healthCurrent -= damage;
             p.anim.SetBool("isHurt", true);

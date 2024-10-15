@@ -116,6 +116,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public float fxRadius;
     public float strongFXThreshold;
     public float damageToSizeScaling; // dmg = size of vfx
+
+    public float initialSpawnDelay = 2f;
     // #region Enable Gizmos
     // public bool IdleDetection = true;
     // #endregion
@@ -156,6 +158,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
         // knockback path tracer
         _lastRecordedPosition = transform.position; // Initialize the last recorded position
+
+        // spawned in delay
+        StartCoroutine(PauseAction(initialSpawnDelay));
     }
     
     private void Update() {
@@ -205,14 +210,12 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             float impactForce = collision.relativeVelocity.magnitude;
             if (impactForce > collisionForceThreshold) { // if force > threshold, then deal dmg, otherwise no longer in InImpact state
                 int collisionDamage = Mathf.RoundToInt(impactForce * collisionDamageMultiplier); // note: consider log max for extreme cases
-
-                // if collide wtih enemy, treat as if you were InImpact
-                if (collision.gameObject.CompareTag("enemy")) { 
+                // if collide wtih enemy that was inImpact, treat as if you were InImpact
+                if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact) { 
                     Damage(collisionDamage);
-
                     InImpact = true;
                     Anim.SetBool("ImpactBool", true);
-                } else { // bounce off surfaces, not enemies
+                } else if (!collision.gameObject.CompareTag("enemy")) { // bounce off surfaces, not enemies
                     Vector2 bounceDirection = collision.contacts[0].normal;
                     // if not one way platform or if hitting one way platform from above (the only allowed bounce, otherwise just go through it)
                     if (!collision.gameObject.CompareTag("OneWayPlatform") || (collision.gameObject.CompareTag("OneWayPlatform") && bounceDirection == Vector2.up)) {
@@ -326,6 +329,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     #region Health/Die Functions
     public void Damage(int damage) {
+        GameEnemyManager.Damage(this, damage); 
+    }
+
+    public void DamageHelper(int damage) {
         CurrentHealth -= damage;
         Anim.SetTrigger("ImpactTrigger");
         Anim.SetBool("ImpactBool", true);

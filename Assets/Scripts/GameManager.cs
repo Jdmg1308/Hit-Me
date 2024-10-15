@@ -176,7 +176,7 @@ public class GameManager : TheSceneManager
 
     void Update()
     {
-        if (GameEnemyManager.currentWave == GameEnemyManager.waveConfigurations.Count)
+        if (GameEnemyManager.currentWave > GameEnemyManager.waveConfigurations.Count)
         {
             if (money >= quota)
             {
