@@ -289,7 +289,7 @@ MonoBehaviour:
   FootstepsSource: {fileID: 1570656324}
   background: {fileID: 8300000, guid: 7ca5dd0b011ee9f4a8b8d608101c3ea0, type: 3}
   punch: {fileID: 8300000, guid: 97f613546e209fd4888e63a86e9a39d9, type: 3}
-  uppercut: {fileID: 8300000, guid: 81abc813165020447b22977590affbe8, type: 3}
+  uppercut: {fileID: 8300000, guid: 619f879f9392ef4469f744209f7951ec, type: 3}
   footsteps: {fileID: 8300000, guid: 8b3d6baab02e31a409ac8b1170276a09, type: 3}
   enemyHit: {fileID: 0}
   playerHit: {fileID: 8300000, guid: 18faf45639ebf8b43850b66bd12a1030, type: 3}
