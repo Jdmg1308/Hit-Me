@@ -541,6 +541,7 @@ MonoBehaviour:
   fxRadius: 1.5
   strongFXThreshold: 10
   damageToSizeScaling: 0.01
+  initialSpawnDelay: 2
 --- !u!1 &6430424488172574266
 GameObject:
   m_ObjectHideFlags: 0

@@ -1215,6 +1215,7 @@ MonoBehaviour:
     baseUppercutDamage: 0
     uppercutForce: {x: 1, y: 5}
     velocityMod: 0.5
+    forwardPunchMovement: {x: 300, y: 0}
     hitStopScaling: 0.009
     screenShakeScaling: 2.5
     hitStopForceThreshold: 16
@@ -1687,6 +1688,7 @@ MonoBehaviour:
     baseUppercutDamage: 0
     uppercutForce: {x: 0, y: 0}
     velocityMod: 0
+    forwardPunchMovement: {x: 0, y: 0}
     hitStopScaling: 0
     screenShakeScaling: 0
     hitStopForceThreshold: 0

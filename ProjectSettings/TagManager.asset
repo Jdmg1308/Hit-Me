@@ -8,6 +8,7 @@ TagManager:
   - enemy
   - GameManager
   - Canvas
+  - Audio
   layers:
   - Default
   - TransparentFX

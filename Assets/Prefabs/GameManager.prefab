@@ -141,6 +141,7 @@ MonoBehaviour:
     baseUppercutDamage: 0
     uppercutForce: {x: 0, y: 0}
     velocityMod: 0
+    forwardPunchMovement: {x: 0, y: 0}
     hitStopScaling: 0
     screenShakeScaling: 0
     hitStopForceThreshold: 0
@@ -529,6 +530,7 @@ MonoBehaviour:
   waveConfigurations: 030000000400000006000000
   currentWave: 0
   isDoubleDamage: 0
+  extraEnemySpawns: 0
   EnemyOnScreenDeathPrefab: {fileID: 7508921488299735724, guid: eb53a49b64c63cc49bb88adbdcf8fde3, type: 3}
   EnemyOffScreenDeathPrefab: {fileID: 7508921488299735724, guid: 7f84a877937bfea40ad9fdb8d477e6fd, type: 3}
 --- !u!1 &5376063832384337724
@@ -620,8 +622,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fcd31f575bb878a43ba3a09f5a298e40, type: 2}
   - {fileID: 11400000, guid: 083bb11e1ad66a74f90b25cc77498650, type: 2}
   - {fileID: 11400000, guid: 3f05113ee504720469a02a6a29dcd6fb, type: 2}
+  - {fileID: 11400000, guid: 41f9978462fb3be4e95f498d989e148d, type: 2}
+  - {fileID: 11400000, guid: b30e46c36192dd7418db70621740063f, type: 2}
+  - {fileID: 11400000, guid: 31f9a894542870042a78ac643cefdd51, type: 2}
   currentDeck:
-    deck: []
+    deck:
+    - {fileID: 11400000, guid: db28ca9d2804f6f47913d52d043edb37, type: 2}
     drawPile: []
     hand: []
     discardPile: []
