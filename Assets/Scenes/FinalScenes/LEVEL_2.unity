@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2129128}
   - component: {fileID: 2129129}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PipesPlatform (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,10 +430,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2595410672827845559, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
-      propertyPath: GameManager
-      value: 
-      objectReference: {fileID: 753996336}
     - target: {fileID: 3768005602822016113, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -448,7 +444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3768005602822016125, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3768005602822016125, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_AnchorMax.x
@@ -528,10 +524,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3768005602839562070, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5389885250048861369, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
-      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -800,7 +792,7 @@ GameObject:
   m_Component:
   - component: {fileID: 625702123}
   - component: {fileID: 625702124}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FireEscapeSpawnUnbroken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -883,7 +875,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5811921193137224075, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5811921193137224075, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1099,7 +1091,7 @@ Transform:
   - {fileID: 7012374598993069231}
   - {fileID: 1050991548385168992}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &902644451
 GameObject:
@@ -1390,7 +1382,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xMin: 1
-  yMin: 0
+  yMin: 1
   xMax: 50
   yMax: 50
 --- !u!1 &941601930
@@ -1403,7 +1395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 941601931}
   - component: {fileID: 941601932}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FireEscapeSpawnBroken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1548,7 +1540,7 @@ GameObject:
   - component: {fileID: 998619459}
   - component: {fileID: 998619461}
   - component: {fileID: 998619460}
-  m_Layer: 10
+  m_Layer: 6
   m_Name: Wall Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2058,7 +2050,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1386137684}
   - component: {fileID: 1386137683}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2138,7 +2130,7 @@ Transform:
   - {fileID: 1566860529}
   - {fileID: 1703632347}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1394024437
 GameObject:
@@ -2288,7 +2280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1427194707}
   - component: {fileID: 1427194708}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PipesPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2540,7 +2532,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1446113209}
-  m_Layer: 10
+  m_Layer: 6
   m_Name: Bounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2948,7 +2940,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1527622699}
   - component: {fileID: 1527622700}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FireEscapeSpawnBroken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3191,7 +3183,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1618727174
 GameObject:
@@ -3287,7 +3279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1667123232}
   - component: {fileID: 1667123233}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FireEscapeLadderUnbroken 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3371,7 +3363,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1702610206}
   - component: {fileID: 1702610205}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FireEscapeLadderUnbroken 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3457,6 +3449,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 842034063, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 842034063, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916012013, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1916012013, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1426531965171240446, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.434618
@@ -3483,7 +3491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055597, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055597, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4039,7 +4047,7 @@ GameObject:
   - component: {fileID: 1842182807}
   - component: {fileID: 1842182809}
   - component: {fileID: 1842182808}
-  m_Layer: 10
+  m_Layer: 6
   m_Name: Wall Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4492,7 +4500,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2079502252}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Platforms (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4532,7 +4540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2089617748}
   - component: {fileID: 2089617747}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pipes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4696,6 +4704,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1386137684}
     m_Modifications:
+    - target: {fileID: 1398018185933375223, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398018186235767438, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398018186330558738, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398018186884290391, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1398018187385068018, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -4743,6 +4767,18 @@ PrefabInstance:
     - target: {fileID: 1398018187385068019, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
       propertyPath: m_Name
       value: DeathPit
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398018187385068019, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398018187528006014, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1398018187585145938, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 18acc100b50b5b84c924a4872dfd6971, type: 3}
@@ -4847,6 +4883,10 @@ PrefabInstance:
     - target: {fileID: 4754742115781492243, guid: 1480ee3f26aad7945ae8a8a5b68b855c, type: 3}
       propertyPath: m_Name
       value: bkgAppended (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4754742115781492243, guid: 1480ee3f26aad7945ae8a8a5b68b855c, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1480ee3f26aad7945ae8a8a5b68b855c, type: 3}

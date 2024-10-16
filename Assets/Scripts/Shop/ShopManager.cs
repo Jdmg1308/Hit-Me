@@ -6,9 +6,6 @@ using UnityEngine.UI;
 public class ShopManager : TheSceneManager
 {
     public List<Card> allPurchasableCards;
-    public Button card0Button;
-    public Button card1Button;
-    public Button card2Button;
     public Button duplicateButton;
     public Button destroyButton;
     public GameObject Options; // Panel containing the player's current deck of cards
@@ -45,18 +42,26 @@ public class ShopManager : TheSceneManager
         {
             _randCards[i] = Random.Range(0, allPurchasableCards.Count);
         }
+
+        GameObject displayPanel = Options.transform.Find("ShopDisplayPanel").gameObject;
         // Using _randCards[i] instead of 0, 1, 2
-        card0Button.GetComponent<Image>().sprite = allPurchasableCards[_randCards[0]].cardImage;
-        card0Button.onClick.AddListener(() => PurchaseCard(_randCards[0], card0Button));
+        GameObject child0 = GM.showCard(allPurchasableCards[_randCards[0]], displayPanel);
+        child0.GetComponent<Button>().onClick.AddListener(() => PurchaseCard(_randCards[0], child0));
 
-        card1Button.GetComponent<Image>().sprite = allPurchasableCards[_randCards[1]].cardImage;
-        card1Button.onClick.AddListener(() => PurchaseCard(_randCards[1], card1Button));
+        GameObject child1 = GM.showCard(allPurchasableCards[_randCards[1]], displayPanel);
+        child1.GetComponent<Button>().onClick.AddListener(() => PurchaseCard(_randCards[1], child1));
 
-        card2Button.GetComponent<Image>().sprite = allPurchasableCards[_randCards[2]].cardImage;
-        card2Button.onClick.AddListener(() => PurchaseCard(_randCards[2], card2Button));
+        GameObject child2 = GM.showCard(allPurchasableCards[_randCards[2]], displayPanel);
+        child2.GetComponent<Button>().onClick.AddListener(() => PurchaseCard(_randCards[2], child2));
+
+        //card1Button.GetComponent<Image>().sprite = allPurchasableCards[_randCards[1]].cardImage;
+        //card1Button.onClick.AddListener(() => PurchaseCard(_randCards[1], card1Button));
+
+        //card2Button.GetComponent<Image>().sprite = allPurchasableCards[_randCards[2]].cardImage;
+        //card2Button.onClick.AddListener(() => PurchaseCard(_randCards[2], card2Button));
     }
 
-    private void PurchaseCard(int _cardIndex, Button button)
+    private void PurchaseCard(int _cardIndex, GameObject buttonCard)
     {
         Card selectedCard = allPurchasableCards[_cardIndex];
         if (GM.money < selectedCard.price)
@@ -70,7 +75,7 @@ public class ShopManager : TheSceneManager
             // Player buys the card
             GM.money -= selectedCard.price;
             GM.deckController.DeckAdd(selectedCard, GM.deckController.currentDeck);
-            button.gameObject.SetActive(false); // Hide the button after purchase
+            Destroy(buttonCard);
         }
     }
 
@@ -97,8 +102,7 @@ public class ShopManager : TheSceneManager
 
         foreach (Card card in GM.deckController.currentDeck)
         {
-            GameObject cardButton = Instantiate(GM.cardButtonPrefab, deckDisplayPanel.transform);
-            cardButton.GetComponent<Image>().sprite = card.cardImage;
+            GameObject cardButton = GM.showCard(card, deckDisplayPanel);
             cardButton.GetComponent<Button>().onClick.AddListener(() =>
             {
                 if (duplicateCard)

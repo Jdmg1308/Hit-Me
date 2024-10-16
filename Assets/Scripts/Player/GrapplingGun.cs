@@ -48,8 +48,9 @@ public class GrapplingGun : MonoBehaviour
 
     public Texture2D defaultCursor;
     public Texture2D specialCursor;
-
-    public Image cursorImage; // Assign this in the Unity Inspector
+    public GameObject Canvas;
+    public Image cursorImage;
+    public GameObject grappleTargetIndicator;
 
     // Cursor Hotspot (adjust for the click point)
     public Vector2 cursorHotspot = Vector2.zero;
@@ -58,7 +59,13 @@ public class GrapplingGun : MonoBehaviour
 
     [Header("Grapple Forgiveness")]
     public float GrappleRadius; // set 'thickness' of grapple detection for easier use
-    public Image grappleTargetIndicator;
+
+    private void Awake()
+    {
+        Canvas = GameObject.FindGameObjectWithTag("Canvas");
+        grappleTargetIndicator = Canvas.transform.Find("GrappleIndicator").gameObject;
+        cursorImage = Canvas.transform.Find("CursorImage").gameObject.GetComponent<Image>();
+    }
 
     private void Start()
     {
@@ -112,14 +119,14 @@ public class GrapplingGun : MonoBehaviour
             endPoint += Vector3.up * 0.5f;
             // GrappleIndicator.SetPosition(0, endPoint + Vector3.up * 0.2f); // setting first point to be 1 unit behind second point to cut line short
             // GrappleIndicator.SetPosition(1, endPoint); // Show the grapple target
-            grappleTargetIndicator.enabled = true;
+            grappleTargetIndicator.SetActive(true);
             grappleTargetIndicator.transform.position = m_camera.WorldToScreenPoint(endPoint);
             Color c = cursorImage.color;
             c.a = 1f;
             cursorImage.color = c;
         } else {
             // GrappleIndicator.enabled = false;
-            grappleTargetIndicator.enabled = false;
+            grappleTargetIndicator.SetActive(false);
             Color c = cursorImage.color;
             c.a = 0.2f;
             cursorImage.color = c;

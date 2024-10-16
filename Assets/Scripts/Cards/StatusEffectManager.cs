@@ -65,7 +65,7 @@ public class StatusEffectManager : MonoBehaviour
 
     public void AddStatusEffect(Card card)
     {
-        if (card.cardType == CardType.EnemyBuff)
+        if (card.cardType == CardType.EnemyBuff || card.cardType == CardType.EnemyDebuff)
         {
             AddToEachEnemy(card);
         } 

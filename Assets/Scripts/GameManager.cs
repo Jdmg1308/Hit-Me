@@ -66,6 +66,8 @@ public class GameManager : TheSceneManager
     protected GameObject WinScreen;
     protected GameObject IBuild;
 
+    protected GameObject cooldownCard;
+
     protected bool paused = false;
 
     [Header("FX")]
@@ -146,6 +148,7 @@ public class GameManager : TheSceneManager
             money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
             quota_text = PlayScreen.transform.Find("Quota")?.gameObject.GetComponent<TextMeshProUGUI>();
             UICard = PlayScreen.transform.Find("Card")?.gameObject.GetComponent<Image>();
+            cooldownCard = PlayScreen.transform.Find("Card")?.gameObject;
             CooldownImg = PlayScreen.transform.Find("Card")?.gameObject.GetComponentInChildren<Image>();
             StatusEffectManager = PlayScreen.transform.Find("Card")?.GetComponent<StatusEffectManager>();
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
@@ -221,8 +224,6 @@ public class GameManager : TheSceneManager
             // close deck
             deckDisplayPanel.SetActive(false);
             deckShowing = false;
-
-
         } else
         {
             // open deck
@@ -230,6 +231,17 @@ public class GameManager : TheSceneManager
             displayDeck();
             deckShowing = true;
         }
+    }
+
+    public GameObject showCard(Card card, GameObject parent)
+    {
+        GameObject cardButton = Instantiate(cardButtonPrefab, parent.transform);
+        cardButton.GetComponent<Image>().sprite = card.cardImage;
+        cardButton.transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = card.cardName;
+        cardButton.transform.Find("Description").gameObject.GetComponent<TextMeshProUGUI>().text = card.cardDescription;
+        cardButton.transform.Find("Image").gameObject.GetComponent<Image>().sprite = card.effectImage;
+
+        return cardButton;
     }
 
     public void displayDeck()
@@ -242,8 +254,7 @@ public class GameManager : TheSceneManager
 
         foreach (Card card in deckController.currentDeck)
         {
-            GameObject cardButton = Instantiate(cardButtonPrefab, deckDisplayPanel.transform);
-            cardButton.GetComponent<Image>().sprite = card.cardImage;
+            showCard(card, deckDisplayPanel);
         }
     }
 
@@ -265,7 +276,22 @@ public class GameManager : TheSceneManager
                 statusCard = card;
                 statusApplied = true;
             }
-            CooldownImg.sprite = card.cardImage;
+            // CooldownImg.sprite = card.cardImage;
+
+            // Get the RectTransform component of the prefab
+            GameObject obj = showCard(card, PlayScreen);
+            RectTransform rectTransform = obj.GetComponent<RectTransform>();
+
+            // Set the anchor to the top right corner
+            rectTransform.anchorMin = new Vector2(0.9243959f, 0.814f);  // Top-right corner
+            rectTransform.anchorMax = new Vector2(0.9942604f, 0.987f);  // Top-right corner
+
+            // Set the pivot to the top right (optional, if you want to rotate around the top-right corner)
+            //rectTransform.pivot = new Vector2(1, 1);
+
+            // Adjust the position (0,0 will be the top right corner)
+            //rectTransform.anchoredPosition = new Vector2(193.55f, 266.95f);
+            obj.transform.localScale = obj.transform.localScale * 0.7f;
             StatusEffectManager.AddStatusEffect(card);
             updateHealth();
         }
