@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Hallucinate Enemies
   cardDescription: You took too many drugs and are seeing doubles,,,
-  cardImage: {fileID: 0}
-  effectImage: {fileID: 0}
+  cardImage: {fileID: 21300000, guid: 2781fff92c20a1540ba36d2db94a01c5, type: 3}
+  effectImage: {fileID: 21300000, guid: 800d38c4decfce5479b56e11151855ab, type: 3}
   effectValue: 1
   id: 0
   cardUserAnim: 

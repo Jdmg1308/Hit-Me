@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Punch Damage Boost
   cardDescription: Increases player punch damage
-  cardImage: {fileID: 0}
-  effectImage: {fileID: 0}
+  cardImage: {fileID: 21300000, guid: 4292a35e1b4eff444875482bedfa609c, type: 3}
+  effectImage: {fileID: 21300000, guid: 82963fb718b67e54cad62c26bef4303d, type: 3}
   effectValue: 2
   id: 0
   cardUserAnim: 

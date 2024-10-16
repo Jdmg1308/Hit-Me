@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3542136557937160504}
   - component: {fileID: 1106636712290084221}
   m_Layer: 5
-  m_Name: StatusEffect
+  m_Name: PermStatusEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

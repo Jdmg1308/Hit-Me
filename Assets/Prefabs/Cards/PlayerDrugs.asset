@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Take Drugs
   cardDescription: go crazy ahhhh
-  cardImage: {fileID: 0}
-  effectImage: {fileID: 0}
+  cardImage: {fileID: 21300000, guid: 084b98d43c550af41b17e4fac83b4690, type: 3}
+  effectImage: {fileID: 21300000, guid: 1e1a9abdc087c164fbf94cb0f6fbc699, type: 3}
   effectValue: 2
   id: 0
   cardUserAnim: 
