@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,7 +29,10 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GM.Difficulty();
+        if (!(SceneManager.GetActiveScene().name == "TUTORIAL" || SceneManager.GetActiveScene().name == "SHOP"))
+        {
+            GM.Difficulty();
+        }
 
         // setting defaults
         p.facingRight = false;
