@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Attack Power Card Data", menuName = "ScriptableObjects/Card/AttackpowerCard")]
-public class AttackpowerCard : Card
+[CreateAssetMenu(fileName = "New Kick Damage Increase Card Data", menuName = "ScriptableObjects/Card/KickDamageIncreaseCard")]
+public class KickDamageIncreaseCard : Card
 {
     public override CardType cardType{get{return CardType.PlayerBuff;}}
 
