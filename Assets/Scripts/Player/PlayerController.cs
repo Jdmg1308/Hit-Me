@@ -109,11 +109,13 @@ public class PlayerController : MonoBehaviour
     }
 
     //helper method called in GM, resets players damage to base levels 
+    //and also player speed i guess LOL
     public void resetPlayerDamage()
     {
         p.kickDamage = p.baseKickDamage;
         p.punchDamage = p.basePunchDamage;
         p.uppercutDamage = p.baseUppercutDamage;
+        p.moveSpeed = p.baseMoveSpeed;
     }
 
     private void Move()
@@ -481,7 +483,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!p.isHit && damage > 0) {
             p.isHit = true;
-            GM.healthCurrent -= damage;
+            GM.healthCurrent -= p.vulnerability * damage;
             StartCoroutine(GM.HurtFlash());
             p.anim.SetBool("isHurt", true);
 

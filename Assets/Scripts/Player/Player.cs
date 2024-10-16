@@ -20,6 +20,7 @@ public class Player
     public int attackCharge;
     public int healCharge;
     public int bleedValue;
+    public int vulnerability = 1; //when fragile/vulnerable, take extra damage ex 2x 
     public float iFrames = .5f;
 
     public Animator anim;
@@ -37,6 +38,7 @@ public class Player
     // player movement
     [Header("Player Movement")]
     public float moveSpeed;
+    public float baseMoveSpeed;
     public float jumpForce, moveDirection;
     public bool isJumping = false, facingRight, isGrounded, midJump;
     public float defaultGravity = 2.5f; // base gravity when jumping

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0968cd5b8b7c714285ea5c66dd5d8a0, type: 3}
+  m_Name: EnemyFragility
+  m_EditorClassIdentifier: 
+  cardName: Enemy Fragility
+  cardDescription: Enemies take double damage for 15 seconds
+  cardImage: {fileID: 0}
+  effectImage: {fileID: 0}
+  effectValue: 15
+  id: 0
+  cardUserAnim: 
+  price: 100
