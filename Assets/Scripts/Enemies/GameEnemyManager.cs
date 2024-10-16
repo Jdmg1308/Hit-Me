@@ -17,7 +17,7 @@ public class GameEnemyManager : MonoBehaviour
     public float SpawnDelay = 3f; // first wave spawn delay
 
     [Header("Wave Settings")]
-    public List<int> waveConfigurations; // List of enemy count per wave
+    public List<int> waveConfigurations = new List<int>{3, 4, 6}; // List of enemy count per wave
     public int currentWave = 0;         // Current wave number
     private bool _WaveInprogress = false;
 
@@ -64,6 +64,7 @@ public class GameEnemyManager : MonoBehaviour
             
             // If no enemies are left, spawn a new wave
             if (EnemiesLeftInWave == 0) {
+                ++currentWave;        
                 StartCoroutine(StartWaves(enemiesToSpawn));
             }
         }
@@ -74,7 +75,7 @@ public class GameEnemyManager : MonoBehaviour
             // DestroyExtraEnemies(5);
             // HealEnemies(15);
             // DoubleDamageTimer(10f);
-            SpawnHallucinationClones(1);
+            // SpawnHallucinationClones(1);
         }
     }
 
@@ -212,9 +213,6 @@ public class GameEnemyManager : MonoBehaviour
     private void SpawnWave(int enemiesToSpawn) {
         int amount = enemiesToSpawn + extraEnemySpawns;
         SpawnExtraEnemies(amount);
-
-        // Move to the next wave
-        ++currentWave;
     }
 
     private List<Transform> GetRandomSpawnPoints(int count)
