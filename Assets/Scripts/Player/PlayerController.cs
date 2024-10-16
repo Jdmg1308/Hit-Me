@@ -15,11 +15,14 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public GameManager GM;
 
+    AudioManager audioManager;
+
     private void Awake()
     {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
         p.playerChargeMeter = GameObject.Find("Player Charge Meter");
         p.playerExtendedChargeMeter = GameObject.Find("Player Extended Charge Meter");
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     // Start is called before the first frame update
@@ -140,9 +143,21 @@ public class PlayerController : MonoBehaviour
 
         if (p.isGrounded)
         {
-            p.anim.SetBool("isWalking", Mathf.Abs(p.rb.velocity.x) > 0.1f);
+            if (Mathf.Abs(p.rb.velocity.x) > 0.1f)
+            {
+                FindObjectOfType<AudioManager>().PlayFootsteps(FindObjectOfType<AudioManager>().footsteps);
+            }
+            else
+            {
+                FindObjectOfType<AudioManager>().StopFootsteps();
+            }
+        }
+        else
+        {
+            FindObjectOfType<AudioManager>().StopFootsteps();
         }
 
+        p.anim.SetBool("isWalking", Mathf.Abs(p.rb.velocity.x) > 0.1f);
         if (p.isJumping)
         {
             p.rb.velocity = new Vector2(p.rb.velocity.x, 0f);
@@ -191,6 +206,7 @@ public class PlayerController : MonoBehaviour
             p.moveDirection = Input.GetAxis("Horizontal");
             if (Input.GetButtonDown("Jump") && p.isGrounded)
             {
+                audioManager.PlaySFX(audioManager.jump);
                 p.isJumping = true;
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
@@ -398,11 +414,13 @@ public class PlayerController : MonoBehaviour
                 IDamageable iDamageable = enemyObject.GetComponent<IDamageable>();
                 if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) {
                     // knock up if uppercut
-                    if (partOfCombo == 3) { 
+                    if (partOfCombo == 3) {
+                        audioManager.PlaySFX(audioManager.uppercut);
                         Vector2 force = p.uppercutForce;
                         force.x = Mathf.Abs(p.uppercutForce.x) * dir;
                         iDamageable.TakeKick(p.uppercutDamage, force);
                     } else { // regular punch otherwise (apply slow down)
+                        audioManager.PlaySFX(audioManager.punch);
                         iDamageable.TakePunch(p.punchDamage, p.velocityMod);
                     }
                     iDamageable.StopAttack(); // cancel enemy attack
@@ -487,6 +505,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator TakeDamage(int damage, Vector2 force)
     {
         if (!p.isHit && damage > 0) {
+            audioManager.PlaySFX(audioManager.playerHit);
             p.isHit = true;
             GM.healthCurrent -= p.vulnerability * damage;
             StartCoroutine(GM.HurtFlash());
