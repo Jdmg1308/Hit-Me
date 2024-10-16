@@ -1200,7 +1200,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 512
     kickDamage: 5
-    baseKickDamage: 1
+    baseKickDamage: 5
     kickChargeMaxDamage: 17
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
@@ -1210,9 +1210,9 @@ MonoBehaviour:
     punchRadius: 0.84
     uppercutRadius: 0.96
     punchDamage: 5
-    basePunchDamage: 0
+    basePunchDamage: 5
     uppercutDamage: 10
-    baseUppercutDamage: 0
+    baseUppercutDamage: 10
     uppercutForce: {x: 1, y: 5}
     velocityMod: 0.5
     forwardPunchMovement: {x: 300, y: 0}
@@ -1709,10 +1709,11 @@ MonoBehaviour:
   isGrappling: 0
   defaultCursor: {fileID: 2800000, guid: 6032ed22844cd4f489856a4e205c8949, type: 3}
   specialCursor: {fileID: 2800000, guid: 5b5489cb42d82aa43bfffc3040e2f7dc, type: 3}
+  Canvas: {fileID: 0}
   cursorImage: {fileID: 0}
+  grappleTargetIndicator: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   GrappleRadius: 0.6
-  grappleTargetIndicator: {fileID: 0}
 --- !u!120 &1546508100
 LineRenderer:
   m_ObjectHideFlags: 0
