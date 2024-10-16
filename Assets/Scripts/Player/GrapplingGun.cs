@@ -58,7 +58,7 @@ public class GrapplingGun : MonoBehaviour
 
     [Header("Grapple Forgiveness")]
     public float GrappleRadius; // set 'thickness' of grapple detection for easier use
-    public LineRenderer GrappleIndicator;
+    public Image grappleTargetIndicator;
 
     private void Start()
     {
@@ -70,9 +70,9 @@ public class GrapplingGun : MonoBehaviour
         // Cursor.SetCursor(defaultCursor, cursorHotspot, CursorMode.Auto);
 
         // configuring line renderer
-        GrappleIndicator.positionCount = 2; // Two points (start and end)
-        GrappleIndicator.startWidth = 0.1f; // Set the starting width
-        GrappleIndicator.endWidth = 0.1f; // Set the ending width
+        // GrappleIndicator.positionCount = 2; // Two points (start and end)
+        // GrappleIndicator.startWidth = 0.1f; // Set the starting width
+        // GrappleIndicator.endWidth = 0.1f; // Set the ending width
     }
 
     private void Update()
@@ -83,7 +83,7 @@ public class GrapplingGun : MonoBehaviour
         // Debug.Log(grappledObject + "1");
         if (isGrappling && grappleRope.enabled)
         {
-            GrappleIndicator.enabled = false;
+            // GrappleIndicator.enabled = false;
             // Debug.Log(grappledObject + "2");
             if (grappledObject != null && grappledObject.layer == LayerMask.NameToLayer("Enemy")) 
             {
@@ -96,7 +96,7 @@ public class GrapplingGun : MonoBehaviour
                 stopGrappling(); // if enemy dies as player is grappling it
             }
         } else {
-            GrappleIndicator.enabled = true;
+            // GrappleIndicator.enabled = true;
             GrappleIndication();
         }
     }
@@ -110,10 +110,19 @@ public class GrapplingGun : MonoBehaviour
         if (_hit) {
             Vector3 endPoint = _hit.point;
             endPoint += Vector3.up * 0.5f;
-            GrappleIndicator.SetPosition(0, endPoint + Vector3.up * 0.7f); // setting first point to be 1 unit behind second point to cut line short
-            GrappleIndicator.SetPosition(1, endPoint); // Show the grapple target
+            // GrappleIndicator.SetPosition(0, endPoint + Vector3.up * 0.2f); // setting first point to be 1 unit behind second point to cut line short
+            // GrappleIndicator.SetPosition(1, endPoint); // Show the grapple target
+            grappleTargetIndicator.enabled = true;
+            grappleTargetIndicator.transform.position = m_camera.WorldToScreenPoint(endPoint);
+            Color c = cursorImage.color;
+            c.a = 1f;
+            cursorImage.color = c;
         } else {
-            GrappleIndicator.enabled = false;
+            // GrappleIndicator.enabled = false;
+            grappleTargetIndicator.enabled = false;
+            Color c = cursorImage.color;
+            c.a = 0.2f;
+            cursorImage.color = c;
         }
     }
 

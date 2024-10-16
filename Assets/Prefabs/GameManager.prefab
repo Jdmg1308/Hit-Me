@@ -64,6 +64,7 @@ MonoBehaviour:
   cardButtonPrefab: {fileID: 7681925040830748014, guid: 9a2382570e344a94285c5965cf8ec476, type: 3}
   healthCurrent: 100
   healthMax: 100
+  baseHealth: 100
   healthBar: {fileID: 0}
   money: 500
   quota: 2300
@@ -123,6 +124,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     kickDamage: 1
+    baseKickDamage: 1
     kickChargeMaxDamage: 0
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
@@ -132,7 +134,9 @@ MonoBehaviour:
     punchRadius: 0
     uppercutRadius: 0
     punchDamage: 0
+    basePunchDamage: 0
     uppercutDamage: 0
+    baseUppercutDamage: 0
     uppercutForce: {x: 0, y: 0}
     velocityMod: 0
     hitStopScaling: 0
@@ -174,10 +178,37 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  totalHurtFlashTime: 0
+  totalHurtFlashTime: 0.3
   hurtFlashCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0010604858
+      value: 0.10079193
+      inSlope: -0.04470898
+      outSlope: -0.04470898
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.11775161
+    - serializedVersion: 3
+      time: 0.3952489
+      value: 0.27082807
+      inSlope: -0.6630917
+      outSlope: -0.6630917
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09178452
+      outWeight: 0.08115363
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -0.44783393
+      outSlope: -0.44783393
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -363,7 +394,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5376063831647956083}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.69, y: 2.18, z: 0}
+  m_LocalPosition: {x: -6.83, y: 4.28, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -492,7 +523,7 @@ MonoBehaviour:
   - {fileID: 5376063831353332324}
   - {fileID: 5376063832007169897}
   enemyPrefab: {fileID: 5811921193137224085, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
-  SpawnDelay: 3
+  SpawnDelay: 1
   waveConfigurations: 030000000400000006000000
   currentWave: 0
   isDoubleDamage: 0
@@ -522,7 +553,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5376063832384337724}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.18, y: 3.31, z: 0}
+  m_LocalPosition: {x: 4.23, y: 3.74, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

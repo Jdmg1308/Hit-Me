@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // GM.Wager();
+        GM.Difficulty();
 
         // setting defaults
         p.facingRight = false;
