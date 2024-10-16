@@ -1082,34 +1082,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5376063830636673451, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: wager_text
-      value: 
-      objectReference: {fileID: 9069415851695447396}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.size
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[7]
-      value: 
-      objectReference: {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[8]
-      value: 
-      objectReference: {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
 --- !u!1 &1099209032
@@ -3013,17 +2985,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &9069415851695447396 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 654687965707093255, guid: 0fe5511de8f36be40a4eaabac7c0d3ad, type: 3}
-  m_PrefabInstance: {fileID: 8415225038188009571}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &9069415851695447399 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 654687965707093252, guid: 0fe5511de8f36be40a4eaabac7c0d3ad, type: 3}
