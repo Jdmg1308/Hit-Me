@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Decrease HP Status Effect Card Data", menuName = "ScriptableObjects/Card/DecHPStatusEffectCard")]
-public class DecreaseHPEffect : Card
+public class DecreaseHPEffectCard : Card
 {
     public override CardType cardType{get{return CardType.StatusEffect;}}
     public float oldHPRatio = 0.0f;

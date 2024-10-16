@@ -152,6 +152,10 @@ public class GameEnemyManager : MonoBehaviour
         for (int i = 0; i < spawnedEnemies.Count; i++) {
             Enemy enemy = spawnedEnemies[i].GetComponent<Enemy>();
             enemy.CurrentHealth += healAmount;
+            //added cap for HP at max HP - angela 
+            if (enemy.CurrentHealth > enemy.MaxHealth) {
+                enemy.CurrentHealth = enemy.MaxHealth;
+            }
         }
     }
 
