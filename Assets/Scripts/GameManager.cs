@@ -60,7 +60,7 @@ public class GameManager : TheSceneManager
     protected TextMeshProUGUI quota_text;
 
     protected GameObject PlayScreen;
-    protected GameObject WagerScreen;
+    protected GameObject DifficultyScreen;
     protected GameObject PauseScreen;
     protected GameObject DeathScreen;
     protected GameObject WinScreen;
@@ -133,7 +133,7 @@ public class GameManager : TheSceneManager
         if (Canvas)
         {
             PlayScreen = Canvas.transform.Find("Play Screen")?.gameObject;
-            WagerScreen = Canvas.transform.Find("Wager Screen")?.gameObject;
+            DifficultyScreen = Canvas.transform.Find("Difficulty Screen")?.gameObject;
             PauseScreen = Canvas.transform.Find("Pause Screen")?.gameObject;
             DeathScreen = Canvas.transform.Find("Death Screen")?.gameObject;
             WinScreen = Canvas.transform.Find("Win Screen")?.gameObject;
@@ -177,6 +177,12 @@ public class GameManager : TheSceneManager
                 AssignButton(PauseScreen.transform, "Map", OpenMap);
                 AssignButton(PauseScreen.transform, "Resume", Pause);
             }
+        }
+
+        if (DifficultyScreen) {
+            DifficultyScreen.transform.Find("Easy").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(1));
+            DifficultyScreen.transform.Find("Medium").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(2));
+            DifficultyScreen.transform.Find("Hard").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(3));
         }
 
         if (IBuild)
@@ -352,19 +358,20 @@ public class GameManager : TheSceneManager
         }
     }
 
-    public void Wager()
+    public void Difficulty()
     {
         freeze(true);
         PlayScreen.SetActive(false);
-        WagerScreen.SetActive(true);
+        DifficultyScreen.SetActive(true);
     }
 
-    public void WagerChoice(int value)
+    public void DifficultyChoice(int value)
     {
         freeze(false);
-        money = value;
+        // money = value;
+        GameEnemyManager.SetDifficulty(value);
         PlayScreen.SetActive(true);
-        WagerScreen.SetActive(false);
+        DifficultyScreen.SetActive(false);
     }
 
     public void Pause()
@@ -439,7 +446,6 @@ public class GameManager : TheSceneManager
             Color c = hurtFlashImage.color;
             c.a = strength;
             hurtFlashImage.color = c;
-            Debug.Log("current alpha: " + strength);
             yield return null;
         }
     }

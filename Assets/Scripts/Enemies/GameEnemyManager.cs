@@ -29,6 +29,7 @@ public class GameEnemyManager : MonoBehaviour
     [Header("Enemy Effects")]
     public EnemyStats enemyStats;
     public bool isDoubleDamage = false;
+    public int extraEnemySpawns = 0;
 
     [Header("FX")]
     // death fx
@@ -103,6 +104,22 @@ public class GameEnemyManager : MonoBehaviour
             if (EnemiesLeftInWave == 0) {
                 _WaveInprogress = false; // Allow the next wave to start
             }
+        }
+    }
+
+    // difficulty = more enemies + enemy hp + dmg + speed
+    public void SetDifficulty(int level) {
+        // level 1, 2, 3
+        if (level == 2) {
+            enemyStats.MaxHealth += 50; // 150
+            enemyStats.ChaseSpeed += 1f; // 3
+            enemyStats.PunchDamage += 3; // 8
+            extraEnemySpawns = 1;
+        } else if (level == 3) {
+            enemyStats.MaxHealth += 80; // 180
+            enemyStats.ChaseSpeed += 1.5f; // 3.5
+            enemyStats.PunchDamage += 5; // 10
+            extraEnemySpawns = 2;
         }
     }
 
@@ -193,7 +210,8 @@ public class GameEnemyManager : MonoBehaviour
 
     #region Spawn Helpers
     private void SpawnWave(int enemiesToSpawn) {
-        SpawnExtraEnemies(enemiesToSpawn);
+        int amount = enemiesToSpawn + extraEnemySpawns;
+        SpawnExtraEnemies(amount);
 
         // Move to the next wave
         ++currentWave;
