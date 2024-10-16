@@ -37,7 +37,8 @@ public class GameManager : TheSceneManager
 
     [Header("Health")]
     public int healthCurrent;       // Current health of the player
-    public int healthMax = 100;     // Maximum health of the player
+    public int healthMax = 100;     // Maximum health of the player (dynamically changed by cards)
+    public int baseHealth = 100;    // base maximum HP of player 
     [HideInInspector]
     public Slider healthBar;       // UI Slider for health bar
 
@@ -126,6 +127,7 @@ public class GameManager : TheSceneManager
         if (Player)
         {
             playerController = Player.GetComponent<PlayerController>();
+            resetPlayer();
         }
 
         if (Canvas)
@@ -306,6 +308,14 @@ public class GameManager : TheSceneManager
             audioSource.clip = BadPullAudio;
         }
         audioSource.Play();
+    }
+
+    // method to be called on level load, resets the players stats to base
+    public void resetPlayer()
+    {
+        playerController.resetPlayerDamage();
+        healthMax = baseHealth;     
+        healthCurrent = healthMax;
     }
 
     public void freeze(bool status)

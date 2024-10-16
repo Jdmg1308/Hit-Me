@@ -108,6 +108,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //helper method called in GM, resets players damage to base levels 
+    public void resetPlayerDamage()
+    {
+        p.kickDamage = p.baseKickDamage;
+        p.punchDamage = p.basePunchDamage;
+        p.uppercutDamage = p.baseUppercutDamage;
+    }
+
     private void Move()
     {
         // if grapping, lower grav
