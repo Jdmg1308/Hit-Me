@@ -151,10 +151,6 @@ public class GameManager : TheSceneManager
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
-
-            deckDisplayPanel = PlayScreen.transform.Find("DeckDisplayPanel")?.gameObject;
-            AssignButton(PlayScreen.transform, "DeckButton", currentCardDeck);
-
             money_text.text = " " + money.ToString();
         }
 
@@ -168,7 +164,6 @@ public class GameManager : TheSceneManager
 
             if (WinScreen)
             {
-                
                 AssignButton(WinScreen.transform, "Map", OpenMap);
             }
 
@@ -176,6 +171,9 @@ public class GameManager : TheSceneManager
             {
                 AssignButton(PauseScreen.transform, "Map", OpenMap);
                 AssignButton(PauseScreen.transform, "Resume", Pause);
+
+                deckDisplayPanel = PauseScreen.transform.Find("DeckDisplayPanel")?.gameObject;
+                AssignButton(PauseScreen.transform, "DeckButton", currentCardDeck);
             }
         }
 
@@ -283,6 +281,7 @@ public class GameManager : TheSceneManager
             if (statusCard)
             {
                 statusCard.use(this);
+                StatusEffectManager.RemovePermanentStatusEffect(statusCard);
                 statusCard = null;
                 statusApplied = false;
                 updateHealth();

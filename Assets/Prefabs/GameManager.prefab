@@ -79,6 +79,7 @@ MonoBehaviour:
     attackCharge: 0
     healCharge: 0
     bleedValue: 0
+    vulnerability: 1
     iFrames: 0.5
     anim: {fileID: 0}
     money: 0
@@ -88,6 +89,7 @@ MonoBehaviour:
     XMaxSpeed: 20
     YMaxSpeed: 30
     moveSpeed: 0
+    baseMoveSpeed: 0
     jumpForce: 0
     moveDirection: 0
     isJumping: 0
@@ -605,13 +607,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allCards:
-  - {fileID: 11400000, guid: 67e42547c1622aa489d6c5eba5a4c04f, type: 2}
-  - {fileID: 11400000, guid: e015b186915226b48acfa1d60887ce6d, type: 2}
-  - {fileID: 11400000, guid: f20a718285d15474aaab6ed11483391b, type: 2}
-  - {fileID: 11400000, guid: 99936fece226fde4a9cb0657c0ad1fe2, type: 2}
+  - {fileID: 11400000, guid: 9b7413b00f6125947adb9ae2da49fab3, type: 2}
+  - {fileID: 11400000, guid: 06cb70c2e41a5f348bbab43c56eb9a72, type: 2}
+  - {fileID: 11400000, guid: ef851a1b386f187428fc8d182ea61ff7, type: 2}
+  - {fileID: 11400000, guid: db28ca9d2804f6f47913d52d043edb37, type: 2}
+  - {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
+  - {fileID: 11400000, guid: 81a36af26ba46e644b3f581e0313d239, type: 2}
+  - {fileID: 11400000, guid: 9f26d0fa727f60647a8c76f42c987d18, type: 2}
+  - {fileID: 11400000, guid: ce388740fce6c3443816867af0a1c4b0, type: 2}
+  - {fileID: 11400000, guid: 46d490d6c51770841b5aceba1e87ffde, type: 2}
+  - {fileID: 11400000, guid: affabd4ccdb85db4385084f851672666, type: 2}
+  - {fileID: 11400000, guid: fcd31f575bb878a43ba3a09f5a298e40, type: 2}
+  - {fileID: 11400000, guid: 083bb11e1ad66a74f90b25cc77498650, type: 2}
+  - {fileID: 11400000, guid: 3f05113ee504720469a02a6a29dcd6fb, type: 2}
   currentDeck:
-    deck:
-    - {fileID: 11400000, guid: f20a718285d15474aaab6ed11483391b, type: 2}
+    deck: []
     drawPile: []
     hand: []
     discardPile: []
