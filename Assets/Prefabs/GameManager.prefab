@@ -622,8 +622,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fcd31f575bb878a43ba3a09f5a298e40, type: 2}
   - {fileID: 11400000, guid: 083bb11e1ad66a74f90b25cc77498650, type: 2}
   - {fileID: 11400000, guid: 3f05113ee504720469a02a6a29dcd6fb, type: 2}
+  - {fileID: 11400000, guid: 41f9978462fb3be4e95f498d989e148d, type: 2}
+  - {fileID: 11400000, guid: b30e46c36192dd7418db70621740063f, type: 2}
+  - {fileID: 11400000, guid: 31f9a894542870042a78ac643cefdd51, type: 2}
   currentDeck:
-    deck: []
+    deck:
+    - {fileID: 11400000, guid: db28ca9d2804f6f47913d52d043edb37, type: 2}
     drawPile: []
     hand: []
     discardPile: []
