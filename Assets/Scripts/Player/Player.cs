@@ -37,7 +37,7 @@ public class Player
 
     // player movement
     [Header("Player Movement")]
-    public float moveSpeed = 10;
+    public float moveSpeed;
     public float baseMoveSpeed;
     public float jumpForce, moveDirection;
     public bool isJumping = false, facingRight, isGrounded, midJump;

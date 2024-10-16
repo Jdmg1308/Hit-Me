@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Half HP
   cardDescription: Temporarily halves the player's HP
-  cardImage: {fileID: -1668312692, guid: ee1b248854ebce84ca7ab8f45642f53f, type: 3}
-  effectImage: {fileID: 21300000, guid: bae87e41e021df24c9268a8304c32204, type: 3}
+  cardImage: {fileID: 21300000, guid: 2781fff92c20a1540ba36d2db94a01c5, type: 3}
+  effectImage: {fileID: 21300000, guid: b4f70fc51c438d24b9a4df996595690c, type: 3}
   effectValue: 50
   id: 0
   cardUserAnim: 

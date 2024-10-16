@@ -304,13 +304,13 @@ public class GameManager : TheSceneManager
         audioSource.clip = CardPullAudio;
         audioSource.Play();
         yield return new WaitForSeconds(CardPullAudio.length);
-        if (card.cardType == CardType.Multiplier || card.cardType == CardType.PlayerBuff)
+        if (card.cardType == CardType.EnemyBuff)
         {
-            audioSource.clip = GoodPullAudio;
+            audioSource.clip = BadPullAudio;
         }
         else
         {
-            audioSource.clip = BadPullAudio;
+            audioSource.clip = GoodPullAudio;
         }
         audioSource.Play();
     }

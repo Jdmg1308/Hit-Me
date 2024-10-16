@@ -8,6 +8,7 @@ public class StatusEffectManager : MonoBehaviour
     public RectTransform canvasRectTransform;
     public GameObject PermStatusEffectPrefab;
     public GameObject TempStatusEffectPrefab;
+    public GameObject TempStatusEffectPrefabForEnemy;
     public float spacing = 10;
     public GameManager GM;
 
@@ -38,11 +39,17 @@ public class StatusEffectManager : MonoBehaviour
         PermanentStatusEffects.Add(permanentStatusEffect);
     }
 
-    public void AboveEffectTemporarily(GameObject target, Card card)
+    public void AboveEffectTemporarily(GameObject target, Card card, bool enemy)
     {
         Sprite EffectImage = card.effectImage;
-
-        GameObject TempStatusEffect = Instantiate(TempStatusEffectPrefab, target.transform);
+        GameObject TempStatusEffect;
+        if (enemy)
+        {
+            TempStatusEffect = Instantiate(TempStatusEffectPrefabForEnemy, target.transform);
+        } else
+        {
+            TempStatusEffect = Instantiate(TempStatusEffectPrefab, target.transform);
+        }
         TempStatusEffect.GetComponent<SpriteRenderer>().sprite = EffectImage;
 
         StartCoroutine(RemoveAboveEffectAfterTime(TempStatusEffect, 5f)); // Remove after card.time seconds
@@ -52,7 +59,7 @@ public class StatusEffectManager : MonoBehaviour
     {
         List<GameObject> enemies = GM.GameEnemyManager.spawnedEnemies;
         foreach (GameObject enemy in enemies) {
-            AboveEffectTemporarily(enemy, card);
+            AboveEffectTemporarily(enemy, card, true);
         }
     }
 
@@ -64,7 +71,7 @@ public class StatusEffectManager : MonoBehaviour
         } 
         else
         {
-            AboveEffectTemporarily(GM.Player, card);
+            AboveEffectTemporarily(GM.Player, card, false);
         }
         AddEffectPermanently(card);
 

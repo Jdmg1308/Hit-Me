@@ -1,5 +1,81 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &895897675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 895897676}
+  - component: {fileID: 895897678}
+  - component: {fileID: 895897677}
+  m_Layer: 5
+  m_Name: Cursor (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &895897676
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895897675}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.570073, y: 0.570073, z: 0.570073}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 3768005602822016125}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &895897678
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895897675}
+  m_CullTransparentMesh: 1
+--- !u!114 &895897677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895897675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
+  m_Color: {r: 0, g: 1, b: 0.34159184, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: -1051549329, guid: 75de9be0c3c28954a86a0032978e44ba, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1327888258
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,7 +644,7 @@ GameObject:
   - component: {fileID: 3768005601729104223}
   - component: {fileID: 3768005601729104222}
   m_Layer: 5
-  m_Name: Number
+  m_Name: Medium
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2743,7 +2819,7 @@ GameObject:
   - component: {fileID: 3768005602661074137}
   - component: {fileID: 3768005602661074136}
   m_Layer: 5
-  m_Name: Number (1)
+  m_Name: Easy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3297,6 +3373,7 @@ RectTransform:
   - {fileID: 3768005603020878597}
   - {fileID: 3768005603519768320}
   - {fileID: 3768005602970807495}
+  - {fileID: 895897676}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3833,6 +3910,7 @@ MonoBehaviour:
     attackCharge: 0
     healCharge: 0
     bleedValue: 0
+    vulnerability: 1
     iFrames: 0.5
     anim: {fileID: 0}
     money: 0
@@ -3842,6 +3920,7 @@ MonoBehaviour:
     XMaxSpeed: 20
     YMaxSpeed: 30
     moveSpeed: 0
+    baseMoveSpeed: 0
     jumpForce: 0
     moveDirection: 0
     isJumping: 0
@@ -3878,6 +3957,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     kickDamage: 1
+    baseKickDamage: 1
     kickChargeMaxDamage: 0
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
@@ -4049,10 +4129,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: e3265ab4bf004d28a9537516768c1c75, type: 3}
-    m_FontSize: 32
+    m_FontSize: 27
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 3
+    m_MinSize: 0
     m_MaxSize: 40
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -4060,7 +4140,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Choose a Wager
+  m_Text: 'Choose Difficulty/Wager
 
 '
 --- !u!1 &3768005603020878596
@@ -4155,7 +4235,7 @@ GameObject:
   - component: {fileID: 3768005603037582696}
   - component: {fileID: 3768005603037582703}
   m_Layer: 5
-  m_Name: Number (2)
+  m_Name: Hard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4545,6 +4625,7 @@ MonoBehaviour:
   canvasRectTransform: {fileID: 3768005602822016125}
   PermStatusEffectPrefab: {fileID: 8179967470403479882, guid: 91dbfc50d002b76439a4a056c73951eb, type: 3}
   TempStatusEffectPrefab: {fileID: 4488178202975426522, guid: c3144a5bc9dc10a4b8124e629976ec8f, type: 3}
+  TempStatusEffectPrefabForEnemy: {fileID: 4488178202975426522, guid: 2590308d1a9dde347bd06755bffccec3, type: 3}
   spacing: 10
   GM: {fileID: 0}
 --- !u!1 &3768005603464584101

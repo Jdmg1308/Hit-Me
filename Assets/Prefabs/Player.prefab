@@ -1153,6 +1153,7 @@ MonoBehaviour:
     attackCharge: 0
     healCharge: 0
     bleedValue: 0
+    vulnerability: 1
     iFrames: 0.5
     anim: {fileID: 3976756146910260309}
     money: 0
@@ -1161,7 +1162,8 @@ MonoBehaviour:
     m_springJoint2D: {fileID: 7021618568593065068}
     XMaxSpeed: 10
     YMaxSpeed: 15
-    moveSpeed: 10
+    moveSpeed: 8
+    baseMoveSpeed: 8
     jumpForce: 3000
     moveDirection: 0
     isJumping: 0
@@ -1198,6 +1200,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 512
     kickDamage: 5
+    baseKickDamage: 1
     kickChargeMaxDamage: 17
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
@@ -1207,7 +1210,9 @@ MonoBehaviour:
     punchRadius: 0.84
     uppercutRadius: 0.96
     punchDamage: 5
+    basePunchDamage: 0
     uppercutDamage: 10
+    baseUppercutDamage: 0
     uppercutForce: {x: 1, y: 5}
     velocityMod: 0.5
     hitStopScaling: 0.009
@@ -1620,6 +1625,7 @@ MonoBehaviour:
     attackCharge: 0
     healCharge: 0
     bleedValue: 0
+    vulnerability: 1
     iFrames: 0.5
     anim: {fileID: 0}
     money: 0
@@ -1629,6 +1635,7 @@ MonoBehaviour:
     XMaxSpeed: 20
     YMaxSpeed: 30
     moveSpeed: 0
+    baseMoveSpeed: 0
     jumpForce: 0
     moveDirection: 0
     isJumping: 0
@@ -1665,6 +1672,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     kickDamage: 1
+    baseKickDamage: 1
     kickChargeMaxDamage: 0
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
@@ -1674,7 +1682,9 @@ MonoBehaviour:
     punchRadius: 0
     uppercutRadius: 0
     punchDamage: 0
+    basePunchDamage: 0
     uppercutDamage: 0
+    baseUppercutDamage: 0
     uppercutForce: {x: 0, y: 0}
     velocityMod: 0
     hitStopScaling: 0
@@ -1700,7 +1710,7 @@ MonoBehaviour:
   cursorImage: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   GrappleRadius: 0.6
-  GrappleIndicator: {fileID: 1546508100}
+  grappleTargetIndicator: {fileID: 0}
 --- !u!120 &1546508100
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -1765,8 +1775,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 0}
-      key1: {r: 1, g: 1, b: 1, a: 0}
+      key0: {r: 0.087931626, g: 0.9811321, b: 0.11965264, a: 0}
+      key1: {r: 0.087931626, g: 0.9811321, b: 0.11965264, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 1}
       key3: {r: 0, g: 0, b: 0, a: 1}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1782,16 +1792,16 @@ LineRenderer:
       ctime6: 0
       ctime7: 0
       atime0: 0
-      atime1: 64880
+      atime1: 65535
       atime2: 65535
       atime3: 65535
       atime4: 0
       atime5: 0
       atime6: 0
       atime7: 0
-      m_Mode: 0
+      m_Mode: 1
       m_NumColorKeys: 2
-      m_NumAlphaKeys: 3
+      m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
