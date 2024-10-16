@@ -381,9 +381,14 @@ public class PlayerController : MonoBehaviour
         int dir = p.facingRight ? 1 : -1;
         // punches apply a little bit of force
         // uppercut applies a lot of upward force
-        // if grappling, just do upper cut
+        // if grappling, just do upper cut (not yet implemented)
 
         float radius = partOfCombo == 3 ? p.uppercutRadius : p.punchRadius;
+        if (p.isGrounded) {
+            Vector2 force = p.forwardPunchMovement;
+            force.x = Mathf.Abs(force.x) * (p.facingRight ? 1 : -1);
+            p.rb.AddForce(force);
+        }
 
         while (shouldBeDamaging) {
             Collider2D[] enemyList = Physics2D.OverlapCircleAll(p.punchPoint.transform.position, radius, p.enemyLayer);
