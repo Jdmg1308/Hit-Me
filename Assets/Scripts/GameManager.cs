@@ -82,6 +82,8 @@ public class GameManager : TheSceneManager
 
     private static GameManager instance;
 
+    public bool hasWon = false;
+
     void Awake()
     {
         if (instance == null)
@@ -193,11 +195,12 @@ public class GameManager : TheSceneManager
 
         audioSource = GetComponent<AudioSource>();
         GameEnemyManager = GetComponentInChildren<GameEnemyManager>();
+        GameEnemyManager.currentWave = 0;
     }
 
     void Update()
     {
-        if (GameEnemyManager.currentWave >= GameEnemyManager.waveConfigurations.Count)
+        if (GameEnemyManager.currentWave > GameEnemyManager.waveConfigurations.Count && !hasWon)
         {
             Win();
         }
@@ -337,6 +340,8 @@ public class GameManager : TheSceneManager
     // method to be called on level load, resets the players stats to base
     public void resetPlayer()
     {
+        hasWon = false;
+        GameEnemyManager.shouldSpawn = true;
         playerController.resetPlayerDamage();
         healthMax = baseHealth;     
         healthCurrent = healthMax;
@@ -428,6 +433,7 @@ public class GameManager : TheSceneManager
         WinScreen.SetActive(true);
         TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
         ScoreText.text = "Final Payout: " + money.ToString();
+        hasWon = true;
     }
 
     #region FX
@@ -468,4 +474,10 @@ public class GameManager : TheSceneManager
         }
     }
     #endregion
+
+    public new void OpenMap()
+    {
+        GameEnemyManager.shouldSpawn = false; // THIS
+        SceneManager.LoadScene("MAP");
+    }
 }

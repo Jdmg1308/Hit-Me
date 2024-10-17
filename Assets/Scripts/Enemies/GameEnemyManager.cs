@@ -39,6 +39,9 @@ public class GameEnemyManager : MonoBehaviour
     private float _OffScreenSpriteWidth;
     private float _OffScreenSpriteHeight;
 
+    public bool hasSpawned = false;
+    public bool shouldSpawn = false;
+
     void Awake() {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
@@ -59,13 +62,18 @@ public class GameEnemyManager : MonoBehaviour
 
     void Update() {
         // Check if there are more waves left
-        if (currentWave < waveConfigurations.Count && !_WaveInprogress) {
-            int enemiesToSpawn = waveConfigurations[currentWave];
-            
+        if (currentWave <= waveConfigurations.Count && !_WaveInprogress && shouldSpawn) {
+            int enemiesToSpawn = 0;
+            if (currentWave < waveConfigurations.Count) {
+                Debug.Log("curretWave: " + currentWave);
+                enemiesToSpawn = waveConfigurations[currentWave];
+            }
             // If no enemies are left, spawn a new wave
-            if (EnemiesLeftInWave == 0) {
-                ++currentWave;        
-                StartCoroutine(StartWaves(enemiesToSpawn));
+            if (EnemiesLeftInWave == 0 && !hasSpawned) {
+                if (currentWave < waveConfigurations.Count) {
+                    StartCoroutine(StartWaves(enemiesToSpawn));
+                }
+                ++currentWave;
             }
         }
 
@@ -211,8 +219,10 @@ public class GameEnemyManager : MonoBehaviour
 
     #region Spawn Helpers
     private void SpawnWave(int enemiesToSpawn) {
+        hasSpawned = true;
         int amount = enemiesToSpawn + extraEnemySpawns;
         SpawnExtraEnemies(amount);
+        hasSpawned = false;
     }
 
     private List<Transform> GetRandomSpawnPoints(int count)
@@ -270,6 +280,7 @@ public class GameEnemyManager : MonoBehaviour
         enemyRef.ChaseSpeed = enemyStats.ChaseSpeed;
         enemyRef.PunchDamage = enemyStats.PunchDamage;
 
+        Debug.Log(newEnemy.name);
         spawnedEnemies.Add(newEnemy);
     }
     #endregion
