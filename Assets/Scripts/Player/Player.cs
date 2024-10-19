@@ -40,7 +40,7 @@ public class Player
     public float moveSpeed;
     public float baseMoveSpeed;
     public float jumpForce, moveDirection;
-    public bool isJumping = false, facingRight, isGrounded, midJump;
+    public bool isJumping, facingRight = false, isGrounded, midJump;
     public float defaultGravity = 2.5f; // base gravity when jumping
     public float fallingGravity = 3.5f; // set higher gravity when falling for less floatiness
     public Transform groundCheck;

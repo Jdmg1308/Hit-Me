@@ -35,8 +35,6 @@ public class PlayerController : MonoBehaviour
         }
 
         // setting defaults
-        p.facingRight = false;
-
         GM.healthCurrent = GM.healthMax; // Set health to max at start
         GM.healthBar.maxValue = GM.healthMax;
         GM.healthBar.value = GM.healthCurrent;
@@ -55,13 +53,12 @@ public class PlayerController : MonoBehaviour
         p.playerExtendedChargeMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(
             p.playerChargeMeter.GetComponent<RectTransform>().sizeDelta.x * extendedPercent, 
             p.playerExtendedChargeMeter.GetComponent<RectTransform>().sizeDelta.y);
-
         p.kickChargeRate = 1f / p.maxChargeTime; // calc charge rate needed to reach desired time
+
         // accessing components
         p.rb = GetComponent<Rigidbody2D>();
         p.anim = GetComponent<Animator>();
 
-        //p.deckController = GetComponent<DeckController>();
         GM.deckController.currentDeck = GM.deckController.GetNewDeck();
 
         if (GM.iOSPanel.activeSelf)
@@ -80,7 +77,7 @@ public class PlayerController : MonoBehaviour
             {
                 ProcessInputMobile();
                 p.anim.SetBool("midJump", p.midJump);
-                directionPlayerFacesMobile();
+                DirectionPlayerFacesMobile();
             } else
             {
                 ProcessInput();
@@ -89,7 +86,7 @@ public class PlayerController : MonoBehaviour
                 {
                     p.anim.SetBool("midJump", true);
                 }
-                directionPlayerFaces();
+                DirectionPlayerFaces();
             }
         }
 
@@ -99,15 +96,14 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (p.rb.velocity.y == 0) {
-            p.midJump = false;
-        }
+        if (p.rb.velocity.y == 0) p.midJump = false;
 
         // if is Grounded and just ended midJump, then play landing animation
         p.isGrounded = Physics2D.OverlapBox(p.groundCheck.position, p.checkGroundSize, 0f, p.groundObjects) && !p.midJump;
         Move();
 
-        if (p.charging) {
+        if (p.charging) 
+        {
             p.kickCharge += (p.kickChargeRate * Time.deltaTime) + (p.rb.velocity.magnitude * p.movementChargeRateMultiplier);
             // if grappling, use extended max, else regular max
             float max = p.grapplingGun.isGrappling ? p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue : 1f;
@@ -125,6 +121,7 @@ public class PlayerController : MonoBehaviour
         p.moveSpeed = p.baseMoveSpeed;
     }
 
+    #region Movement
     private void Move()
     {
         // if grapping, lower grav
@@ -134,11 +131,8 @@ public class PlayerController : MonoBehaviour
 
         // if !isGrounded and !isGrappling
         float adjustAirControl = 1;
-        if (!p.isGrounded && !p.grapplingGun.isGrappling) {
-            adjustAirControl = p.airControl;
-        } else if (!p.isGrounded && p.grapplingGun.isGrappling) {
-            adjustAirControl = p.grappleAirControl;
-        }
+        if (!p.isGrounded) adjustAirControl = !p.grapplingGun.isGrappling ? p.airControl : p.grappleAirControl;
+
         // if in air/grappling, maintain prev x for momentum (else add ground friction), add directed movement with air control restrictions
         float xVelocity = (p.rb.velocity.x * (!p.isGrounded || p.grapplingGun.isGrappling ? 1 : p.friction))
             + (p.moveDirection * p.moveSpeed * adjustAirControl);
@@ -171,106 +165,124 @@ public class PlayerController : MonoBehaviour
         p.isJumping = false;
     }
 
-    private void directionPlayerFaces()
+    public void FlipCharacter(bool right)
+    {
+        // storing whether object is already facingRight to avoid double flipping
+        if (right != p.facingRight) 
+        {
+            p.facingRight = !p.facingRight;
+            transform.Rotate(0.0f, 180.0f, 0.0f);
+        }
+    }
+
+    private void DirectionPlayerFaces()
     {
         Vector2 mousePos = p.grapplingGun.m_camera.ScreenToWorldPoint(Input.mousePosition);
         Vector2 aimDirection = (mousePos - (Vector2)p.grapplingGun.firePoint.position).normalized;
 
         // when kicking, face player towards cursor to make attack easier
-        if (p.anim.GetBool("isKicking")) {
+        if (p.anim.GetBool("isKicking")) 
+        {
             FlipCharacter(aimDirection.x > 0);
         }
         // Handle character flipping only based on movement when moving
-        else if (p.moveDirection != 0) {
-            FlipCharacter(p.moveDirection > 0);
-        }
-        // If not moving, flip character based on aim direction
-        else {
-            FlipCharacter(aimDirection.x > 0);
-        }
-
-    }
-
-    private void directionPlayerFacesMobile()
-    {
-        Vector2 mousePos = Input.mousePosition;
-
-        // Handle character flipping only based on movement when moving
-        if (p.moveDirection != 0)
+        else if (p.moveDirection != 0) 
         {
             FlipCharacter(p.moveDirection > 0);
         }
+        // If not moving, flip character based on aim direction
+        else 
+        {
+            FlipCharacter(aimDirection.x > 0);
+        }
+
     }
 
+    private void DirectionPlayerFacesMobile()
+    {
+        // Handle character flipping only based on movement when moving
+        if (p.moveDirection != 0) FlipCharacter(p.moveDirection > 0);
+    }
+    #endregion
+
+    #region Input
     private void ProcessInput()
     {
         // Normal Movement Input
         // scale of -1 -> 1
-        if (p.anim.GetBool("canMove")) {
+        if (p.anim.GetBool("canMove")) 
+        {
             p.moveDirection = Input.GetAxis("Horizontal");
             if (Input.GetButtonDown("Jump") && p.isGrounded)
             {
                 audioManager.PlaySFX(audioManager.jump);
                 p.isJumping = true;
             }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                if (p.currentOneWayPlatform != null)
-                {
-                    StartCoroutine(DisableCollision());
-                }
-            }
-        } else {
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) && p.currentOneWayPlatform != null) 
+                StartCoroutine(DisableCollision());
+        } 
+        else 
+        {
             p.moveDirection = 0;
         }
         
-        // attacks
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.K) && !p.isHit) {
+        HandleAttackInput();        
+
+        HandleGrappleInput();
+        
+        //card drawing - TODO: ADD COOLDOWN (in battle manager maybe?)
+        if (Input.GetKeyDown(KeyCode.F)) GM.useCard();
+        if (Input.GetKeyDown(KeyCode.Escape)) GM.Pause();
+    }
+
+    private void HandleAttackInput() 
+    {
+        // punching
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.K) && !p.isHit) 
+        {
             p.anim.SetBool("isPunching", true);
             p.anim.SetTrigger("punch");
             p.anim.SetBool("isKicking", false);
         }
-        // can buffer kick
-        if (Input.GetKey(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit) {
+        // kick, can buffer (i think?)
+        if (Input.GetKey(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit) 
             p.anim.SetBool("isKicking", true);
-        }
-        // while not holding down button, set back to normal
-        if (Input.GetKey(KeyCode.Q) && p.charging && !p.isHit && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching")) {
+        // while not holding down button to charge, set back to normal
+        if (Input.GetKey(KeyCode.Q) && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit && p.charging) 
+        {
             p.playerChargeMeter.SetActive(true);
             p.anim.speed = 0; // pause anim
-        } else {
+        } 
+        else 
+        {
             p.charging = false;
             p.anim.speed = 1; // unpause anim
             p.playerChargeMeter.SetActive(false);
         }
+    }
 
-        // Grappling hook Input
-        if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.J)) 
-        { 
-            p.grapplingGun.SetGrapplePoint(); 
-        }
-        if (Input.GetKey(KeyCode.Mouse1) || Input.GetKey(KeyCode.J)) {
+    private void HandleGrappleInput() 
+    {
+        // start grappling
+        if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.J)) p.grapplingGun.SetGrapplePoint(); 
+        // pull yourself towrds object
+        if (Input.GetKey(KeyCode.Mouse1) || Input.GetKey(KeyCode.J)) 
+        {
             p.grapplingGun.pull();
-            if (p.charging) {
-                p.playerExtendedChargeMeter.SetActive(true);
-            }
-        } else if (Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.J)) { 
+            if (p.charging) p.playerExtendedChargeMeter.SetActive(true);
+        } 
+        else if (Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.J)) 
+        { 
             p.grapplingGun.stopGrappling(); 
             //p.anim.SetBool("midJump", false); 
-        } else {
+        } 
+        else 
+        {
             p.playerExtendedChargeMeter.SetActive(false);
         }
-        // Pull enemies
+        // Pull enemies towaards you (need to work on)
         if (Input.GetKeyDown(KeyCode.E)) p.grapplingGun.PullEnemy();
         if (Input.GetKeyUp(KeyCode.E)) p.grapplingGun.StopPullingEnemy();
-        //card drawing - TODO: ADD COOLDOWN (in battle manager maybe?)
-        if (Input.GetKeyDown(KeyCode.F)) {
-            GM.useCard();
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            GM.Pause();
-        }
     }
 
     private void ProcessInputMobile()
@@ -284,14 +296,8 @@ public class PlayerController : MonoBehaviour
             p.isJumping = true;
             p.ButtonsAndClickScript.isJumping = false; // so that jumping is not spammed
         }
-        if (p.MovementJoystickScript.joystickVec.normalized.y < -0.90)
-        {
-            if (p.currentOneWayPlatform != null)
-            {
-                StartCoroutine(DisableCollision());
-            }
-
-        }
+        if (p.MovementJoystickScript.joystickVec.normalized.y < -0.90 && p.currentOneWayPlatform != null)
+            StartCoroutine(DisableCollision());
 
         // attacks
         if (p.ButtonsAndClickScript.isKicking)
@@ -315,8 +321,11 @@ public class PlayerController : MonoBehaviour
             p.ButtonsAndClickScript.pause = false;
         }
     }
+    #endregion
 
-    public void StartCharging() {
+    #region Kick Anim Calls
+    public void StartCharging() 
+    {
         p.charging = true;
     }
 
@@ -341,7 +350,8 @@ public class PlayerController : MonoBehaviour
         //     kickRadius = Mathf.Lerp(p.kickRadius, p.extendedChargeRadius, t);
         // }
 
-        while (shouldBeDamaging) {
+        while (shouldBeDamaging) 
+        {
             Collider2D[] enemyList = Physics2D.OverlapCircleAll(p.kickPoint.transform.position, kickRadius, p.enemyLayer);
 
             foreach (Collider2D enemyObject in enemyList)
@@ -354,7 +364,8 @@ public class PlayerController : MonoBehaviour
 
                 // apply damage + force to enemy 
                 IDamageable iDamageable = enemyObject.GetComponent<IDamageable>();
-                if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) {
+                if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) 
+                {
                     int extraDamage = (int)(p.kickCharge * p.kickChargeMaxDamage);
                     iDamageable.TakeKick(p.kickDamage + extraDamage, force);
                     iDamageable.StopAttack(); // cancel enemy attack
@@ -365,14 +376,18 @@ public class PlayerController : MonoBehaviour
         }
 
         // post active-frame processing
-        if (iDamageableSet.Count == 0) {
+        if (iDamageableSet.Count == 0) 
+        {
             GM.audioSource.clip = GM.MissAudio;
             GM.audioSource.Play();
-        } else {
+        } 
+        else 
+        {
             GM.audioSource.clip = GM.KickAudio;
             GM.audioSource.Play();
 
-            if (force.magnitude > p.hitStopForceThreshold) {
+            if (force.magnitude > p.hitStopForceThreshold) 
+            {
                 StartCoroutine(GM.HitStop(force.magnitude * p.hitStopScaling));
                 StartCoroutine(GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
             }
@@ -380,8 +395,9 @@ public class PlayerController : MonoBehaviour
         iDamageableSet.Clear();
     }
 
-    // set end of kick active frames
-    public void EndShouldBeDamaging() {
+    // set end of kick/punch active frames
+    public void EndShouldBeDamaging() 
+    {
         shouldBeDamaging = false;
         p.kickCharge = 0; // reset charge
     }
@@ -391,7 +407,9 @@ public class PlayerController : MonoBehaviour
     {
         p.anim.SetBool("isKicking", false);
     }
+    #endregion
 
+    #region Punch Anim Calls
     public IEnumerator PunchCombo(int partOfCombo) {
         // 1-2 = first two hits
         // 3 = uppercut
@@ -404,26 +422,33 @@ public class PlayerController : MonoBehaviour
         // if grappling, just do upper cut (not yet implemented)
 
         float radius = partOfCombo == 3 ? p.uppercutRadius : p.punchRadius;
-        if (p.isGrounded) {
+        if (p.isGrounded) 
+        {
             Vector2 force = p.forwardPunchMovement;
             force.x = Mathf.Abs(force.x) * (p.facingRight ? 1 : -1);
             p.rb.AddForce(force);
         }
 
-        while (shouldBeDamaging) {
+        while (shouldBeDamaging) 
+        {
             Collider2D[] enemyList = Physics2D.OverlapCircleAll(p.punchPoint.transform.position, radius, p.enemyLayer);
 
-            foreach (Collider2D enemyObject in enemyList) {
+            foreach (Collider2D enemyObject in enemyList) 
+            {
                 // apply damage + force to enemy 
                 IDamageable iDamageable = enemyObject.GetComponent<IDamageable>();
-                if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) {
+                if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) 
+                {
                     // knock up if uppercut
-                    if (partOfCombo == 3) {
+                    if (partOfCombo == 3) 
+                    {
                         audioManager.PlaySFX(audioManager.uppercut);
                         Vector2 force = p.uppercutForce;
                         force.x = Mathf.Abs(p.uppercutForce.x) * dir;
                         iDamageable.TakeKick(p.uppercutDamage, force);
-                    } else { // regular punch otherwise (apply slow down)
+                    } 
+                    else 
+                    { // regular punch otherwise (apply slow down)
                         audioManager.PlaySFX(audioManager.punch);
                         iDamageable.TakePunch(p.punchDamage, p.velocityMod);
                     }
@@ -447,7 +472,8 @@ public class PlayerController : MonoBehaviour
             //     StartCoroutine(GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
             // }
         // }
-        if (partOfCombo == 3 && iDamageableSet.Count > 0) {
+        if (partOfCombo == 3 && iDamageableSet.Count > 0) 
+        {
             StartCoroutine(GM.HitStop(p.uppercutForce.magnitude * p.hitStopScaling));
             StartCoroutine(GM.ScreenShake(p.uppercutForce.magnitude * p.hitStopScaling, p.uppercutForce.magnitude * p.screenShakeScaling));
         }
@@ -459,13 +485,12 @@ public class PlayerController : MonoBehaviour
     {
         p.anim.SetBool("isPunching", false);
     }
+    #endregion
 
+    #region One Way Platforms
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("OneWayPlatform"))
-        {
-            p.currentOneWayPlatform = other.gameObject;
-        }
+        if (other.gameObject.CompareTag("OneWayPlatform")) p.currentOneWayPlatform = other.gameObject;
     }
 
     private IEnumerator DisableCollision()
@@ -475,21 +500,14 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(p.waitTime);
         Physics2D.IgnoreCollision(p.playerCollider, platformCollider, false);
     }
-
-    public void FlipCharacter(bool right)
-    {
-        // storing whether object is already facingRight to avoid double flipping
-        if (right != p.facingRight) {
-            p.facingRight = !p.facingRight;
-            transform.Rotate(0.0f, 180.0f, 0.0f);
-        }
-    }
+    #endregion
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         float kickRadius = p.kickRadius;
-        if (p.kickCharge > 1f) { // during grapple
+        if (p.kickCharge > 1f)  // during grapple 
+        {
             float t = Mathf.Clamp((p.kickCharge - 1f) / (p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue - 1f), 0f, 1f);
             kickRadius = Mathf.Lerp(p.kickRadius, p.extendedChargeRadius, t);
         }
@@ -505,13 +523,16 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawCube(p.groundCheck.position, p.checkGroundSize);
     }
 
+    #region Take Damage
     // Function to take damage + iframes + knockback
     public IEnumerator TakeDamage(int damage, Vector2 force)
     {
         if (!p.isHit && damage > 0) {
-            audioManager.PlaySFX(audioManager.playerHit);
-            p.isHit = true;
+            p.isHit = true; // for iframes
             GM.healthCurrent -= p.vulnerability * damage;
+            
+            // fx
+            audioManager.PlaySFX(audioManager.playerHit);
             StartCoroutine(GM.HurtFlash());
             p.anim.SetBool("isHurt", true);
 
@@ -521,6 +542,7 @@ public class PlayerController : MonoBehaviour
             EndShouldBeDamaging();
             p.playerChargeMeter.SetActive(false);
 
+            // knock player back a bit
             p.rb.velocity = Vector2.zero; // so previous velocity doesn't interfere (would super stop player momentum tho? maybe change in future)
             p.rb.AddForce(force, ForceMode2D.Impulse);
 
@@ -532,6 +554,7 @@ public class PlayerController : MonoBehaviour
             p.anim.SetBool("canMove", true);
         }
     }
+    #endregion
 
     public void SetControls(bool status)
     {
