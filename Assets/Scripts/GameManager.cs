@@ -30,9 +30,11 @@ public class GameManager : TheSceneManager
     public bool statusApplied = false;
     public GameObject cardButtonPrefab; // Prefab to create buttons for each card in the deck
     protected Image UICard;
-    protected Image CooldownImg;
+    protected Image CardCooldownImg;
     protected StatusEffectManager StatusEffectManager;
     protected bool deckShowing = false;
+    [HideInInspector]
+    public GameObject CardDisplay;
     protected GameObject deckDisplayPanel;
 
     [Header("Health")]
@@ -44,7 +46,6 @@ public class GameManager : TheSceneManager
 
     [Header("Money")]
     public float money = 500;
-    public float quota;
 
     [Header("Mobile")]
     public bool mobile;
@@ -65,8 +66,6 @@ public class GameManager : TheSceneManager
     protected GameObject DeathScreen;
     protected GameObject WinScreen;
     protected GameObject IBuild;
-
-    protected GameObject cooldownCard;
 
     protected bool paused = false;
 
@@ -148,11 +147,13 @@ public class GameManager : TheSceneManager
         {
             Debug.Log("PLAY SCREEN" + PlayScreen);
             money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
-            quota_text = PlayScreen.transform.Find("Quota")?.gameObject.GetComponent<TextMeshProUGUI>();
-            UICard = PlayScreen.transform.Find("Card")?.gameObject.GetComponent<Image>();
-            cooldownCard = PlayScreen.transform.Find("Card")?.gameObject;
-            CooldownImg = PlayScreen.transform.Find("Card")?.gameObject.GetComponentInChildren<Image>();
-            StatusEffectManager = PlayScreen.transform.Find("Card")?.GetComponent<StatusEffectManager>();
+            CardDisplay = PlayScreen.transform.Find("CardDisplay")?.gameObject;
+            if (CardDisplay)
+            {
+                UICard = CardDisplay.GetComponent<Image>();
+                CardCooldownImg = CardDisplay.transform.Find("Cooldown")?.gameObject.GetComponent<Image>();
+                StatusEffectManager = CardDisplay.GetComponent<StatusEffectManager>();
+            }
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
@@ -278,16 +279,14 @@ public class GameManager : TheSceneManager
             GameObject obj = showCard(card, PlayScreen);
             RectTransform rectTransform = obj.GetComponent<RectTransform>();
 
-            // Set the anchor to the top right corner
-            rectTransform.anchorMin = new Vector2(0.9243959f, 0.814f);  // Top-right corner
-            rectTransform.anchorMax = new Vector2(0.9942604f, 0.987f);  // Top-right corner
+            //// Set the anchor to the top right corner
+            rectTransform.anchorMin = new Vector2(1, 0.725f);  // Top-right corner
+            rectTransform.anchorMax = new Vector2(1, 0.725f);  // Top-right corner
+            rectTransform.pivot = new Vector2(1, 1);
 
-            // Set the pivot to the top right (optional, if you want to rotate around the top-right corner)
-            //rectTransform.pivot = new Vector2(1, 1);
-
-            // Adjust the position (0,0 will be the top right corner)
-            //rectTransform.anchoredPosition = new Vector2(193.55f, 266.95f);
-            obj.transform.localScale = obj.transform.localScale * 0.7f;
+            //// Adjust the position (0,0 will be the top right corner)
+            ////rectTransform.anchoredPosition = new Vector2(193.55f, 266.95f);
+            //obj.transform.localScale = obj.transform.localScale * 0.7f;
             StatusEffectManager.AddStatusEffect(card);
             updateHealth();
         }
@@ -317,7 +316,9 @@ public class GameManager : TheSceneManager
         else
         {
             UICard.GetComponentInChildren<TextMeshProUGUI>().text = Mathf.RoundToInt(cardCDTimer).ToString();
-            CooldownImg.fillAmount = cardCDTimer / cardCDTime;
+
+            Debug.Log("COOLDOWN FILL: " + CardCooldownImg.fillAmount);
+            CardCooldownImg.fillAmount = cardCDTimer / cardCDTime;
         }
     }
 

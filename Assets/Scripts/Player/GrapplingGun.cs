@@ -49,13 +49,8 @@ public class GrapplingGun : MonoBehaviour
     public Texture2D defaultCursor;
     public Texture2D specialCursor;
     public GameObject Canvas;
-    public Image cursorImage;
     public GameObject grappleTargetIndicator;
-
-    // Cursor Hotspot (adjust for the click point)
-    public Vector2 cursorHotspot = Vector2.zero;
-    // Track the current cursor to avoid setting it unnecessarily
-    private Texture2D currentCursor;
+    public Image grappleTargetIndicatorImg;
 
     [Header("Grapple Forgiveness")]
     public float GrappleRadius; // set 'thickness' of grapple detection for easier use
@@ -64,7 +59,7 @@ public class GrapplingGun : MonoBehaviour
     {
         Canvas = GameObject.FindGameObjectWithTag("Canvas");
         grappleTargetIndicator = Canvas.transform.Find("GrappleIndicator").gameObject;
-        cursorImage = Canvas.transform.Find("CursorImage").gameObject.GetComponent<Image>();
+        grappleTargetIndicatorImg = grappleTargetIndicator.GetComponent<Image>();
     }
 
     private void Start()
@@ -72,14 +67,6 @@ public class GrapplingGun : MonoBehaviour
         // Cursor.visible = false;
         grappleRope.enabled = false;
         m_springJoint2D.enabled = false;
-        //playerController = GameObject.Find("Player Controller").GetComponent<PlayerController>();
-        // p = playerController.p;
-        // Cursor.SetCursor(defaultCursor, cursorHotspot, CursorMode.Auto);
-
-        // configuring line renderer
-        // GrappleIndicator.positionCount = 2; // Two points (start and end)
-        // GrappleIndicator.startWidth = 0.1f; // Set the starting width
-        // GrappleIndicator.endWidth = 0.1f; // Set the ending width
     }
 
     private void Update()
@@ -87,14 +74,10 @@ public class GrapplingGun : MonoBehaviour
         Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
         RotateGun(mousePos); ////////////////// same thing?
         updateCursorLook();
-        // Debug.Log(grappledObject + "1");
         if (isGrappling && grappleRope.enabled)
         {
-            // GrappleIndicator.enabled = false;
-            // Debug.Log(grappledObject + "2");
             if (grappledObject != null && grappledObject.layer == LayerMask.NameToLayer("Enemy")) 
             {
-                // Debug.Log(grappledObject + "3");
                 grapplePoint = grappledObject.transform.position;
                 
             }
@@ -103,7 +86,6 @@ public class GrapplingGun : MonoBehaviour
                 stopGrappling(); // if enemy dies as player is grappling it
             }
         } else {
-            // GrappleIndicator.enabled = true;
             GrappleIndication();
         }
     }
@@ -116,20 +98,10 @@ public class GrapplingGun : MonoBehaviour
         // Update the LineRenderer to show the projected grapple point
         if (_hit) {
             Vector3 endPoint = _hit.point;
-            endPoint += Vector3.up * 0.5f;
-            // GrappleIndicator.SetPosition(0, endPoint + Vector3.up * 0.2f); // setting first point to be 1 unit behind second point to cut line short
-            // GrappleIndicator.SetPosition(1, endPoint); // Show the grapple target
             grappleTargetIndicator.SetActive(true);
             grappleTargetIndicator.transform.position = m_camera.WorldToScreenPoint(endPoint);
-            Color c = cursorImage.color;
-            c.a = 1f;
-            cursorImage.color = c;
         } else {
-            // GrappleIndicator.enabled = false;
             grappleTargetIndicator.SetActive(false);
-            Color c = cursorImage.color;
-            c.a = 0.2f;
-            cursorImage.color = c;
         }
     }
 
@@ -264,15 +236,15 @@ public class GrapplingGun : MonoBehaviour
         Vector2 mousePos = m_camera.ScreenToWorldPoint(Input.mousePosition);
         if (!grappleRope.enabled)
         {
-            cursorImage.transform.position = Input.mousePosition; 
+            grappleTargetIndicator.transform.position = Input.mousePosition; 
         } else {
-            cursorImage.transform.position = m_camera.WorldToScreenPoint(grapplePoint);
+            grappleTargetIndicator.transform.position = m_camera.WorldToScreenPoint(grapplePoint);
         }
 
         // Calculate direction and angle to rotate cursor
         Vector2 aimDirection = (mousePos - (Vector2)firePoint.position).normalized;
         float angle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg;
-        cursorImage.transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
+        grappleTargetIndicator.transform.rotation = Quaternion.Euler(0f, 0f, angle - 90);
 
     }
 }

@@ -127,17 +127,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2990557554159055595, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
   m_PrefabInstance: {fileID: 4699786613595592954}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &916290222 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3768005602935393662, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
-  m_PrefabInstance: {fileID: 4699786613020417054}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &838622345544163900
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1432,6 +1421,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3768005601834402601, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1273123382, guid: ee1b248854ebce84ca7ab8f45642f53f, type: 3}
+    - target: {fileID: 3768005601834402601, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768005601834402601, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.085973606
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768005601834402601, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.12431134
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768005601834402601, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.4339623
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768005601834402601, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.209
+      objectReference: {fileID: 0}
     - target: {fileID: 3768005602822016113, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -2103,7 +2116,7 @@ PrefabInstance:
     - target: {fileID: 5516453970350294433, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: cursorImage
       value: 
-      objectReference: {fileID: 916290222}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
 --- !u!4 &4699786613638303884
