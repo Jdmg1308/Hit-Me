@@ -8,16 +8,18 @@ using UnityEngine.Tilemaps;
 public class Player
 {
     // Game Manager
-    public GameManager gameManager;
+    public GameManager GameManager;
 
     [Header("Controls")]
-    public bool controlsEnabled = true;
-    public MovementJoystick movementJoystickScript;
-    public ButtonsAndClick buttonsAndClickScript;
+    public bool ControlsEnabled = true;
+    public MovementJoystick MovementJoystickScript;
+    public ButtonsAndClick ButtonsAndClickScript;
 
     [Header("Health")]
     public bool isHit = false;
-    public int attackCharge, healCharg, bleedValue;
+    public int attackCharge;
+    public int healCharge;
+    public int bleedValue;
     public int vulnerability = 1; //when fragile/vulnerable, take extra damage ex 2x 
     public float iFrames = .5f;
 
@@ -31,11 +33,13 @@ public class Player
     public GrapplingRope grappleRope;
     public GrapplingGun grapplingGun;
     public SpringJoint2D m_springJoint2D;
-    public float xMaxSpeed = 20f, yMaxSpeed = 30f;
+    public float XMaxSpeed = 20f, YMaxSpeed = 30f;
 
     // player movement
     [Header("Player Movement")]
-    public float moveSpeed, baseMoveSpeed, jumpForce, moveDirection;
+    public float moveSpeed;
+    public float baseMoveSpeed;
+    public float jumpForce, moveDirection;
     public bool isJumping, facingRight = false, isGrounded, midJump;
     public float defaultGravity = 2.5f; // base gravity when jumping
     public float fallingGravity = 3.5f; // set higher gravity when falling for less floatiness
@@ -78,13 +82,15 @@ public class Player
     public int kickDamage = 1;
     public int baseKickDamage = 1;
     public float kickChargeMaxDamage; // damage of non-extended max charge 
-    public GameObject playerChargeMeter, playerExtendedChargeMeter; 
+    public GameObject playerChargeMeter;
+    public GameObject playerExtendedChargeMeter; 
     public float extendedChargeRadius; // max radius when in grapple state
     public bool charging = false;
 
     [Header("Punch Vars")]
     public GameObject punchPoint;
-    public float punchRadius, uppercutRadius;
+    public float punchRadius;
+    public float uppercutRadius;
     public int punchDamage;     // punch damage that dynamically increases/decreases based on cards
     public int basePunchDamage; // base punch damage
     public int uppercutDamage;  //same as above but just for upper cut 
