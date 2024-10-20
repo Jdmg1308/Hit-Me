@@ -30,9 +30,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         if (!(SceneManager.GetActiveScene().name == "TUTORIAL" || SceneManager.GetActiveScene().name == "SHOP"))
-        {
             GM.Difficulty();
-        }
 
         // setting defaults
         GM.healthCurrent = GM.healthMax; // Set health to max at start
@@ -63,22 +61,23 @@ public class PlayerController : MonoBehaviour
 
         if (GM.iOSPanel.activeSelf)
         {
-            p.MovementJoystickScript = GM.iOSPanel.GetComponent<MovementJoystick>();
-            p.ButtonsAndClickScript = GM.iOSPanel.GetComponent<ButtonsAndClick>();
+            p.movementJoystickScript = GM.iOSPanel.GetComponent<MovementJoystick>();
+            p.buttonsAndClickScript = GM.iOSPanel.GetComponent<ButtonsAndClick>();
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (p.ControlsEnabled)
+        if (p.controlsEnabled)
         {
             if (GM.mobile)
             {
                 ProcessInputMobile();
                 p.anim.SetBool("midJump", p.midJump);
                 DirectionPlayerFacesMobile();
-            } else
+            } 
+            else
             {
                 ProcessInput();
                 p.anim.SetBool("midJump", p.midJump);
@@ -131,13 +130,17 @@ public class PlayerController : MonoBehaviour
 
         // if !isGrounded and !isGrappling
         float adjustAirControl = 1;
-        if (!p.isGrounded) adjustAirControl = !p.grapplingGun.isGrappling ? p.airControl : p.grappleAirControl;
+        if (!p.isGrounded) 
+            adjustAirControl = !p.grapplingGun.isGrappling ? p.airControl : p.grappleAirControl;
 
         // if in air/grappling, maintain prev x for momentum (else add ground friction), add directed movement with air control restrictions
         float xVelocity = (p.rb.velocity.x * (!p.isGrounded || p.grapplingGun.isGrappling ? 1 : p.friction))
             + (p.moveDirection * p.moveSpeed * adjustAirControl);
-        p.rb.velocity = new Vector2(Mathf.Clamp(xVelocity, -p.XMaxSpeed, p.XMaxSpeed),
-            Mathf.Min(p.rb.velocity.y, p.YMaxSpeed));
+        Debug.Log("xvelocity:" + xVelocity);
+        p.rb.velocity = new Vector2(Mathf.Clamp(xVelocity, -p.xMaxSpeed, p.xMaxSpeed),
+            Mathf.Min(p.rb.velocity.y, p.yMaxSpeed));
+        Debug.Log("rb velocity:" + p.rb.velocity);
+        
 
         if (p.isGrounded)
         {
@@ -289,36 +292,36 @@ public class PlayerController : MonoBehaviour
     {
         // Normal Movement Input
         // scale of -1 -> 1
-        p.moveDirection = p.MovementJoystickScript.joystickVec.x;
+        p.moveDirection = p.movementJoystickScript.joystickVec.x;
         
-        if (p.ButtonsAndClickScript.isJumping && p.isGrounded)
+        if (p.buttonsAndClickScript.isJumping && p.isGrounded)
         {
             p.isJumping = true;
-            p.ButtonsAndClickScript.isJumping = false; // so that jumping is not spammed
+            p.buttonsAndClickScript.isJumping = false; // so that jumping is not spammed
         }
-        if (p.MovementJoystickScript.joystickVec.normalized.y < -0.90 && p.currentOneWayPlatform != null)
+        if (p.movementJoystickScript.joystickVec.normalized.y < -0.90 && p.currentOneWayPlatform != null)
             StartCoroutine(DisableCollision());
 
         // attacks
-        if (p.ButtonsAndClickScript.isKicking)
+        if (p.buttonsAndClickScript.isKicking)
         {
             p.anim.SetBool("isKicking", true);
-            p.ButtonsAndClickScript.isKicking = false;
+            p.buttonsAndClickScript.isKicking = false;
         }
         // Grappling hook Input
         //if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.J)) p.grapplingGun.SetGrapplePoint();
-        if (p.ButtonsAndClickScript.pulling) p.grapplingGun.pull();
+        if (p.buttonsAndClickScript.pulling) p.grapplingGun.pull();
         //else if (Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.J)) p.grapplingGun.stopGrappling();
 
-        if (p.ButtonsAndClickScript.drawCard)
+        if (p.buttonsAndClickScript.drawCard)
         {
             GM.useCard();
-            p.ButtonsAndClickScript.drawCard = false;
+            p.buttonsAndClickScript.drawCard = false;
         }
-        if (p.ButtonsAndClickScript.pause)
+        if (p.buttonsAndClickScript.pause)
         {
             GM.Pause();
-            p.ButtonsAndClickScript.pause = false;
+            p.buttonsAndClickScript.pause = false;
         }
     }
     #endregion
@@ -558,6 +561,6 @@ public class PlayerController : MonoBehaviour
 
     public void SetControls(bool status)
     {
-        p.ControlsEnabled = status;
+        p.controlsEnabled = status;
     }
 }
