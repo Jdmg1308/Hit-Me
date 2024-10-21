@@ -29,13 +29,13 @@ AnimationClip:
       value: {fileID: 431337462, guid: ad9a8a54f869c6248922a8af4182c0d8, type: 3}
     - time: 0.41666666
       value: {fileID: -385061440, guid: ad9a8a54f869c6248922a8af4182c0d8, type: 3}
-    - time: 0.75
+    - time: 0.6666667
       value: {fileID: -973870224, guid: ad9a8a54f869c6248922a8af4182c0d8, type: 3}
-    - time: 1
+    - time: 0.8333333
       value: {fileID: 1390659846, guid: ad9a8a54f869c6248922a8af4182c0d8, type: 3}
-    - time: 1.25
+    - time: 0.9166667
       value: {fileID: -1080370263, guid: ad9a8a54f869c6248922a8af4182c0d8, type: 3}
-    - time: 1.4166666
+    - time: 1.0833334
       value: {fileID: -1080370263, guid: ad9a8a54f869c6248922a8af4182c0d8, type: 3}
     attribute: m_Sprite
     path: 
@@ -70,7 +70,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.5
+    m_StopTime: 1.1666667
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -104,21 +104,21 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.75
+  - time: 0.6666667
     functionName: Punch
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1
+  - time: 0.8333333
     functionName: EndShouldBeDamaging
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.4166666
+  - time: 1.0833334
     functionName: EndPunch
     data: 
     objectReferenceParameter: {fileID: 0}

@@ -512,10 +512,13 @@ MonoBehaviour:
   collisionForceMultiplier: 0.5
   baseMass: 1
   postImpactMassScale: 0.9
-  <MaxHealth>k__BackingField: 50
+  <MaxHealth>k__BackingField: 100
   <CurrentHealth>k__BackingField: 0
   <IsDead>k__BackingField: 0
   <HitStunTime>k__BackingField: 1
+  HitStunLimit: 4
+  CurrentHitStunAmount: 0
+  HitStunImmunityTime: 10
   <ChaseSpeed>k__BackingField: 2
   <MaxYJumpForce>k__BackingField: 15
   <MaxXJumpForce>k__BackingField: 5

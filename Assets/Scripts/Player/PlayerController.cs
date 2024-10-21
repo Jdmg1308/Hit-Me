@@ -445,7 +445,7 @@ public class PlayerController : MonoBehaviour
                         audioManager.PlaySFX(audioManager.uppercut);
                         Vector2 force = p.uppercutForce;
                         force.x = Mathf.Abs(p.uppercutForce.x) * dir;
-                        iDamageable.TakeKick(p.uppercutDamage, force);
+                        iDamageable.TakeUppercut(p.uppercutDamage, force);
                     } 
                     else 
                     { // regular punch otherwise (apply slow down)

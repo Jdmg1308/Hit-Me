@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public Animator Anim { get; set; }
 
     [Header("State Variables")]
-    public bool InImpact = false;
+    public bool InImpact = false; // record knockback path + allows collision dmg
 
     // IMoveable State Variables
     [field: SerializeField] public bool IsPaused { get; set; }
@@ -59,6 +59,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public object DeathLock { get; set; } = new object();
     [field: SerializeField] public bool IsDead { get; set; } = false;
     [field: SerializeField] public float HitStunTime { get; set; } = 1f;
+    public int HitStunLimit; // amount of hits can receive before getting hit stun immunity
+    public int CurrentHitStunAmount = 0;
+    public float HitStunImmunityTime; // how long hit stun immunity lasts
+    public bool HitStunImmune; // set during immunity
 
     // IMoveable Variables
     // components
@@ -124,7 +128,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     #region Universal Functions
     // called before start when script is loaded
-    private void Awake() {
+    private void Awake() 
+    {
         Player = GameObject.FindGameObjectWithTag("Player");
         GameEnemyManager = GameObject.Find("GameEnemyManager").GetComponent<GameEnemyManager>();
         StateMachine = new EnemyStateMachine();
@@ -134,7 +139,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // called before first frame after all scripts loaded
-    private void Start() {
+    private void Start() 
+    {
         // accessing components
         Anim = transform.Find("Sprite").GetComponent<Animator>();
         RB = GetComponent<Rigidbody2D>();
@@ -163,7 +169,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         StartCoroutine(PauseAction(initialSpawnDelay));
     }
     
-    private void Update() {
+    private void Update() 
+    {
         StateMachine.currentEnemyState.FrameUpdate();
         enemyState = StateMachine.currentEnemyState.id; // for debug
 
@@ -173,27 +180,30 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         PlatformDetectionOrigin = TopEnemyTransform + (Vector3.up * (MaxJumpHeight / 2)) + ((FacingRight ? Vector3.right : Vector3.left) * (MaxJumpDistance / 2));
 
         // record path during impact
-        if (InImpact) {
+        if (InImpact) 
+        {
             RB.mass = baseMass * postImpactMassScale;
-            if (Vector3.Distance(transform.position, _lastRecordedPosition) > PointSpacing) {
+            if (Vector3.Distance(transform.position, _lastRecordedPosition) > PointSpacing) 
                 AddPointToPath(transform.position);
-            }
-        } else {
+        } 
+        else 
+        {
             RB.mass = baseMass;
         }
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate() 
+    {
         // if low velocity, then no longer InImpact
-        if (RB.velocity.magnitude < collisionForceThreshold) {
+        if (RB.velocity.magnitude < collisionForceThreshold) 
+        {
             InImpact = false;
             ClearPath();
             Anim.SetBool("ImpactBool", false);
         }
 
-        if (!IsPaused && !InImpact) {
+        if (!IsPaused && !InImpact) 
             StateMachine.currentEnemyState.PhysicsUpdate();
-        }
 
         RB.velocity = Vector2.ClampMagnitude(RB.velocity, maxVelocity); // prob can set clamp in property
     }
@@ -201,29 +211,31 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     // receiving impact reaction
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("OneWayPlatform")) {
+        if (collision.gameObject.CompareTag("OneWayPlatform")) 
             CurrentOneWayPlatform = collision.gameObject;
-        }
 
-        if (InImpact || collision.gameObject.CompareTag("enemy")) {
-            
+        if (InImpact || collision.gameObject.CompareTag("enemy")) 
+        {
             float impactForce = collision.relativeVelocity.magnitude;
-            if (impactForce > collisionForceThreshold) { // if force > threshold, then deal dmg, otherwise no longer in InImpact state
+            if (impactForce > collisionForceThreshold) 
+            { // if force > threshold, then deal dmg, otherwise no longer in InImpact state
                 int collisionDamage = Mathf.RoundToInt(impactForce * collisionDamageMultiplier); // note: consider log max for extreme cases
                 // if collide wtih enemy that was inImpact, treat as if you were InImpact
-                if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact) { 
+                if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact) 
+                { 
                     Damage(collisionDamage);
                     InImpact = true;
                     Anim.SetBool("ImpactBool", true);
-                } else if (!collision.gameObject.CompareTag("enemy")) { // bounce off surfaces, not enemies
+                } 
+                else if (!collision.gameObject.CompareTag("enemy")) 
+                { // bounce off surfaces, not enemies
                     Vector2 bounceDirection = collision.contacts[0].normal;
                     // if not one way platform or if hitting one way platform from above (the only allowed bounce, otherwise just go through it)
-                    if (!collision.gameObject.CompareTag("OneWayPlatform") || (collision.gameObject.CompareTag("OneWayPlatform") && bounceDirection == Vector2.up)) {
+                    if (!collision.gameObject.CompareTag("OneWayPlatform") || (collision.gameObject.CompareTag("OneWayPlatform") && bounceDirection == Vector2.up)) 
+                    {
                         Damage(collisionDamage);
                         
-                        if (Math.Abs(bounceDirection.x) > 0) {
-                            FlipCharacter(bounceDirection.x < 0);
-                        }
+                        if (Math.Abs(bounceDirection.x) > 0) FlipCharacter(bounceDirection.x < 0);
                         RB.AddForce(bounceDirection * (impactForce * collisionForceMultiplier), ForceMode2D.Impulse);
                     }
                 }
@@ -236,15 +248,18 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void FlipCharacter(bool right)
     {
         // storing whether object is already facingRight to avoid double flipping
-        if (right != FacingRight) {
+        if (right != FacingRight) 
+        {
             FacingRight = !FacingRight;
             transform.Rotate(0.0f, 180.0f, 0.0f);
         }
     }
 
     // Helper function to encapsulate the pause logic
-    public IEnumerator PauseAction(float delay) {
-        if (!IsPaused) {
+    public IEnumerator PauseAction(float delay) 
+    {
+        if (!IsPaused) 
+        {
             IsPaused = true;
             Anim.SetBool("isWalking", false);
             yield return new WaitForSeconds(delay);
@@ -266,7 +281,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // find x and y jump force needed to reach landingPosition
-    public Vector2 CalculateJumpForce(Vector2 landingPosition) {
+    public Vector2 CalculateJumpForce(Vector2 landingPosition) 
+    {
         // Horizontal and vertical distances
         float deltaX = Math.Abs(landingPosition.x - transform.position.x);
         float deltaY = Math.Abs(landingPosition.y - BottomEnemyTransform.y);
@@ -283,21 +299,28 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // look for platforms within detection box (max jump dist/height) and find furthest landing target within max jump
-    public void DetectTargetFromPlatform() {
+    public void DetectTargetFromPlatform() 
+    {
         Vector2 boxSize = new Vector2(MaxJumpDistance, MaxJumpHeight);
         Collider2D[] hits = Physics2D.OverlapBoxAll(PlatformDetectionOrigin, boxSize, 0f, PlatformDetectionMask);
         LandingTarget = Vector2.zero; // special val
-        if (hits.Length == 0) { // No platforms detected, exit early
+        if (hits.Length == 0) 
+        { // No platforms detected, exit early
             return;
-        } else { // look for platform furthest from enemy
+        } 
+        else 
+        { // look for platform furthest from enemy
             float maxDistance = float.MinValue;
             Collider2D furthestPlatform = null;
-            foreach (var hit in hits) {
+            foreach (var hit in hits) 
+            {
                 // Check if the hit object has the "OneWayPlatform" tag
-                if (hit.CompareTag("OneWayPlatform")) {
+                if (hit.CompareTag("OneWayPlatform")) 
+                {
                     // Calculate the distance between the enemy and the hit platform
                     float distance = Vector2.Distance(BottomEnemyTransform, hit.transform.position);
-                    if (distance > maxDistance) {
+                    if (distance > maxDistance) 
+                    {
                         maxDistance = distance;
                         furthestPlatform = hit;
                     }
@@ -305,7 +328,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             }
 
             // Get the collider bounds of the furthest platform
-            if (furthestPlatform != null) {
+            if (furthestPlatform != null) 
+            {
                 Bounds platformBounds = furthestPlatform.bounds;
                 float platformXDist = Math.Abs(RB.transform.position.x - (FacingRight ? platformBounds.max.x : platformBounds.min.x));
                 float jumpX = (FacingRight ? 1 : -1) * Math.Min(platformXDist, MaxJumpDistance);
@@ -328,14 +352,16 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     #endregion
 
     #region Health/Die Functions
-    public void Damage(int damage) {
+    // refers to GM bc to apply card effects
+    public void Damage(int damage) 
+    {
         GameEnemyManager.Damage(this, damage); 
     }
 
-    public void DamageHelper(int damage) {
+    // actual damage function that GM will reference
+    public void DamageHelper(int damage) 
+    {
         CurrentHealth -= damage;
-        Anim.SetTrigger("ImpactTrigger");
-        Anim.SetBool("ImpactBool", true);
 
         // spawning damage vfx        
         Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * fxRadius;
@@ -346,24 +372,42 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         newSize.y += damage * damageToSizeScaling;
         newVFX.transform.localScale = newSize;
 
-        if (CurrentHealth <= 0) {
-            if (!gameObject.IsDestroyed())
-            {
-                Die();
-            }
-        }
+        if (CurrentHealth <= 0 && !gameObject.IsDestroyed())
+            Die();
 
-        StartCoroutine(HitStun(HitStunTime));
+        // hit stun limit, if over limit, then become immune to fx of hit stun (not being able to attack) for a bit
+        // NOTE: still able to take dmg or be knocked around tho
+        CurrentHitStunAmount += 1;
+        if (CurrentHitStunAmount > HitStunLimit && !HitStunImmune) 
+        {
+            HitStunImmune = true;
+            StartCoroutine(HitStunImmunity(HitStunImmunityTime));
+        }
+        
+        if (!HitStunImmune)
+        {
+            Anim.SetTrigger("ImpactTrigger");
+            Anim.SetBool("ImpactBool", true);
+            StartCoroutine(HitStun(HitStunTime));
+        }
     }
 
     // specific hit state (for punches), if in this state then temp can't attack
-    private IEnumerator HitStun(float time) {
+    private IEnumerator HitStun(float time) 
+    {
         InHitStun = true;
         yield return new WaitForSeconds(time);
         InHitStun = false;
     }
 
-    public void Die() {
+    private IEnumerator HitStunImmunity(float time) {
+        yield return new WaitForSeconds(time);
+        HitStunImmune = false;
+        CurrentHitStunAmount = 0;
+    }
+
+    public void Die() 
+    {
         lock (DeathLock) // Ensure only one thread executes this block at a time
         {
             if (!IsDead)
@@ -374,52 +418,89 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         }
     }
 
-    public void TakeKick(int damage, Vector2 force) {
+    public void TakeKick(int damage, Vector2 force) 
+    {
         Damage(damage);
-        InImpact = true;
 
-        if (force.x < 0) {
+        if (force.x < 0) 
+        {
             FlipCharacter(true);
-        } else if (force.x > 0) {
+        } 
+        else if (force.x > 0) 
+        {
             FlipCharacter(false);
         }
+        
+        // no force if in immunity
+        if (!HitStunImmune) 
+        {
+            InImpact = true;
 
-        if (IsGrounded) {
-            transform.position = new Vector2(transform.position.x, transform.position.y + 0.1f); // slight upward translate to enable bounce from ground
+            if (IsGrounded) 
+                transform.position = new Vector2(transform.position.x, transform.position.y + 0.1f); // slight upward translate to enable bounce from ground
+
+            RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
+            RB.AddForce(force, ForceMode2D.Impulse);
         }
-        RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
-        RB.AddForce(force, ForceMode2D.Impulse);
     }
 
-    public void TakePunch(int damage, float velocityMod) {
+    public void TakePunch(int damage, float velocityMod) 
+    {
         Damage(damage);
         RB.velocity = RB.velocity * velocityMod;
     }
 
-    public void StopAttack() {
+    public void TakeUppercut(int damage, Vector2 force) 
+    {
+        Damage(damage);
+        // 'knockup' state
+
+        if (force.x < 0) 
+        {
+            FlipCharacter(true);
+        } 
+        else if (force.x > 0) 
+        {
+            FlipCharacter(false);
+        }
+
+        // no knockup if in immunity
+        if (!HitStunImmune) 
+        {
+            RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
+            RB.AddForce(force, ForceMode2D.Impulse);
+        }
+    }
+
+    public void StopAttack() 
+    {
         Anim.SetBool("isPunching", false);
         EndShouldBeDamaging();
     }
     #endregion
 
     #region Animation Triggers
-        public enum AnimationTriggerType {
+        public enum AnimationTriggerType 
+        {
             StartPunch,
             EndPunch,
             EndPunchDamaging
         }
         
-        public void AnimationTriggerEvent(AnimationTriggerType triggerType) {
+        public void AnimationTriggerEvent(AnimationTriggerType triggerType) 
+        {
             StateMachine.currentEnemyState.AnimationTriggerEvent(triggerType);
         }
     #endregion
 
     #region Detection
-    public void SetInChaseRange(bool inChaseRange) {
+    public void SetInChaseRange(bool inChaseRange) 
+    {
         InChaseRange = inChaseRange;
     }
 
-    public void SetInAttackRange(bool inAttackRange) {
+    public void SetInAttackRange(bool inAttackRange) 
+    {
         InAttackRange = inAttackRange;
     }
     #endregion
@@ -457,11 +538,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     #region Punching
     // punch active frames
-    public IEnumerator Punch() {
+    public IEnumerator Punch() 
+    {
         ShouldBeDamaging = true;
-        while (ShouldBeDamaging && !InHitStun) {
+        while (ShouldBeDamaging && !InHitStun) 
+        {
             Collider2D player = Physics2D.OverlapCircle(DetectAttack.transform.position, AttackRadius, 1 << Player.layer);
-            if (player != null) {
+            if (player != null) 
+            {
                 Vector2 force = new Vector2((FacingRight ? 1 : -1) * Math.Abs(PunchForce.x), PunchForce.y);
                 StartCoroutine(player.GetComponent<PlayerController>().TakeDamage(PunchDamage, force));
             }
@@ -470,12 +554,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // end punch active frames
-    public void EndShouldBeDamaging() {
+    public void EndShouldBeDamaging() 
+    {
         ShouldBeDamaging = false;
     }
 
     // set end of animation
-    public void EndPunch() {
+    public void EndPunch() 
+    {
         Anim.SetBool("isPunching", false);
         StartCoroutine(PauseAction(AttackWait));
     }

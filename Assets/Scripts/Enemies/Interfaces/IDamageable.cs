@@ -17,5 +17,6 @@ public interface IDamageable
     void Die();
     void TakeKick(int damage, Vector2 force);
     void TakePunch(int damage, float velocityMod);
+    void TakeUppercut(int damage, Vector2 force);
     void StopAttack();
 }
