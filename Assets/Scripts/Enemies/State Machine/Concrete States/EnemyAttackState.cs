@@ -31,7 +31,7 @@ public class EnemyAttackState : EnemyState
     {
         // must finish punch animation before considering next action
         // InImpact = taking collisions, ImpactBool = damage hit stun state?
-        if (!e.IsPaused && !e.InImpact && !e.Anim.GetBool("ImpactBool") && !e.InHitStun) {
+        if (!e.IsPaused && !e.InImpact && !e.Anim.GetBool("ImpactBool") && !e.InHitStun && !e.InKnockup) {
             if (!e.Anim.GetBool("isPunching") && !e.InAttackRange) {
                 if (!e.InChaseRange) {
                     enemyStateMachine.changeState(e.IdleState);

@@ -89,6 +89,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     [field: SerializeField] public float LandingOffset { get; set; } = 1.5f;
     [field: SerializeField] public float JumpDelay { get; set; } = 0.3f;
     [field: SerializeField] public LayerMask GroundLayer { get; set; }
+    public Vector2 CheckGroundSize;
 
     // State Machine Variables
     public EnemyStateMachine StateMachine { get; set; }
@@ -209,10 +210,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
             // If the timer reaches zero, reset the hit stun amount
             if (outOfCombatTimer <= 0) 
-            {
                 CurrentHitStunAmount = 0;
-                Debug.Log("reset combat timer");
-            } 
         }
     }
 
@@ -234,7 +232,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             {
                 if (IsGrounded)
                 {
-                    Debug.Log("isGrounded fix");
                     Anim.SetBool("ImpactBool", false);
                     InKnockup = false;
                 }
@@ -248,16 +245,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         PlayerAbove = (Player.transform.position.y > TopEnemyTransform.y) ? true : false; // check for need to jump to player level
         PlayerBelow = (Player.transform.position.y < BottomEnemyTransform.y) ? true : false;
 
-        RaycastHit2D hit = Physics2D.Raycast(BottomEnemyTransform, Vector2.down, .3f, GroundLayer);
-        IsGrounded = hit.collider != null && !MidJump; // check if standing on ground
-        if (hit.collider != null)
-        {
-            Debug.Log("object being hit: " + hit.collider.gameObject.name);
-        }
-        // if (!IsGrounded)
-        //     Debug.Log("isGrounded false");
+        // RaycastHit2D hit = Physics2D.Raycast(BottomEnemyTransform, Vector2.down, .3f, GroundLayer);
+        IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
 
-        if (!IsPaused && !InImpact) 
+        if (!IsPaused && !InImpact && !InKnockup) 
             StateMachine.currentEnemyState.PhysicsUpdate();
 
         RB.velocity = Vector2.ClampMagnitude(RB.velocity, maxVelocity); // prob can set clamp in property
@@ -480,13 +471,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         Damage(damage, true);
 
         if (force.x < 0) 
-        {
             FlipCharacter(true);
-        } 
         else if (force.x > 0) 
-        {
             FlipCharacter(false);
-        }
         
         // no force if in immunity
         if (!HitStunImmune) 
@@ -510,20 +497,17 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void TakeUppercut(int damage, Vector2 force) 
     {
         Damage(damage, true);
-        InKnockup = true;
 
         if (force.x < 0) 
-        {
             FlipCharacter(true);
-        } 
         else if (force.x > 0) 
-        {
             FlipCharacter(false);
-        }
 
         // no knockup if in immunity
         if (!HitStunImmune) 
         {
+            InKnockup = true;
+
             RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
             RB.AddForce(force, ForceMode2D.Impulse);
         }
@@ -583,7 +567,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(BottomEnemyTransform, Vector2.down * .3f); // isGrounded
+        Gizmos.DrawCube(BottomEnemyTransform, CheckGroundSize); // isGrounded
+        // Gizmos.DrawRay(BottomEnemyTransform, Vector2.down * .3f); // isGrounded
+        // IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
+        
 
         Gizmos.color = new Color(0f, 1f, 0f, 0.5f);
         Gizmos.DrawWireCube(PlatformDetectionOrigin, new Vector2(MaxJumpDistance, MaxJumpHeight)); // jump detection box

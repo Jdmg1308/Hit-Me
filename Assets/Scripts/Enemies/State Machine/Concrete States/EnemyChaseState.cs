@@ -11,7 +11,7 @@ public class EnemyChaseState : EnemyState
 
     public override void FrameUpdate() {
         // check state
-        if (!e.IsPaused && !e.InImpact && e.IsGrounded) 
+        if (!e.IsPaused && !e.InImpact && e.IsGrounded && !e.InKnockup) 
         { // can only change state if on ground and not paused
             if (e.InAttackRange) 
             {
@@ -34,7 +34,7 @@ public class EnemyChaseState : EnemyState
         if (enabled) 
         {
             // grounded and in control abilities
-            if (e.IsGrounded && !e.InImpact) 
+            if (e.IsGrounded) 
             {
                 e.WalkToTarget(e.Player.transform.position); // chase after player
 

@@ -219,7 +219,9 @@ public class PlayerController : MonoBehaviour
                 p.isJumping = true;
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) && p.currentOneWayPlatform != null) 
+            {
                 StartCoroutine(DisableCollision());
+            }
         } 
         else 
         {
