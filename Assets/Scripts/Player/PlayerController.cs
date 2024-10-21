@@ -213,7 +213,7 @@ public class PlayerController : MonoBehaviour
         if (p.anim.GetBool("canMove")) 
         {
             p.moveDirection = Input.GetAxis("Horizontal");
-            if (Input.GetButtonDown("Jump") && p.isGrounded)
+            if (Input.GetKeyDown(KeyCode.W) && p.isGrounded)
             {
                 audioManager.PlaySFX(audioManager.jump);
                 p.isJumping = true;
@@ -244,11 +244,13 @@ public class PlayerController : MonoBehaviour
             p.anim.SetTrigger("punch");
             p.anim.SetBool("isKicking", false);
         }
+        
         // kick, can buffer (i think?)
-        if (Input.GetKey(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit) 
+        if (Input.GetKey(KeyCode.Space) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit) 
             p.anim.SetBool("isKicking", true);
+        
         // while not holding down button to charge, set back to normal
-        if (Input.GetKey(KeyCode.Q) && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit && p.charging) 
+        if (Input.GetKey(KeyCode.Space) && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit && p.charging) 
         {
             p.playerChargeMeter.SetActive(true);
             p.anim.speed = 0; // pause anim

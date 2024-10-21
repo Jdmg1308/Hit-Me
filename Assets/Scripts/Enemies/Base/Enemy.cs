@@ -15,7 +15,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public Animator Anim { get; set; }
 
     [Header("State Variables")]
-    public bool InImpact = false; // record knockback path + allows collision dmg
+    public bool InImpact = false; // record knockback path + allows collision dmg + anim lock
+    public bool InKnockup = false; // anim lock
 
     // IMoveable State Variables
     [field: SerializeField] public bool IsPaused { get; set; }
@@ -222,8 +223,39 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         {
             InImpact = false;
             ClearPath();
-            Anim.SetBool("ImpactBool", false);
+
+            // if not in knockup, disable impact
+            if (!InKnockup)
+            {
+                Anim.SetBool("ImpactBool", false);
+            }
+            // else, only end impact/knockup if grounded while in knockup state
+            else
+            {
+                if (IsGrounded)
+                {
+                    Debug.Log("isGrounded fix");
+                    Anim.SetBool("ImpactBool", false);
+                    InKnockup = false;
+                }
+            }
         }
+
+        // exit jump state when landing
+        if (RB.velocity.y == 0) MidJump = false;
+
+        // detection checks
+        PlayerAbove = (Player.transform.position.y > TopEnemyTransform.y) ? true : false; // check for need to jump to player level
+        PlayerBelow = (Player.transform.position.y < BottomEnemyTransform.y) ? true : false;
+
+        RaycastHit2D hit = Physics2D.Raycast(BottomEnemyTransform, Vector2.down, .3f, GroundLayer);
+        IsGrounded = hit.collider != null && !MidJump; // check if standing on ground
+        if (hit.collider != null)
+        {
+            Debug.Log("object being hit: " + hit.collider.gameObject.name);
+        }
+        // if (!IsGrounded)
+        //     Debug.Log("isGrounded false");
 
         if (!IsPaused && !InImpact) 
             StateMachine.currentEnemyState.PhysicsUpdate();
@@ -406,6 +438,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             
             if (!HitStunImmune)
             {
+                // anim set to impact to cause anim lock
                 Anim.SetTrigger("ImpactTrigger");
                 Anim.SetBool("ImpactBool", true);
                 StartCoroutine(HitStun(HitStunTime));
@@ -477,7 +510,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void TakeUppercut(int damage, Vector2 force) 
     {
         Damage(damage, true);
-        // 'knockup' state
+        InKnockup = true;
 
         if (force.x < 0) 
         {
@@ -546,6 +579,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         _lineRenderer.positionCount = 0;
     }
     #endregion
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

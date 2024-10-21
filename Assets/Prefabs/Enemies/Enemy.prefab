@@ -495,6 +495,7 @@ MonoBehaviour:
   GameEnemyManager: {fileID: 0}
   Player: {fileID: 0}
   InImpact: 0
+  InKnockup: 0
   <IsPaused>k__BackingField: 0
   <FacingRight>k__BackingField: 0
   <IsGrounded>k__BackingField: 0
@@ -548,6 +549,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   flashDuration: 0
   flashInterval: 0.15
+  outOfCombatDuration: 5
   initialSpawnDelay: 1.5
 --- !u!1 &6430424488172574266
 GameObject:
