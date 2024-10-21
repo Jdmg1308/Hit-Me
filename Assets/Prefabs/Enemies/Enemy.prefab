@@ -518,7 +518,8 @@ MonoBehaviour:
   <HitStunTime>k__BackingField: 1
   HitStunLimit: 4
   CurrentHitStunAmount: 0
-  HitStunImmunityTime: 10
+  HitStunImmunityTime: 5
+  HitStunImmune: 0
   <ChaseSpeed>k__BackingField: 2
   <MaxYJumpForce>k__BackingField: 15
   <MaxXJumpForce>k__BackingField: 5
@@ -532,7 +533,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   IdleRange: 5
-  IdleTimeBetweenMove: 2
+  IdleTimeBetweenMove: 1.5
   <DetectAttack>k__BackingField: {fileID: 1780041902}
   <AttackRadius>k__BackingField: 0.8
   <PunchDamage>k__BackingField: 5
@@ -544,7 +545,10 @@ MonoBehaviour:
   fxRadius: 1.5
   strongFXThreshold: 10
   damageToSizeScaling: 0.01
-  initialSpawnDelay: 2
+  spriteRenderer: {fileID: 0}
+  flashDuration: 0
+  flashInterval: 0.15
+  initialSpawnDelay: 1.5
 --- !u!1 &6430424488172574266
 GameObject:
   m_ObjectHideFlags: 0

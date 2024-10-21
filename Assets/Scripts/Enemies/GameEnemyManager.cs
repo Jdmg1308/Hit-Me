@@ -94,11 +94,11 @@ public class GameEnemyManager : MonoBehaviour
     }
 
     // this exists to handle damage mods
-    public void Damage(Enemy enemy, int damage) {
+    public void Damage(Enemy enemy, int damage, bool isPlayerAttack) {
         if (isDoubleDamage) {
-            enemy.DamageHelper(2 * damage);
+            enemy.DamageHelper(2 * damage, isPlayerAttack);
         } else {
-            enemy.DamageHelper(damage);
+            enemy.DamageHelper(damage, isPlayerAttack);
         }
     }
 
