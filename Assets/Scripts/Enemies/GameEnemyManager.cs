@@ -65,7 +65,7 @@ public class GameEnemyManager : MonoBehaviour
         if (currentWave <= waveConfigurations.Count && !_WaveInprogress && shouldSpawn) {
             int enemiesToSpawn = 0;
             if (currentWave < waveConfigurations.Count) {
-                Debug.Log("curretWave: " + currentWave);
+                // Debug.Log("curretWave: " + currentWave);
                 enemiesToSpawn = waveConfigurations[currentWave];
             }
             // If no enemies are left, spawn a new wave
@@ -280,7 +280,7 @@ public class GameEnemyManager : MonoBehaviour
         enemyRef.ChaseSpeed = enemyStats.ChaseSpeed;
         enemyRef.PunchDamage = enemyStats.PunchDamage;
 
-        Debug.Log(newEnemy.name);
+        // Debug.Log(newEnemy.name);
         spawnedEnemies.Add(newEnemy);
     }
     #endregion

@@ -495,6 +495,7 @@ MonoBehaviour:
   GameEnemyManager: {fileID: 0}
   Player: {fileID: 0}
   InImpact: 0
+  InKnockup: 0
   <IsPaused>k__BackingField: 0
   <FacingRight>k__BackingField: 0
   <IsGrounded>k__BackingField: 0
@@ -518,7 +519,7 @@ MonoBehaviour:
   <HitStunTime>k__BackingField: 1
   HitStunLimit: 4
   CurrentHitStunAmount: 0
-  HitStunImmunityTime: 5
+  HitStunImmunityTime: 3
   HitStunImmune: 0
   <ChaseSpeed>k__BackingField: 2
   <MaxYJumpForce>k__BackingField: 15
@@ -532,6 +533,7 @@ MonoBehaviour:
   <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
+  CheckGroundSize: {x: 1.15, y: 0.27}
   IdleRange: 5
   IdleTimeBetweenMove: 1.5
   <DetectAttack>k__BackingField: {fileID: 1780041902}
@@ -548,6 +550,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   flashDuration: 0
   flashInterval: 0.15
+  outOfCombatDuration: 5
   initialSpawnDelay: 1.5
 --- !u!1 &6430424488172574266
 GameObject:

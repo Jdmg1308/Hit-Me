@@ -18,7 +18,7 @@ public class EnemyIdleState : EnemyState
     public override void FrameUpdate()
     {
         // check state
-        if (!e.IsPaused && !e.InImpact) {
+        if (!e.IsPaused && !e.InImpact && !e.InKnockup) {
             if (e.InAttackRange) {
                 enemyStateMachine.changeState(e.AttackState);
             } else if (e.InChaseRange) {
