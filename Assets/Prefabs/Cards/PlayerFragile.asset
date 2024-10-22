@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Player Fragility
   cardDescription: Player takes double damage for 15 seconds
-  cardImage: {fileID: 21300000, guid: 084b98d43c550af41b17e4fac83b4690, type: 3}
+  cardImage: {fileID: 21300000, guid: 5747d134d38c571498eda7ef2736d103, type: 3}
   effectImage: {fileID: 21300000, guid: 1ff32e1327803f9478d5b385187a1ff6, type: 3}
   effectValue: 1
   id: 0

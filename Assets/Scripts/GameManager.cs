@@ -36,6 +36,7 @@ public class GameManager : TheSceneManager
     [HideInInspector]
     public GameObject CardDisplay;
     protected GameObject deckDisplayPanel;
+    protected GameObject latestCard = null;
 
     [Header("Health")]
     public int healthCurrent;       // Current health of the player
@@ -83,6 +84,7 @@ public class GameManager : TheSceneManager
 
     public bool hasWon = false;
 
+    #region Setup and update data
     void Awake()
     {
         if (instance == null)
@@ -157,6 +159,9 @@ public class GameManager : TheSceneManager
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
+            deckDisplayPanel = PlayScreen.transform.Find("DeckDisplayPanel")?.gameObject;
+            AssignButton(PlayScreen.transform, "DeckButton", currentCardDeck);
+
             money_text.text = " " + money.ToString();
         }
 
@@ -213,7 +218,9 @@ public class GameManager : TheSceneManager
 
         updateWager();
     }
+    #endregion
 
+    #region Cards
     public void currentCardDeck()
     {
         if (deckShowing)
@@ -276,13 +283,28 @@ public class GameManager : TheSceneManager
             // CooldownImg.sprite = card.cardImage;
 
             // Get the RectTransform component of the prefab
-            GameObject obj = showCard(card, PlayScreen);
-            RectTransform rectTransform = obj.GetComponent<RectTransform>();
+            if (latestCard != null) {
+                Destroy(latestCard);
+            }
+            latestCard = showCard(card, PlayScreen);
+            //latestCard.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+            RectTransform latestRect = latestCard.GetComponent<RectTransform>();
+            RectTransform cardDisplayRect = CardDisplay.GetComponent<RectTransform>();
+
+            // Set anchor, pivot, and offset values
+            latestRect.anchorMax = cardDisplayRect.anchorMax;
+            latestRect.anchorMin = cardDisplayRect.anchorMin;
+            latestRect.pivot = cardDisplayRect.pivot;
+            latestRect.offsetMin = cardDisplayRect.offsetMin; // Left and Bottom
+            latestRect.offsetMax = cardDisplayRect.offsetMax; // Right and Top
+
+            float spaceBetweenCards = 10f; // Optional: Adjust the space between cards as needed
+            latestRect.anchoredPosition = new Vector2(cardDisplayRect.anchoredPosition.x, cardDisplayRect.anchoredPosition.y - cardDisplayRect.rect.height - spaceBetweenCards);
 
             //// Set the anchor to the top right corner
-            rectTransform.anchorMin = new Vector2(1, 0.725f);  // Top-right corner
-            rectTransform.anchorMax = new Vector2(1, 0.725f);  // Top-right corner
-            rectTransform.pivot = new Vector2(1, 1);
+            //rectTransform.anchorMin = new Vector2(1, 0.725f);  // Top-right corner
+            //rectTransform.anchorMax = new Vector2(1, 0.725f);  // Top-right corner
+            //rectTransform.pivot = new Vector2(1, 1);
 
             //// Adjust the position (0,0 will be the top right corner)
             ////rectTransform.anchoredPosition = new Vector2(193.55f, 266.95f);
@@ -337,7 +359,9 @@ public class GameManager : TheSceneManager
         }
         audioSource.Play();
     }
+    #endregion
 
+    #region UI_elements and screens
     // method to be called on level load, resets the players stats to base
     public void resetPlayer()
     {
@@ -405,7 +429,6 @@ public class GameManager : TheSceneManager
             // pause
             freeze(true);
             paused = true;
-            PlayScreen.SetActive(false);
             PauseScreen.SetActive(true);
         }
         else
@@ -413,7 +436,6 @@ public class GameManager : TheSceneManager
             // unpause
             freeze(false);
             paused = false;
-            PlayScreen.SetActive(true);
             PauseScreen.SetActive(false);
         }
     }
@@ -436,6 +458,7 @@ public class GameManager : TheSceneManager
         ScoreText.text = "Final Payout: " + money.ToString();
         hasWon = true;
     }
+    #endregion
 
     #region FX
     // hit stop (scaling) + screen shake (if strong enough)

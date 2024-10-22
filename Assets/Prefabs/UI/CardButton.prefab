@@ -93,8 +93,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 9
-  m_fontSizeBase: 9
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 16.918211, y: 5.74109, z: 5.6241426, w: 8.199444}
+  m_margin: {x: 13.179197, y: 4.84369, z: 4.5772066, w: 6.853405}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -243,7 +243,7 @@ RectTransform:
   m_GameObject: {fileID: 7681925040830748014}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.78, y: 1.78, z: 1.78}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4273991409121234801}
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 2781fff92c20a1540ba36d2db94a01c5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: be5318f4ce56f704190299e86dec13b7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -351,7 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbf5bd313c969bf4ea8cf3a1669cd6ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scaleLarge: {x: 3, y: 3, z: 3}
+  scaleLarge: {x: 2.6, y: 2.6, z: 2.6}
 --- !u!114 &7553245099081549067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,10 +469,10 @@ RectTransform:
   m_Father: {fileID: 7681925040830748015}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0.120000005, y: 0.09333334}
+  m_AnchorMax: {x: 0.87000006, y: 0.36666667}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 90, y: 46}
+  m_SizeDelta: {x: 0, y: -0.0000009536743}
   m_Pivot: {x: 0.5, y: -0.26}
 --- !u!222 &7681925041375837932
 CanvasRenderer:
@@ -565,7 +565,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 10.992554, y: 3.6671553, z: 11.944822, w: 8.594502}
+  m_margin: {x: 1.9741821, y: 2.1641035, z: 1.8742657, w: 1.8307085}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
