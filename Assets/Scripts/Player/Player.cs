@@ -98,6 +98,7 @@ public class Player
     public Vector2 uppercutForce;
     [Range(0, 1)] public float velocityMod; // how much normal punches slow down enemy
     public Vector2 forwardPunchMovement; // how much punches move player forward
+    public Vector2 superUppercutForce;
 
     // fx
     [Header("VFX")]

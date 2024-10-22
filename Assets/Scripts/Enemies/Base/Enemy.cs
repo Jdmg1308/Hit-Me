@@ -621,7 +621,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         while (elapsedTime < flashDuration)
         {
             // Toggle the sprite's visibility
-            SetSpriteAlpha(spriteRenderer.color.a == 1f ? 0.2f : 1f);
+            SetSpriteAlpha(spriteRenderer.color.a == 1f ? 0.5f : 1f);
 
             yield return new WaitForSeconds(flashInterval);
             elapsedTime += flashInterval;
@@ -633,12 +633,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     // Helper method to set the alpha value of the sprite
     private void SetSpriteAlpha(float alpha)
     {
-        Color color = spriteRenderer.color;
-        color.a = alpha;
-        spriteRenderer.color = color;
+        Color dullColor = new Color(alpha, alpha, alpha, alpha);
+        spriteRenderer.color = dullColor;
     }
 
-    // spawning damage vfx   
+    // spawning damage vfx
     private void SpawnDamageVFX(int damage) 
     {
         Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * fxRadius;

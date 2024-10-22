@@ -232,9 +232,15 @@ public class PlayerController : MonoBehaviour
         // punching
         if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.K) && !p.isHit) 
         {
-            p.anim.SetBool("isPunching", true);
             p.anim.SetTrigger("punch");
+            p.anim.SetBool("isPunching", true);
             p.anim.SetBool("isKicking", false);
+
+            if (p.grapplingGun.isGrappling)
+            {
+                // do super upper cut instead
+                p.anim.SetTrigger("SuperUppercut");
+            }
         }
         
         // kick, can buffer (i think?)
@@ -336,7 +342,16 @@ public class PlayerController : MonoBehaviour
         float weightedYForce = p.kickUpForce + (chargeIncrease * p.chargeUpForceMultiplier);
 
         // if grounded or moving up, kick upward, else downward
-        force.y = ((p.isGrounded || p.rb.velocity.y > 0) ? 1 : -1) * weightedYForce;
+        force.y = ((p.isGrounded || p.rb.velocity.y >= 0) ? 1 : -1) * weightedYForce;
+
+        // modding if downward force to replicate feeling that upward force grants
+        if (force.y < 0)
+        {
+            // force.x += Math.Abs(force.y) * 0.5f;
+            force.y = 0;
+        }
+
+        Debug.Log("force: " + force.magnitude);
 
         float kickRadius = p.kickRadius;
         // if (p.kickCharge > 1f) { // during grapple
@@ -407,7 +422,15 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Punch Anim Calls
-    public IEnumerator PunchCombo(int partOfCombo) {
+    public enum TypeOfPunch 
+    {
+        Jab,
+        Uppercut,
+        SuperUppercut,
+        DownSlam
+    }
+
+    public IEnumerator PunchCombo(TypeOfPunch partOfCombo) {
         // 1-2 = first two hits
         // 3 = uppercut
         shouldBeDamaging = true;
@@ -418,7 +441,8 @@ public class PlayerController : MonoBehaviour
         // uppercut applies a lot of upward force
         // if grappling, just do upper cut (not yet implemented)
 
-        float radius = partOfCombo == 3 ? p.uppercutRadius : p.punchRadius;
+        // use special larger radius if doing anything but jabs
+        float radius = partOfCombo != TypeOfPunch.Jab ? p.uppercutRadius : p.punchRadius;
         if (p.isGrounded) 
         {
             Vector2 force = p.forwardPunchMovement;
@@ -440,13 +464,20 @@ public class PlayerController : MonoBehaviour
                 if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) 
                 {
                     // knock up if uppercut
-                    if (partOfCombo == 3) 
+                    if (partOfCombo == TypeOfPunch.Uppercut) 
                     {
                         audioManager.PlaySFX(audioManager.uppercut);
                         Vector2 force = p.uppercutForce;
                         force.x = Mathf.Abs(p.uppercutForce.x) * dir;
                         iDamageable.TakeUppercut(p.uppercutDamage, force);
                     } 
+                    else if (partOfCombo == TypeOfPunch.SuperUppercut)
+                    {
+                        audioManager.PlaySFX(audioManager.uppercut);
+                        Vector2 force = p.superUppercutForce;
+                        force.x = Mathf.Abs(p.superUppercutForce.x) * dir;
+                        iDamageable.TakeUppercut(p.uppercutDamage, force);
+                    }
                     else 
                     { // regular punch otherwise (apply slow down)
                         audioManager.PlaySFX(audioManager.punch);
@@ -472,7 +503,7 @@ public class PlayerController : MonoBehaviour
             //     StartCoroutine(GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
             // }
         // }
-        if (partOfCombo == 3 && iDamageableSet.Count > 0) 
+        if (partOfCombo != TypeOfPunch.Jab && iDamageableSet.Count > 0) 
         {
             StartCoroutine(GM.HitStop(p.uppercutForce.magnitude * p.hitStopScaling));
             StartCoroutine(GM.ScreenShake(p.uppercutForce.magnitude * p.hitStopScaling, p.uppercutForce.magnitude * p.screenShakeScaling));
