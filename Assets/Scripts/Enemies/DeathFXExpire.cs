@@ -6,13 +6,18 @@ using UnityEngine.UIElements;
 public class DeathFXExpire : MonoBehaviour
 {
     public float TimeToExpire;
-    public float yPosChangeRate; // how fast skull floats upward into nothingness 
+    public float yPosChangeRate; // how fast sprite floats upward into nothingness 
     public AnimationCurve _Curve;
     private SpriteRenderer _Rend;
     public bool shouldYPosChange;
+    public List<Sprite> sprites;
 
     void Awake() {
         _Rend = GetComponent<SpriteRenderer>();
+        if (sprites.Count > 0) 
+        {
+            _Rend.sprite = sprites[Random.Range(0, sprites.Count)];
+        }
     }   
     
     void Start() {

@@ -142,3 +142,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   shouldYPosChange: 0
+  sprites:
+  - {fileID: 21300000, guid: 8faf5fffc51b73444a8ef5a17f59c7f0, type: 3}
+  - {fileID: 21300000, guid: 021d16ae4beae174a8e01ffbc7d2beff, type: 3}
+  - {fileID: 21300000, guid: 5b23f0b42a5a79a478f7a4a4efee8262, type: 3}

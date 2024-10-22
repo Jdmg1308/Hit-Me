@@ -273,7 +273,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
                 // if collide wtih enemy that was inImpact, treat as if you were InImpact
                 if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact) 
                 { 
-                    Damage(collisionDamage, false);
+                    Damage(collisionDamage, 0);
                     InImpact = true;
                     Anim.SetBool("ImpactBool", true);
                 } 
@@ -283,7 +283,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
                     // if not one way platform or if hitting one way platform from above (the only allowed bounce, otherwise just go through it)
                     if (!collision.gameObject.CompareTag("OneWayPlatform") || (collision.gameObject.CompareTag("OneWayPlatform") && bounceDirection == Vector2.up)) 
                     {
-                        Damage(collisionDamage, false);
+                        Damage(collisionDamage, 0);
                         
                         if (Math.Abs(bounceDirection.x) > 0) FlipCharacter(bounceDirection.x < 0);
                         RB.AddForce(bounceDirection * (impactForce * collisionForceMultiplier), ForceMode2D.Impulse);
@@ -404,13 +404,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     #region Health/Die Functions
     // refers to GM bc to apply card effects
     // if not player attack, shouldn't affect hit stun effects
-    public void Damage(int damage, bool isPlayerAttack) 
+    public void Damage(int damage, int hitstun) 
     {
-        GameEnemyManager.Damage(this, damage, isPlayerAttack); 
+        GameEnemyManager.Damage(this, damage, hitstun); 
     }
 
     // actual damage function that GM will reference
-    public void DamageHelper(int damage, bool isPlayerAttack) 
+    public void DamageHelper(int damage, int hitstun) 
     {
         CurrentHealth -= damage;
 
@@ -419,29 +419,25 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         if (CurrentHealth <= 0 && !gameObject.IsDestroyed())
             Die();
 
-        if (isPlayerAttack)
+        // hit stun limit, if over limit, then become immune to fx of hit stun (not being able to attack) and player knockback for a bit
+        // NOTE: still able to take dmg
+        CurrentHitStunAmount += hitstun;
+        if (CurrentHitStunAmount > HitStunLimit && !HitStunImmune) 
         {
-            // hit stun limit, if over limit, then become immune to fx of hit stun (not being able to attack) and player knockback for a bit
-            // NOTE: still able to take dmg
-            CurrentHitStunAmount += 1;
-            if (CurrentHitStunAmount > HitStunLimit && !HitStunImmune) 
-            {
-                HitStunImmune = true;
-                StartCoroutine(HitStunImmunity(HitStunImmunityTime));
-                StartCoroutine(HitStunImmunityFlash(flashDuration));
-            }
-            
-            if (!HitStunImmune)
-            {
-                // anim set to impact to cause anim lock
-                Anim.SetTrigger("ImpactTrigger");
-                Anim.SetBool("ImpactBool", true);
-                StartCoroutine(HitStun(HitStunTime));
-            }
-
-            outOfCombatTimer = outOfCombatDuration;
+            HitStunImmune = true;
+            StartCoroutine(HitStunImmunity(HitStunImmunityTime));
+            StartCoroutine(HitStunImmunityFlash(flashDuration));
+        }
+        
+        if (!HitStunImmune)
+        {
+            // anim set to impact to cause anim lock
+            Anim.SetTrigger("ImpactTrigger");
+            Anim.SetBool("ImpactBool", true);
+            StartCoroutine(HitStun(HitStunTime));
         }
 
+        outOfCombatTimer = outOfCombatDuration;
     }
 
     // specific hit state (for punches), if in this state then temp can't attack
@@ -472,8 +468,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     public void TakeKick(int damage, Vector2 force) 
     {
-        Damage(damage, true);
-
         if (force.x < 0) 
             FlipCharacter(true);
         else if (force.x > 0) 
@@ -490,18 +484,18 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
             RB.AddForce(force, ForceMode2D.Impulse);
         }
+
+        Damage(damage, 2);
     }
 
     public void TakePunch(int damage, float velocityMod) 
     {
-        Damage(damage, true);
+        Damage(damage, 1);
         RB.velocity = RB.velocity * velocityMod;
     }
 
     public void TakeUppercut(int damage, Vector2 force) 
     {
-        Damage(damage, true);
-
         if (force.x < 0) 
             FlipCharacter(true);
         else if (force.x > 0) 
@@ -515,6 +509,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
             RB.AddForce(force, ForceMode2D.Impulse);
         }
+
+        Damage(damage, 1);
     }
 
     public void StopAttack() 
@@ -648,6 +644,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * fxRadius;
         Vector3 spawnPosition = new Vector3(randomPoint.x, randomPoint.y, 0) + transform.position;
         GameObject newVFX = Instantiate(damage >= strongFXThreshold ? strongPowPrefab : weakPowPrefab, spawnPosition, Quaternion.identity);
+        // make vfx 'weaker' if enemy was hit while hit stun immune
+        if (HitStunImmune)
+            newVFX.GetComponent<SpriteRenderer>().color = newVFX.GetComponent<SpriteRenderer>().color * 0.5f;
         Vector3 newSize = newVFX.transform.localScale;
         newSize.x += damage * damageToSizeScaling;
         newSize.y += damage * damageToSizeScaling;

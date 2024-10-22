@@ -13,7 +13,7 @@ public interface IDamageable
     bool InHitStun { get; set; }
     float HitStunTime { get; set; }
 
-    void Damage(int damage, bool isPlayerAttack);
+    void Damage(int damage, int hitstun);
     void Die();
     void TakeKick(int damage, Vector2 force);
     void TakePunch(int damage, float velocityMod);

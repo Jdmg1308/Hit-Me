@@ -1183,15 +1183,16 @@ MonoBehaviour:
     waitTime: 1
     airControl: 0.7
     grappleAirControl: 0.2
+    baseFriction: 0.2
     friction: 0.2
     kickPoint: {fileID: 6114587614926986967}
-    baseKickForce: 8
-    maxKickForce: 23
+    baseKickForce: 10
+    maxKickForce: 18
     forceIncrease: 0
-    extendedMaxKickForce: 35
+    extendedMaxKickForce: 28
     kickUpForce: 8
     kickRadius: 1
-    maxChargeTime: 0.7
+    maxChargeTime: 0.6
     kickCharge: 0
     kickChargeRate: 0
     movementChargeRateMultiplier: 0.0015
@@ -1201,7 +1202,7 @@ MonoBehaviour:
       m_Bits: 512
     kickDamage: 5
     baseKickDamage: 5
-    kickChargeMaxDamage: 17
+    kickChargeMaxDamage: 15
     playerChargeMeter: {fileID: 0}
     playerExtendedChargeMeter: {fileID: 0}
     extendedChargeRadius: 1.8
@@ -1211,11 +1212,11 @@ MonoBehaviour:
     uppercutRadius: 0.96
     punchDamage: 5
     basePunchDamage: 5
-    uppercutDamage: 10
-    baseUppercutDamage: 10
-    uppercutForce: {x: 1, y: 5}
-    velocityMod: 0.5
-    forwardPunchMovement: {x: 300, y: 0}
+    uppercutDamage: 7
+    baseUppercutDamage: 7
+    uppercutForce: {x: 1, y: 10}
+    velocityMod: 1
+    forwardPunchMovement: {x: 250, y: 0}
     hitStopScaling: 0.009
     screenShakeScaling: 2.5
     hitStopForceThreshold: 16
@@ -1656,6 +1657,7 @@ MonoBehaviour:
     waitTime: 0
     airControl: 0
     grappleAirControl: 0
+    baseFriction: 0
     friction: 0
     kickPoint: {fileID: 0}
     baseKickForce: 0.5
@@ -1710,9 +1712,8 @@ MonoBehaviour:
   defaultCursor: {fileID: 2800000, guid: 6032ed22844cd4f489856a4e205c8949, type: 3}
   specialCursor: {fileID: 2800000, guid: 5b5489cb42d82aa43bfffc3040e2f7dc, type: 3}
   Canvas: {fileID: 0}
-  cursorImage: {fileID: 0}
   grappleTargetIndicator: {fileID: 0}
-  cursorHotspot: {x: 0, y: 0}
+  grappleTargetIndicatorImg: {fileID: 0}
   GrappleRadius: 0.6
 --- !u!120 &1546508100
 LineRenderer:

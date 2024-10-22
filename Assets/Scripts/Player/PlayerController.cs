@@ -133,6 +133,9 @@ public class PlayerController : MonoBehaviour
         float adjustAirControl = 1;
         if (!p.isGrounded) adjustAirControl = !p.grapplingGun.isGrappling ? p.airControl : p.grappleAirControl;
 
+        // for slight momentum during kick charge        
+        p.friction = Input.GetKey(KeyCode.Space) && p.anim.GetBool("isKicking") ? 1 : p.baseFriction;
+
         // if in air/grappling, maintain prev x for momentum (else add ground friction), add directed movement with air control restrictions
         float xVelocity = (p.rb.velocity.x * (!p.isGrounded || p.grapplingGun.isGrappling ? 1 : p.friction))
             + (p.moveDirection * p.moveSpeed * adjustAirControl);
@@ -142,13 +145,9 @@ public class PlayerController : MonoBehaviour
         if (p.isGrounded)
         {
             if (Mathf.Abs(p.rb.velocity.x) > 0.1f)
-            {
                 FindObjectOfType<AudioManager>().PlayFootsteps(FindObjectOfType<AudioManager>().footsteps);
-            }
             else
-            {
                 FindObjectOfType<AudioManager>().StopFootsteps();
-            }
         }
         else
         {
@@ -182,20 +181,13 @@ public class PlayerController : MonoBehaviour
 
         // when kicking, face player towards cursor to make attack easier
         if (p.anim.GetBool("isKicking")) 
-        {
             FlipCharacter(aimDirection.x > 0);
-        }
         // Handle character flipping only based on movement when moving
         else if (p.moveDirection != 0) 
-        {
             FlipCharacter(p.moveDirection > 0);
-        }
         // If not moving, flip character based on aim direction
         else 
-        {
             FlipCharacter(aimDirection.x > 0);
-        }
-
     }
 
     private void DirectionPlayerFacesMobile()
@@ -219,9 +211,7 @@ public class PlayerController : MonoBehaviour
                 p.isJumping = true;
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) && p.currentOneWayPlatform != null) 
-            {
                 StartCoroutine(DisableCollision());
-            }
         } 
         else 
         {
@@ -248,7 +238,7 @@ public class PlayerController : MonoBehaviour
         }
         
         // kick, can buffer (i think?)
-        if (Input.GetKey(KeyCode.Space) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit) 
+        if (Input.GetKey(KeyCode.Space) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit)
             p.anim.SetBool("isKicking", true);
         
         // while not holding down button to charge, set back to normal
@@ -262,6 +252,7 @@ public class PlayerController : MonoBehaviour
             p.charging = false;
             p.anim.speed = 1; // unpause anim
             p.playerChargeMeter.SetActive(false);
+            p.friction = p.baseFriction;
         }
     }
 
@@ -277,8 +268,7 @@ public class PlayerController : MonoBehaviour
         } 
         else if (Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.J)) 
         { 
-            p.grapplingGun.stopGrappling(); 
-            //p.anim.SetBool("midJump", false); 
+            p.grapplingGun.stopGrappling();
         } 
         else 
         {
@@ -353,6 +343,9 @@ public class PlayerController : MonoBehaviour
         //     float t = Mathf.Clamp((p.kickCharge - 1f) / (p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue - 1f), 0f, 1f);
         //     kickRadius = Mathf.Lerp(p.kickRadius, p.extendedChargeRadius, t);
         // }
+
+        // stop grappling if attacking
+        p.grapplingGun.stopGrappling();
 
         while (shouldBeDamaging) 
         {
@@ -432,6 +425,9 @@ public class PlayerController : MonoBehaviour
             force.x = Mathf.Abs(force.x) * (p.facingRight ? 1 : -1);
             p.rb.AddForce(force);
         }
+
+        // stop grappling if attacking
+        p.grapplingGun.stopGrappling();
 
         while (shouldBeDamaging) 
         {
@@ -545,6 +541,7 @@ public class PlayerController : MonoBehaviour
             p.anim.SetBool("isPunching", false);
             EndShouldBeDamaging();
             p.playerChargeMeter.SetActive(false);
+            p.grapplingGun.stopGrappling();
 
             // knock player back a bit
             p.rb.velocity = Vector2.zero; // so previous velocity doesn't interfere (would super stop player momentum tho? maybe change in future)

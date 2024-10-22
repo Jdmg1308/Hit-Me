@@ -51,7 +51,7 @@ public class Player
     [SerializeField] public BoxCollider2D playerCollider;
     public float waitTime = 0f;
     [Range(0, 1)]
-    public float airControl, grappleAirControl, friction; 
+    public float airControl, grappleAirControl, baseFriction, friction; 
     // degree of player air control, air grappling control, and friction on surfaces
     
     // attack tuning
