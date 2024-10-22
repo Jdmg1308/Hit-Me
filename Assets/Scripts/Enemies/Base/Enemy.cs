@@ -64,6 +64,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public int CurrentHitStunAmount = 0;
     public float HitStunImmunityTime; // how long hit stun immunity lasts
     public bool HitStunImmune; // set during immunity
+    public float outOfCombatDuration = 5f; // Duration for the timer in seconds
+    private float outOfCombatTimer = 0f;   // Current timer value
 
     // IMoveable Variables
     // components
@@ -128,8 +130,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public SpriteRenderer spriteRenderer;
     public float flashDuration; // total duration of flashing, will be set to hit stun immunity time
     public float flashInterval = 0.1f; // time between flashes
-    public float outOfCombatDuration = 5f; // Duration for the timer in seconds
-    private float outOfCombatTimer = 0f;   // Current timer value
 
     public float initialSpawnDelay = 1.5f;
 
@@ -216,28 +216,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     private void FixedUpdate() 
     {
-        // if low velocity, then no longer InImpact
-        if (RB.velocity.magnitude < collisionForceThreshold) 
-        {
-            InImpact = false;
-            ClearPath();
-
-            // if not in knockup, disable impact
-            if (!InKnockup)
-            {
-                Anim.SetBool("ImpactBool", false);
-            }
-            // else, only end impact/knockup if grounded while in knockup state
-            else
-            {
-                if (IsGrounded)
-                {
-                    Anim.SetBool("ImpactBool", false);
-                    InKnockup = false;
-                }
-            }
-        }
-
         // exit jump state when landing
         if (RB.velocity.y == 0) MidJump = false;
 
@@ -247,6 +225,32 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
         // RaycastHit2D hit = Physics2D.Raycast(BottomEnemyTransform, Vector2.down, .3f, GroundLayer);
         IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
+
+        // if low velocity, then no longer InImpact
+        if (RB.velocity.magnitude < collisionForceThreshold) 
+        {
+            InImpact = false;
+            ClearPath();
+
+            // if in hit stun, don't disable impact bool
+            if (!InHitStun) 
+            {
+                // if not in knockup, disable impact
+                if (!InKnockup)
+                {
+                    Anim.SetBool("ImpactBool", false);
+                }
+                // else, only end impact/knockup if grounded while in knockup state
+                else
+                {
+                    if (IsGrounded)
+                    {
+                        Anim.SetBool("ImpactBool", false);
+                        InKnockup = false;
+                    }
+                }
+            }
+        }
 
         if (!IsPaused && !InImpact && !InKnockup) 
             StateMachine.currentEnemyState.PhysicsUpdate();
