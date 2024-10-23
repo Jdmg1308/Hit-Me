@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         float extendedPercent = (p.extendedMaxKickForce - p.baseKickForce) / p.forceIncrease; // 1 + percent increase
         p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue = extendedPercent;
         p.playerExtendedChargeMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(
-            p.playerChargeMeter.GetComponent<RectTransform>().sizeDelta.x * extendedPercent, 
+            p.playerChargeMeter.GetComponent<RectTransform>().sizeDelta.x * extendedPercent,
             p.playerExtendedChargeMeter.GetComponent<RectTransform>().sizeDelta.y);
         p.kickChargeRate = 1f / p.maxChargeTime; // calc charge rate needed to reach desired time
 
@@ -76,7 +76,8 @@ public class PlayerController : MonoBehaviour
                 ProcessInputMobile();
                 p.anim.SetBool("midJump", p.midJump);
                 DirectionPlayerFacesMobile();
-            } else
+            }
+            else
             {
                 ProcessInput();
                 p.anim.SetBool("midJump", p.midJump);
@@ -100,12 +101,12 @@ public class PlayerController : MonoBehaviour
         p.isGrounded = Physics2D.OverlapBox(p.groundCheck.position, p.checkGroundSize, 0f, p.groundObjects) && !p.midJump;
         Move();
 
-        if (p.charging) 
+        if (p.charging)
         {
             p.kickCharge += (p.kickChargeRate * Time.deltaTime) + (p.rb.velocity.magnitude * p.movementChargeRateMultiplier);
             // if grappling, use extended max, else regular max
             float max = p.grapplingGun.isGrappling ? p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue : 1f;
-            p.kickCharge = Mathf.Clamp(p.kickCharge, 0, max);   
+            p.kickCharge = Mathf.Clamp(p.kickCharge, 0, max);
         }
     }
 
@@ -165,7 +166,7 @@ public class PlayerController : MonoBehaviour
     public void FlipCharacter(bool right)
     {
         // storing whether object is already facingRight to avoid double flipping
-        if (right != p.facingRight) 
+        if (right != p.facingRight)
         {
             p.facingRight = !p.facingRight;
             transform.Rotate(0.0f, 180.0f, 0.0f);
@@ -178,13 +179,13 @@ public class PlayerController : MonoBehaviour
         Vector2 aimDirection = (mousePos - (Vector2)p.grapplingGun.firePoint.position).normalized;
 
         // when kicking, face player towards cursor to make attack easier
-        if (p.anim.GetBool("isKicking")) 
+        if (p.anim.GetBool("isKicking"))
             FlipCharacter(aimDirection.x > 0);
         // Handle character flipping only based on movement when moving
-        else if (p.moveDirection != 0) 
+        else if (p.moveDirection != 0)
             FlipCharacter(p.moveDirection > 0);
         // If not moving, flip character based on aim direction
-        else 
+        else
             FlipCharacter(aimDirection.x > 0);
     }
 
@@ -200,7 +201,7 @@ public class PlayerController : MonoBehaviour
     {
         // Normal Movement Input
         // scale of -1 -> 1
-        if (p.anim.GetBool("canMove")) 
+        if (p.anim.GetBool("canMove"))
         {
             p.moveDirection = Input.GetAxis("Horizontal");
             if (Input.GetKeyDown(KeyCode.Space) && p.isGrounded)
@@ -208,27 +209,27 @@ public class PlayerController : MonoBehaviour
                 audioManager.PlaySFX(audioManager.jump);
                 p.isJumping = true;
             }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) && p.currentOneWayPlatform != null) 
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) && p.currentOneWayPlatform != null)
                 StartCoroutine(DisableCollision());
-        } 
-        else 
+        }
+        else
         {
             p.moveDirection = 0;
         }
-        
-        HandleAttackInput();        
+
+        HandleAttackInput();
 
         HandleGrappleInput();
-        
+
         //card drawing - TODO: ADD COOLDOWN (in battle manager maybe?)
         if (Input.GetKeyDown(KeyCode.F)) p.GM.useCard();
         if (Input.GetKeyDown(KeyCode.Escape)) p.GM.Pause();
     }
 
-    private void HandleAttackInput() 
+    private void HandleAttackInput()
     {
         // punching
-        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.K) && !p.isHit) 
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.K) && !p.isHit)
         {
             p.anim.SetTrigger("punch");
             p.anim.SetBool("isPunching", true);
@@ -240,18 +241,18 @@ public class PlayerController : MonoBehaviour
                 p.anim.SetTrigger("SuperUppercut");
             }
         }
-        
+
         // kick, can buffer (i think?)
         if (Input.GetKey(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit)
             p.anim.SetBool("isKicking", true);
-        
+
         // while not holding down button to charge, set back to normal
-        if (Input.GetKey(KeyCode.Q) && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit && p.charging) 
+        if (Input.GetKey(KeyCode.Q) && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit && p.charging)
         {
             p.playerChargeMeter.SetActive(true);
             p.anim.speed = 0; // pause anim
-        } 
-        else 
+        }
+        else
         {
             p.charging = false;
             p.anim.speed = 1; // unpause anim
@@ -260,21 +261,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleGrappleInput() 
+    private void HandleGrappleInput()
     {
         // start grappling
-        if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.J)) p.grapplingGun.SetGrapplePoint(); 
+        if (Input.GetKeyDown(KeyCode.Mouse1) || Input.GetKeyDown(KeyCode.J)) p.grapplingGun.SetGrapplePoint();
         // pull yourself towrds object
-        if (Input.GetKey(KeyCode.Mouse1) || Input.GetKey(KeyCode.J)) 
+        if (Input.GetKey(KeyCode.Mouse1) || Input.GetKey(KeyCode.J))
         {
             p.grapplingGun.pull();
             if (p.charging) p.playerExtendedChargeMeter.SetActive(true);
-        } 
-        else if (Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.J)) 
-        { 
+        }
+        else if (Input.GetKeyUp(KeyCode.Mouse1) || Input.GetKeyUp(KeyCode.J))
+        {
             p.grapplingGun.stopGrappling();
-        } 
-        else 
+        }
+        else
         {
             p.playerExtendedChargeMeter.SetActive(false);
         }
@@ -288,7 +289,7 @@ public class PlayerController : MonoBehaviour
         // Normal Movement Input
         // scale of -1 -> 1
         p.moveDirection = p.MovementJoystickScript.joystickVec.x;
-        
+
         if (p.ButtonsAndClickScript.isJumping && p.isGrounded)
         {
             p.isJumping = true;
@@ -322,7 +323,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Kick Anim Calls
-    public void StartCharging() 
+    public void StartCharging()
     {
         p.charging = true;
     }
@@ -346,7 +347,7 @@ public class PlayerController : MonoBehaviour
         if (force.y < 0)
         {
             float magnitude = force.magnitude;
-            float adjustedX =  dir * ((float)Math.Sqrt(Math.Pow(magnitude, 2) - Math.Pow(force.y * 0.5, 2)));
+            float adjustedX = dir * ((float)Math.Sqrt(Math.Pow(magnitude, 2) - Math.Pow(force.y * 0.5, 2)));
             force = new Vector2(adjustedX, force.y * 0.5f);
         }
 
@@ -361,7 +362,7 @@ public class PlayerController : MonoBehaviour
         // stop grappling if attacking
         p.grapplingGun.stopGrappling();
 
-        while (shouldBeDamaging) 
+        while (shouldBeDamaging)
         {
             Collider2D[] enemyList = Physics2D.OverlapCircleAll(p.kickPoint.transform.position, kickRadius, p.enemyLayer);
 
@@ -375,7 +376,7 @@ public class PlayerController : MonoBehaviour
 
                 // apply damage + force to enemy 
                 IDamageable iDamageable = enemyObject.GetComponent<IDamageable>();
-                if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) 
+                if (iDamageable != null && !iDamageableSet.Contains(iDamageable))
                 {
                     int extraDamage = (int)(p.kickCharge * p.kickChargeMaxDamage);
                     iDamageable.TakeKick(p.kickDamage + extraDamage, force);
@@ -387,17 +388,17 @@ public class PlayerController : MonoBehaviour
         }
 
         // post active-frame processing
-        if (iDamageableSet.Count == 0) 
+        if (iDamageableSet.Count == 0)
         {
             p.GM.audioSource.clip = p.GM.MissAudio;
             p.GM.audioSource.Play();
-        } 
-        else 
+        }
+        else
         {
             p.GM.audioSource.clip = p.GM.KickAudio;
             p.GM.audioSource.Play();
 
-            if (force.magnitude > p.hitStopForceThreshold) 
+            if (force.magnitude > p.hitStopForceThreshold)
             {
                 StartCoroutine(p.GM.HitStop(force.magnitude * p.hitStopScaling));
                 StartCoroutine(p.GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
@@ -407,7 +408,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // set end of kick/punch active frames
-    public void EndShouldBeDamaging() 
+    public void EndShouldBeDamaging()
     {
         shouldBeDamaging = false;
         p.kickCharge = 0; // reset charge
@@ -421,7 +422,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Punch Anim Calls
-    public enum TypeOfPunch 
+    public enum TypeOfPunch
     {
         Jab,
         Uppercut,
@@ -429,7 +430,8 @@ public class PlayerController : MonoBehaviour
         DownSlam
     }
 
-    public IEnumerator PunchCombo(TypeOfPunch partOfCombo) {
+    public IEnumerator PunchCombo(TypeOfPunch partOfCombo)
+    {
         // 1-2 = first two hits
         // 3 = uppercut
         shouldBeDamaging = true;
@@ -442,7 +444,7 @@ public class PlayerController : MonoBehaviour
 
         // use special larger radius if doing anything but jabs
         float radius = partOfCombo != TypeOfPunch.Jab ? p.uppercutRadius : p.punchRadius;
-        if (p.isGrounded) 
+        if (p.isGrounded)
         {
             Vector2 force = p.forwardPunchMovement;
             force.x = Mathf.Abs(force.x) * (p.facingRight ? 1 : -1);
@@ -452,24 +454,24 @@ public class PlayerController : MonoBehaviour
         // stop grappling if attacking
         p.grapplingGun.stopGrappling();
 
-        while (shouldBeDamaging) 
+        while (shouldBeDamaging)
         {
             Collider2D[] enemyList = Physics2D.OverlapCircleAll(p.punchPoint.transform.position, radius, p.enemyLayer);
 
-            foreach (Collider2D enemyObject in enemyList) 
+            foreach (Collider2D enemyObject in enemyList)
             {
                 // apply damage + force to enemy 
                 IDamageable iDamageable = enemyObject.GetComponent<IDamageable>();
-                if (iDamageable != null && !iDamageableSet.Contains(iDamageable)) 
+                if (iDamageable != null && !iDamageableSet.Contains(iDamageable))
                 {
                     // knock up if uppercut
-                    if (partOfCombo == TypeOfPunch.Uppercut) 
+                    if (partOfCombo == TypeOfPunch.Uppercut)
                     {
                         audioManager.PlaySFX(audioManager.uppercut);
                         Vector2 force = p.uppercutForce;
                         force.x = Mathf.Abs(p.uppercutForce.x) * dir;
                         iDamageable.TakeUppercut(p.uppercutDamage, force);
-                    } 
+                    }
                     else if (partOfCombo == TypeOfPunch.SuperUppercut)
                     {
                         audioManager.PlaySFX(audioManager.uppercut);
@@ -477,7 +479,7 @@ public class PlayerController : MonoBehaviour
                         force.x = Mathf.Abs(p.superUppercutForce.x) * dir;
                         iDamageable.TakeUppercut(p.uppercutDamage, force);
                     }
-                    else 
+                    else
                     { // regular punch otherwise (apply slow down)
                         audioManager.PlaySFX(audioManager.punch);
                         iDamageable.TakePunch(p.punchDamage, p.velocityMod);
@@ -497,12 +499,12 @@ public class PlayerController : MonoBehaviour
         //     p.GM.audioSource.clip = p.GM.KickAudio;
         //     p.GM.audioSource.Play();
 
-            // if (force.magnitude > p.hitStopForceThreshold) {
-            //     StartCoroutine(p.GM.HitStop(force.magnitude * p.hitStopScaling));
-            //     StartCoroutine(p.GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
-            // }
+        // if (force.magnitude > p.hitStopForceThreshold) {
+        //     StartCoroutine(p.GM.HitStop(force.magnitude * p.hitStopScaling));
+        //     StartCoroutine(p.GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
         // }
-        if (partOfCombo != TypeOfPunch.Jab && iDamageableSet.Count > 0) 
+        // }
+        if (partOfCombo != TypeOfPunch.Jab && iDamageableSet.Count > 0)
         {
             StartCoroutine(p.GM.HitStop(p.uppercutForce.magnitude * p.hitStopScaling));
             StartCoroutine(p.GM.ScreenShake(p.uppercutForce.magnitude * p.hitStopScaling, p.uppercutForce.magnitude * p.screenShakeScaling));
@@ -557,16 +559,17 @@ public class PlayerController : MonoBehaviour
     // Function to take damage + iframes + knockback
     public void TakeDamage(int damage, Vector2 force)
     {
-        if (!p.isHit && damage > 0) {
+        if (!p.isHit && damage > 0)
+        {
             p.isHit = true; // for iframes
             p.GM.healthCurrent -= p.vulnerability * damage;
-            
+
             // fx
             audioManager.PlaySFX(audioManager.playerHit);
             StartCoroutine(p.GM.HurtFlash());
 
             // if you get hurt, cancel attacks
-            p.anim.SetBool("isKicking", false); 
+            p.anim.SetBool("isKicking", false);
             p.anim.SetBool("isPunching", false);
             EndShouldBeDamaging();
             p.playerChargeMeter.SetActive(false);
@@ -584,7 +587,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private IEnumerator WaitForIframes() {
+    private IEnumerator WaitForIframes()
+    {
         Material originalMat = p.spriteRenderer.material;
 
         p.isHit = true;
@@ -594,7 +598,8 @@ public class PlayerController : MonoBehaviour
         p.spriteRenderer.material = originalMat;
     }
 
-    private IEnumerator WaitForHitStun() {
+    private IEnumerator WaitForHitStun()
+    {
         p.anim.SetBool("isHurt", true);
         yield return new WaitForSeconds(p.hitStunTime);
         p.anim.SetBool("isHurt", false);

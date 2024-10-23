@@ -4,47 +4,48 @@ using UnityEngine;
 
 public class EnemyChaseState : EnemyState
 {
-    public EnemyChaseState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine) 
+    public EnemyChaseState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
     {
         id = EnemyStateMachine.EnemyStates.Chase;
     }
 
-    public override void FrameUpdate() {
+    public override void FrameUpdate()
+    {
         // check state
-        if (!e.IsPaused && !e.InImpact && e.IsGrounded && !e.InKnockup) 
+        if (!e.IsPaused && !e.InImpact && e.IsGrounded && !e.InKnockup)
         { // can only change state if on ground and not paused
-            if (e.InAttackRange) 
+            if (e.InAttackRange)
             {
                 enemyStateMachine.changeState(e.AttackState);
-            } 
-            else if (!e.InChaseRange) 
+            }
+            else if (!e.InChaseRange)
             {
                 enemyStateMachine.changeState(e.IdleState);
             }
         }
     }
 
-    public override void PhysicsUpdate() 
+    public override void PhysicsUpdate()
     {
         e.StartCoroutine(enemyAI(!e.IsPaused));
     }
 
-    private IEnumerator enemyAI(bool enabled) 
+    private IEnumerator enemyAI(bool enabled)
     {
-        if (enabled) 
+        if (enabled)
         {
             // grounded and in control abilities
-            if (e.IsGrounded) 
+            if (e.IsGrounded)
             {
                 e.WalkToTarget(e.Player.transform.position); // chase after player
 
                 if (e.PlayerAbove) // look for landing target if player above
-                { 
+                {
                     e.DetectTargetFromPlatform();
                     e.ShouldJump = e.LandingTarget != Vector2.zero;
                 }
                 // looking to jump and valid landing target exists
-                if (e.ShouldJump) 
+                if (e.ShouldJump)
                 {
                     Vector2 val = e.CalculateJumpForce(e.LandingTarget + (Vector2.up * e.LandingOffset));
 
@@ -57,7 +58,7 @@ public class EnemyChaseState : EnemyState
                 }
 
                 // looking to drop down to player
-                if (e.PlayerBelow && e.CurrentOneWayPlatform != null) 
+                if (e.PlayerBelow && e.CurrentOneWayPlatform != null)
                 {
                     yield return e.PauseAction(e.JumpDelay);
                     e.StartCoroutine(e.DisableCollision());

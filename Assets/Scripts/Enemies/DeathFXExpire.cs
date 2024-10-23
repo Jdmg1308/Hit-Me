@@ -12,30 +12,34 @@ public class DeathFXExpire : MonoBehaviour
     public bool shouldYPosChange;
     public List<Sprite> sprites;
 
-    void Awake() {
+    void Awake()
+    {
         _Rend = GetComponent<SpriteRenderer>();
-        if (sprites.Count > 0) 
+        if (sprites.Count > 0)
         {
             _Rend.sprite = sprites[Random.Range(0, sprites.Count)];
         }
-    }   
-    
-    void Start() {
+    }
+
+    void Start()
+    {
         StartCoroutine(PlayFX());
     }
 
-    private IEnumerator PlayFX() {
+    private IEnumerator PlayFX()
+    {
         // opacity tied to curve, expires once time ends
         float elapsedTime = 0f;
-        while (elapsedTime < TimeToExpire) {
+        while (elapsedTime < TimeToExpire)
+        {
             elapsedTime += Time.deltaTime;
             float strength = _Curve.Evaluate(elapsedTime / TimeToExpire);
-            _Rend.color = new Color(_Rend.color.r, _Rend.color.g, _Rend.color.b, strength); 
+            _Rend.color = new Color(_Rend.color.r, _Rend.color.g, _Rend.color.b, strength);
             if (shouldYPosChange)
                 transform.position = new Vector2(transform.position.x, transform.position.y + yPosChangeRate);
             yield return null;
         }
-        
+
         Destroy(gameObject);
     }
 }

@@ -5,21 +5,26 @@ using UnityEngine;
 public class InChaseRangeCheck : MonoBehaviour
 {
     public GameObject Player { get; set; }
-    private Enemy _enemy; 
+    private Enemy _enemy;
 
-    private void Awake() {
+    private void Awake()
+    {
         Player = GameObject.FindGameObjectWithTag("Player");
         _enemy = GetComponentInParent<Enemy>();
     }
 
-    void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject == Player) {
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject == Player)
+        {
             _enemy.SetInChaseRange(true);
         }
     }
 
-    void OnTriggerExit2D(Collider2D collision) {
-        if (collision.gameObject == Player) {
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject == Player)
+        {
             _enemy.SetInChaseRange(false);
         }
     }

@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     [Tooltip("Force threshold needed to cause damage and impact state, if not met then return to normal control")]
     public float collisionForceThreshold;
-    
+
     [Tooltip("Determines how much collision force is factored into impact damage"), Range(0, 1)]
     public float collisionDamageMultiplier;
 
@@ -53,7 +53,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public float baseMass;
     [Tooltip("Affects enemy floatiness during Impact State (for easier juggles)"), Range(0, 1)]
     public float postImpactMassScale;
-    
+
     // IDamageable Variables
     [field: SerializeField, Header("Health/Death")] public int MaxHealth { get; set; }
     [field: SerializeField] public int CurrentHealth { get; set; }
@@ -74,6 +74,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     // state
     public Vector3 TopEnemyTransform { get; set; }
     public Vector3 BottomEnemyTransform { get; set; }
+    public GameObject groundCheck;
     public float BodyGravity { get; set; }
     public float MaxJumpHeight { get; set; }
     public float MaxJumpDistance { get; set; }
@@ -135,7 +136,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     #region Universal Functions
     // called before start when script is loaded
-    private void Awake() 
+    private void Awake()
     {
         // accessing components
         Player = GameObject.FindGameObjectWithTag("Player");
@@ -150,11 +151,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         StateMachine = new EnemyStateMachine();
         IdleState = new EnemyIdleState(this, StateMachine);
         ChaseState = new EnemyChaseState(this, StateMachine);
-        AttackState = new EnemyAttackState(this, StateMachine); 
+        AttackState = new EnemyAttackState(this, StateMachine);
     }
 
     // called before first frame after all scripts loaded
-    private void Start() 
+    private void Start()
     {
         // setting properties
 
@@ -167,7 +168,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         float timeToApex = MaxYJumpForce / BodyGravity;
         MaxJumpDistance = MaxXJumpForce * timeToApex; // Calculate the max horizontal distance AI can jump
         LandingTarget = Vector2.zero;
-        
+
         // state machine
         StateMachine.Initialize(IdleState);
 
@@ -180,8 +181,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         // spawned with initial pause delay
         StartCoroutine(PauseAction(initialSpawnDelay));
     }
-    
-    private void Update() 
+
+    private void Update()
     {
         StateMachine.currentEnemyState.FrameUpdate();
         enemyState = StateMachine.currentEnemyState.id; // for debug
@@ -192,13 +193,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         PlatformDetectionOrigin = TopEnemyTransform + (Vector3.up * (MaxJumpHeight / 2)) + ((FacingRight ? Vector3.right : Vector3.left) * (MaxJumpDistance / 2));
 
         // record path during impact
-        if (InImpact) 
+        if (InImpact)
         {
             RB.mass = baseMass * postImpactMassScale;
-            if (Vector3.Distance(transform.position, _lastRecordedPosition) > PointSpacing) 
+            if (Vector3.Distance(transform.position, _lastRecordedPosition) > PointSpacing)
                 AddPointToPath(transform.position);
-        } 
-        else 
+        }
+        else
         {
             RB.mass = baseMass;
         }
@@ -209,12 +210,12 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             outOfCombatTimer -= Time.deltaTime;
 
             // If the timer reaches zero, reset the hit stun amount
-            if (outOfCombatTimer <= 0) 
+            if (outOfCombatTimer <= 0)
                 CurrentHitStunAmount = 0;
         }
     }
 
-    private void FixedUpdate() 
+    private void FixedUpdate()
     {
         // exit jump state when landing
         if (RB.velocity.y == 0) MidJump = false;
@@ -227,13 +228,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
 
         // if low velocity, then no longer InImpact
-        if (RB.velocity.magnitude < collisionForceThreshold) 
+        if (RB.velocity.magnitude < collisionForceThreshold)
         {
             InImpact = false;
             ClearPath();
 
             // if in hit stun, don't disable impact bool
-            if (!InHitStun) 
+            if (!InHitStun)
             {
                 // if not in knockup, disable impact
                 if (!InKnockup)
@@ -252,7 +253,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             }
         }
 
-        if (!IsPaused && !InImpact && !InKnockup) 
+        if (!IsPaused && !InImpact && !InKnockup)
             StateMachine.currentEnemyState.PhysicsUpdate();
 
         RB.velocity = Vector2.ClampMagnitude(RB.velocity, maxVelocity); // prob can set clamp in property
@@ -261,30 +262,30 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     // receiving impact reaction
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("OneWayPlatform")) 
+        if (collision.gameObject.CompareTag("OneWayPlatform"))
             CurrentOneWayPlatform = collision.gameObject;
 
-        if (InImpact || collision.gameObject.CompareTag("enemy")) 
+        if (InImpact || collision.gameObject.CompareTag("enemy"))
         {
             float impactForce = collision.relativeVelocity.magnitude;
-            if (impactForce > collisionForceThreshold) 
+            if (impactForce > collisionForceThreshold)
             { // if force > threshold, then deal dmg, otherwise no longer in InImpact state
                 int collisionDamage = Mathf.RoundToInt(impactForce * collisionDamageMultiplier); // note: consider log max for extreme cases
                 // if collide wtih enemy that was inImpact, treat as if you were InImpact
-                if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact) 
-                { 
+                if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact)
+                {
                     Damage(collisionDamage, 0);
                     InImpact = true;
                     Anim.SetBool("ImpactBool", true);
-                } 
-                else if (!collision.gameObject.CompareTag("enemy")) 
+                }
+                else if (!collision.gameObject.CompareTag("enemy"))
                 { // bounce off surfaces, not enemies
                     Vector2 bounceDirection = collision.contacts[0].normal;
                     // if not one way platform or if hitting one way platform from above (the only allowed bounce, otherwise just go through it)
-                    if (!collision.gameObject.CompareTag("OneWayPlatform") || (collision.gameObject.CompareTag("OneWayPlatform") && bounceDirection == Vector2.up)) 
+                    if (!collision.gameObject.CompareTag("OneWayPlatform") || (collision.gameObject.CompareTag("OneWayPlatform") && bounceDirection == Vector2.up))
                     {
                         Damage(collisionDamage, 0);
-                        
+
                         if (Math.Abs(bounceDirection.x) > 0) FlipCharacter(bounceDirection.x < 0);
                         RB.AddForce(bounceDirection * (impactForce * collisionForceMultiplier), ForceMode2D.Impulse);
                     }
@@ -298,7 +299,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void FlipCharacter(bool right)
     {
         // storing whether object is already facingRight to avoid double flipping
-        if (right != FacingRight) 
+        if (right != FacingRight)
         {
             FacingRight = !FacingRight;
             transform.Rotate(0.0f, 180.0f, 0.0f);
@@ -306,9 +307,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // Helper function to encapsulate the pause logic
-    public IEnumerator PauseAction(float delay) 
+    public IEnumerator PauseAction(float delay)
     {
-        if (!IsPaused) 
+        if (!IsPaused)
         {
             IsPaused = true;
             Anim.SetBool("isWalking", false);
@@ -321,7 +322,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void WalkToTarget(Vector2 target)
     {
         float stoppingDistance = 0.1f; // to prevent enemy glitching out on same spot
-        Vector2 dist = target - (Vector2)transform.position;  
+        Vector2 dist = target - (Vector2)transform.position;
         int xDirection = dist.x == 0 ? 0 : (dist.x > 0 ? 1 : -1);
         bool isOutOfReach = Math.Abs(dist.x) > stoppingDistance;
 
@@ -331,7 +332,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // find x and y jump force needed to reach landingPosition
-    public Vector2 CalculateJumpForce(Vector2 landingPosition) 
+    public Vector2 CalculateJumpForce(Vector2 landingPosition)
     {
         // Horizontal and vertical distances
         float deltaX = Math.Abs(landingPosition.x - transform.position.x);
@@ -349,27 +350,27 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // look for platforms within detection box (max jump dist/height) and find furthest landing target within max jump
-    public void DetectTargetFromPlatform() 
+    public void DetectTargetFromPlatform()
     {
         Vector2 boxSize = new Vector2(MaxJumpDistance, MaxJumpHeight);
         Collider2D[] hits = Physics2D.OverlapBoxAll(PlatformDetectionOrigin, boxSize, 0f, PlatformDetectionMask);
         LandingTarget = Vector2.zero; // special val
-        if (hits.Length == 0) 
+        if (hits.Length == 0)
         { // No platforms detected, exit early
             return;
-        } 
-        else 
+        }
+        else
         { // look for platform furthest from enemy
             float maxDistance = float.MinValue;
             Collider2D furthestPlatform = null;
-            foreach (var hit in hits) 
+            foreach (var hit in hits)
             {
                 // Check if the hit object has the "OneWayPlatform" tag
-                if (hit.CompareTag("OneWayPlatform")) 
+                if (hit.CompareTag("OneWayPlatform"))
                 {
                     // Calculate the distance between the enemy and the hit platform
                     float distance = Vector2.Distance(BottomEnemyTransform, hit.transform.position);
-                    if (distance > maxDistance) 
+                    if (distance > maxDistance)
                     {
                         maxDistance = distance;
                         furthestPlatform = hit;
@@ -378,7 +379,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             }
 
             // Get the collider bounds of the furthest platform
-            if (furthestPlatform != null) 
+            if (furthestPlatform != null)
             {
                 Bounds platformBounds = furthestPlatform.bounds;
                 float platformXDist = Math.Abs(RB.transform.position.x - (FacingRight ? platformBounds.max.x : platformBounds.min.x));
@@ -404,13 +405,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     #region Health/Die Functions
     // refers to GM bc to apply card effects
     // if not player attack, shouldn't affect hit stun effects
-    public void Damage(int damage, int hitstun) 
+    public void Damage(int damage, int hitstun)
     {
-        GameEnemyManager.Damage(this, damage, hitstun); 
+        GameEnemyManager.Damage(this, damage, hitstun);
     }
 
     // actual damage function that GM will reference
-    public void DamageHelper(int damage, int hitstun) 
+    public void DamageHelper(int damage, int hitstun)
     {
         CurrentHealth -= damage;
 
@@ -422,13 +423,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         // hit stun limit, if over limit, then become immune to fx of hit stun (not being able to attack) and player knockback for a bit
         // NOTE: still able to take dmg
         CurrentHitStunAmount += hitstun;
-        if (CurrentHitStunAmount > HitStunLimit && !HitStunImmune) 
+        if (CurrentHitStunAmount > HitStunLimit && !HitStunImmune)
         {
             HitStunImmune = true;
             StartCoroutine(HitStunImmunity(HitStunImmunityTime));
             StartCoroutine(HitStunImmunityFlash(flashDuration));
         }
-        
+
         if (!HitStunImmune)
         {
             // anim set to impact to cause anim lock
@@ -441,20 +442,21 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // specific hit state (for punches), if in this state then temp can't attack
-    private IEnumerator HitStun(float time) 
+    private IEnumerator HitStun(float time)
     {
         InHitStun = true;
         yield return new WaitForSeconds(time);
         InHitStun = false;
     }
 
-    private IEnumerator HitStunImmunity(float time) {
+    private IEnumerator HitStunImmunity(float time)
+    {
         yield return new WaitForSeconds(time);
         HitStunImmune = false;
         CurrentHitStunAmount = 0;
     }
 
-    public void Die() 
+    public void Die()
     {
         lock (DeathLock) // Ensure only one thread executes this block at a time
         {
@@ -466,19 +468,19 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         }
     }
 
-    public void TakeKick(int damage, Vector2 force) 
+    public void TakeKick(int damage, Vector2 force)
     {
-        if (force.x < 0) 
+        if (force.x < 0)
             FlipCharacter(true);
-        else if (force.x > 0) 
+        else if (force.x > 0)
             FlipCharacter(false);
-        
+
         // no force if in immunity
-        if (!HitStunImmune) 
+        if (!HitStunImmune)
         {
             InImpact = true;
 
-            if (IsGrounded) 
+            if (IsGrounded)
                 transform.position = new Vector2(transform.position.x, transform.position.y + 0.1f); // slight upward translate to enable bounce from ground
 
             RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
@@ -488,21 +490,21 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         Damage(damage, 2);
     }
 
-    public void TakePunch(int damage, float velocityMod) 
+    public void TakePunch(int damage, float velocityMod)
     {
         Damage(damage, 1);
         RB.velocity = RB.velocity * velocityMod;
     }
 
-    public void TakeUppercut(int damage, Vector2 force) 
+    public void TakeUppercut(int damage, Vector2 force)
     {
-        if (force.x < 0) 
+        if (force.x < 0)
             FlipCharacter(true);
-        else if (force.x > 0) 
+        else if (force.x > 0)
             FlipCharacter(false);
 
         // no knockup if in immunity
-        if (!HitStunImmune) 
+        if (!HitStunImmune)
         {
             InKnockup = true;
 
@@ -513,7 +515,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         Damage(damage, 1);
     }
 
-    public void StopAttack() 
+    public void StopAttack()
     {
         Anim.SetBool("isPunching", false);
         EndShouldBeDamaging();
@@ -521,26 +523,26 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     #endregion
 
     #region Animation Triggers
-        public enum AnimationTriggerType 
-        {
-            StartPunch,
-            EndPunch,
-            EndPunchDamaging
-        }
-        
-        public void AnimationTriggerEvent(AnimationTriggerType triggerType) 
-        {
-            StateMachine.currentEnemyState.AnimationTriggerEvent(triggerType);
-        }
+    public enum AnimationTriggerType
+    {
+        StartPunch,
+        EndPunch,
+        EndPunchDamaging
+    }
+
+    public void AnimationTriggerEvent(AnimationTriggerType triggerType)
+    {
+        StateMachine.currentEnemyState.AnimationTriggerEvent(triggerType);
+    }
     #endregion
 
     #region Detection
-    public void SetInChaseRange(bool inChaseRange) 
+    public void SetInChaseRange(bool inChaseRange)
     {
         InChaseRange = inChaseRange;
     }
 
-    public void SetInAttackRange(bool inAttackRange) 
+    public void SetInAttackRange(bool inAttackRange)
     {
         InAttackRange = inAttackRange;
     }
@@ -564,13 +566,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
     #endregion
 
+    #region Gizmos
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(BottomEnemyTransform, CheckGroundSize); // isGrounded
-        // Gizmos.DrawRay(BottomEnemyTransform, Vector2.down * .3f); // isGrounded
-        // IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
-        
+        Gizmos.DrawCube(groundCheck.transform.position, CheckGroundSize); // isGrounded
+                                                                          // Gizmos.DrawRay(BottomEnemyTransform, Vector2.down * .3f); // isGrounded
+                                                                          // IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
+
 
         Gizmos.color = new Color(0f, 1f, 0f, 0.5f);
         Gizmos.DrawWireCube(PlatformDetectionOrigin, new Vector2(MaxJumpDistance, MaxJumpHeight)); // jump detection box
@@ -580,16 +583,17 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawWireSphere(DetectAttack.transform.position, AttackRadius);
     }
+    #endregion
 
     #region Punching
     // punch active frames
-    public IEnumerator Punch() 
+    public IEnumerator Punch()
     {
         ShouldBeDamaging = true;
-        while (ShouldBeDamaging && !InHitStun) 
+        while (ShouldBeDamaging && !InHitStun)
         {
             Collider2D player = Physics2D.OverlapCircle(DetectAttack.transform.position, AttackRadius, 1 << Player.layer);
-            if (player != null) 
+            if (player != null)
             {
                 Vector2 force = new Vector2((FacingRight ? 1 : -1) * Math.Abs(PunchForce.x), PunchForce.y);
                 player.GetComponent<PlayerController>().TakeDamage(PunchDamage, force);
@@ -599,13 +603,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // end punch active frames
-    public void EndShouldBeDamaging() 
+    public void EndShouldBeDamaging()
     {
         ShouldBeDamaging = false;
     }
 
     // set end of animation
-    public void EndPunch() 
+    public void EndPunch()
     {
         Anim.SetBool("isPunching", false);
         StartCoroutine(PauseAction(AttackWait));
@@ -614,7 +618,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     #region VFX
     // flashing effect for hit immunity
-    private IEnumerator HitStunImmunityFlash(float flashDuration) 
+    private IEnumerator HitStunImmunityFlash(float flashDuration)
     {
         float elapsedTime = 0f;
 
@@ -627,7 +631,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             elapsedTime += flashInterval;
         }
         // reset vfx
-        SetSpriteColor(1f); 
+        SetSpriteColor(1f);
     }
 
     // Helper method to set the alpha value of the sprite
@@ -638,7 +642,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
 
     // spawning damage vfx
-    private void SpawnDamageVFX(int damage) 
+    private void SpawnDamageVFX(int damage)
     {
         Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * fxRadius;
         Vector3 spawnPosition = new Vector3(randomPoint.x, randomPoint.y, 0) + transform.position;

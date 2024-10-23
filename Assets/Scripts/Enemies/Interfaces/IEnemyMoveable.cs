@@ -38,7 +38,7 @@ public interface IEnemyMoveable
     LayerMask GroundLayer { get; set; }
 
     void FlipCharacter(bool right);
-     // Helper function to encapsulate the pause logic
+    // Helper function to encapsulate the pause logic
     IEnumerator PauseAction(float delay);
     // walk in x direction
     void WalkToTarget(Vector2 target);

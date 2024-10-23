@@ -17,11 +17,12 @@ public class GameEnemyManager : MonoBehaviour
     public float SpawnDelay = 3f; // first wave spawn delay
 
     [Header("Wave Settings")]
-    public List<int> waveConfigurations = new List<int>{3, 4, 6}; // List of enemy count per wave
+    public List<int> waveConfigurations = new List<int> { 3, 4, 6 }; // List of enemy count per wave
     public int currentWave = 0;         // Current wave number
-    private bool _WaveInprogress = false;
+    private bool _WaveInProgress = false;
 
-    public struct EnemyStats {
+    public struct EnemyStats
+    {
         public int MaxHealth;
         public float ChaseSpeed;
         public int PunchDamage;
@@ -42,43 +43,46 @@ public class GameEnemyManager : MonoBehaviour
     public bool hasSpawned = false;
     public bool shouldSpawn = false;
 
-    void Awake() {
+    void Awake()
+    {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
     // Start is called before the first frame update
-    void Start() {
+    void Start()
+    {
         _OffScreenDeathRend = EnemyOffScreenDeathPrefab.GetComponent<SpriteRenderer>();
 
         var bounds = _OffScreenDeathRend.bounds;
         _OffScreenSpriteWidth = bounds.size.x / 2f;
         _OffScreenSpriteHeight = bounds.size.y / 2f;
 
-        var enemyScript = enemyPrefab.GetComponent<Enemy>(); 
+        var enemyScript = enemyPrefab.GetComponent<Enemy>();
         enemyStats = new EnemyStats();
         enemyStats.MaxHealth = enemyScript.MaxHealth;
         enemyStats.ChaseSpeed = enemyScript.ChaseSpeed;
         enemyStats.PunchDamage = enemyScript.PunchDamage;
     }
 
-    void Update() {
+    void Update()
+    {
         // Check if there are more waves left
-        if (currentWave <= waveConfigurations.Count && !_WaveInprogress && shouldSpawn) {
+        if (currentWave <= waveConfigurations.Count && !_WaveInProgress && shouldSpawn)
+        {
             int enemiesToSpawn = 0;
-            if (currentWave < waveConfigurations.Count) {
-                // Debug.Log("curretWave: " + currentWave);
+            if (currentWave < waveConfigurations.Count)
                 enemiesToSpawn = waveConfigurations[currentWave];
-            }
             // If no enemies are left, spawn a new wave
-            if (EnemiesLeftInWave == 0 && !hasSpawned) {
-                if (currentWave < waveConfigurations.Count) {
+            if (EnemiesLeftInWave == 0 && !hasSpawned)
+            {
+                if (currentWave < waveConfigurations.Count)
                     StartCoroutine(StartWaves(enemiesToSpawn));
-                }
                 ++currentWave;
             }
         }
 
         // testing methods
-        if (Input.GetKeyDown(KeyCode.T)) {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
             // SpawnExtraEnemies(5);
             // DestroyExtraEnemies(5);
             // HealEnemies(15);
@@ -87,44 +91,58 @@ public class GameEnemyManager : MonoBehaviour
         }
     }
 
-    public IEnumerator StartWaves(int enemiesToSpawn) {
-        _WaveInprogress = true;
+    public void ResetWaves()
+    {
+        currentWave = 0;
+        EnemiesLeftInWave = 0;
+        hasSpawned = false;
+        _WaveInProgress = false;
+    }
+
+    public IEnumerator StartWaves(int enemiesToSpawn)
+    {
+        _WaveInProgress = true;
         yield return new WaitForSeconds(SpawnDelay);
         SpawnWave(enemiesToSpawn);
     }
 
     // this exists to handle damage mods
-    public void Damage(Enemy enemy, int damage, int hitstun) {
-        if (isDoubleDamage) {
+    public void Damage(Enemy enemy, int damage, int hitstun)
+    {
+        if (isDoubleDamage)
             enemy.DamageHelper(2 * damage, hitstun);
-        } else {
+        else
             enemy.DamageHelper(damage, hitstun);
-        }
     }
 
     public void Death(GameObject enemy)
     {
-        if (enemy != null) {
+        if (enemy != null)
+        {
             EnemiesLeftInWave -= 1;
             spawnedEnemies.Remove(enemy);
             StartCoroutine(WaitForSpawn(enemy));
 
             // Check if all enemies are dead
-            if (EnemiesLeftInWave == 0) {
-                _WaveInprogress = false; // Allow the next wave to start
-            }
+            if (EnemiesLeftInWave == 0)
+                _WaveInProgress = false; // Allow the next wave to start
         }
     }
 
     // difficulty = more enemies + enemy hp + dmg + speed
-    public void SetDifficulty(int level) {
+    public void SetDifficulty(int level)
+    {
+
         // level 1, 2, 3
-        if (level == 2) {
+        if (level == 2)
+        {
             enemyStats.MaxHealth += 50; // 150
             enemyStats.ChaseSpeed += 1f; // 3
             enemyStats.PunchDamage += 3; // 8
             extraEnemySpawns = 1;
-        } else if (level == 3) {
+        }
+        else if (level == 3)
+        {
             enemyStats.MaxHealth += 80; // 180
             enemyStats.ChaseSpeed += 1.5f; // 3.5
             enemyStats.PunchDamage += 5; // 10
@@ -135,8 +153,10 @@ public class GameEnemyManager : MonoBehaviour
     #region Card Effects
     public void BuffEnemies(int ExtraHealth, int ExtraDamage, float ExtraSpeed)
     {
-        foreach(GameObject enemy in spawnedEnemies) {
-            if (enemy != null) {
+        foreach (GameObject enemy in spawnedEnemies)
+        {
+            if (enemy != null)
+            {
                 Enemy enemyRef = enemy.GetComponent<Enemy>();
                 // Code to execute for each item
                 enemyRef.MaxHealth += ExtraHealth;
@@ -152,7 +172,8 @@ public class GameEnemyManager : MonoBehaviour
     }
 
     // spawn x enemies, chooses random spawn points from list
-    public void SpawnExtraEnemies(int enemiesToSpawn) {
+    public void SpawnExtraEnemies(int enemiesToSpawn)
+    {
         // Choose a random number of spawn points, capped by the total spawn points available
         int randomSpawnPoints = Mathf.Min(enemiesToSpawn, spawnPoints.Count);
         List<Transform> selectedSpawnPoints = GetRandomSpawnPoints(randomSpawnPoints);
@@ -162,38 +183,44 @@ public class GameEnemyManager : MonoBehaviour
     }
 
     // destroy x num of enemies from existing list
-    public void DestroyExtraEnemies(int enemiesToDestroy) {
+    public void DestroyExtraEnemies(int enemiesToDestroy)
+    {
         // Make sure we do not try to destroy more enemies than we have
         enemiesToDestroy = Mathf.Min(enemiesToDestroy, spawnedEnemies.Count);
 
         // Loop through the specified number of enemies to destroy
-        for (int i = 0; i < enemiesToDestroy; i++) {
+        for (int i = 0; i < enemiesToDestroy; i++)
+        {
             GameObject enemy = spawnedEnemies[0];
             Death(enemy);
         }
     }
 
     // heal all enemies
-    public void HealEnemies(int healAmount) {
-        for (int i = 0; i < spawnedEnemies.Count; i++) {
+    public void HealEnemies(int healAmount)
+    {
+        for (int i = 0; i < spawnedEnemies.Count; i++)
+        {
             Enemy enemy = spawnedEnemies[i].GetComponent<Enemy>();
             enemy.CurrentHealth += healAmount;
             //added cap for HP at max HP - angela 
-            if (enemy.CurrentHealth > enemy.MaxHealth) {
+            if (enemy.CurrentHealth > enemy.MaxHealth)
                 enemy.CurrentHealth = enemy.MaxHealth;
-            }
         }
     }
 
     // temporarily all enemies take double damage
-    public void DoubleDamageTimer(float timeAmount) {
+    public void DoubleDamageTimer(float timeAmount)
+    {
         StartCoroutine(DoubleDamageTimerHelper(timeAmount));
     }
 
-    private IEnumerator DoubleDamageTimerHelper(float timeAmount) {
+    private IEnumerator DoubleDamageTimerHelper(float timeAmount)
+    {
         float currentTime = 0f;
         isDoubleDamage = true;
-        while (currentTime < timeAmount) {
+        while (currentTime < timeAmount)
+        {
             currentTime += Time.deltaTime;
             yield return null;
         }
@@ -201,8 +228,10 @@ public class GameEnemyManager : MonoBehaviour
     }
 
     // spawns clones of each enemy beside them
-    public void SpawnHallucinationClones(int health) {
-        foreach (GameObject t in spawnedEnemies) {
+    public void SpawnHallucinationClones(int health)
+    {
+        foreach (GameObject t in spawnedEnemies)
+        {
             GameObject newEnemy = Instantiate(enemyPrefab, t.transform.position, Quaternion.identity);
             Enemy enemyRef = newEnemy.GetComponent<Enemy>();
             enemyRef.Player = GM.Player;
@@ -218,7 +247,8 @@ public class GameEnemyManager : MonoBehaviour
     #endregion
 
     #region Spawn Helpers
-    private void SpawnWave(int enemiesToSpawn) {
+    private void SpawnWave(int enemiesToSpawn)
+    {
         hasSpawned = true;
         int amount = enemiesToSpawn + extraEnemySpawns;
         SpawnExtraEnemies(amount);
@@ -269,7 +299,8 @@ public class GameEnemyManager : MonoBehaviour
         EnemiesLeftInWave += totalEnemies;
     }
 
-    private void SpawnEnemy(Transform spawnPoint) {
+    private void SpawnEnemy(Transform spawnPoint)
+    {
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         Enemy enemyRef = newEnemy.GetComponent<Enemy>();
         enemyRef.Player = GM.Player;
@@ -280,14 +311,18 @@ public class GameEnemyManager : MonoBehaviour
         enemyRef.ChaseSpeed = enemyStats.ChaseSpeed;
         enemyRef.PunchDamage = enemyStats.PunchDamage;
 
-        // Debug.Log(newEnemy.name);
+        Debug.Log(newEnemy.name);
+        Debug.Log(enemyPrefab);
+        Debug.Log(spawnPoint.position);
         spawnedEnemies.Add(newEnemy);
     }
     #endregion
 
     #region FX
-    IEnumerator WaitForSpawn(GameObject enemy) {
-        while (Time.timeScale != 1.0f) { // wait until after hit stop fx
+    IEnumerator WaitForSpawn(GameObject enemy)
+    {
+        while (Time.timeScale != 1.0f)
+        { // wait until after hit stop fx
             yield return null;
         }
         Destroy(enemy);
@@ -295,12 +330,14 @@ public class GameEnemyManager : MonoBehaviour
     }
 
     // if enemy is offscreen, then spawn offscreen arrow pointing at them, otherwise normal death fx
-    private void DeathIndication(GameObject enemy) {
+    private void DeathIndication(GameObject enemy)
+    {
         Camera _Camera = GM.Camera.GetComponent<Camera>();
         Vector3 screenPos = _Camera.WorldToViewportPoint(enemy.transform.position);
         bool isOffScreen = screenPos.x <= 0 || screenPos.x >= 1 || screenPos.y <= 0 || screenPos.y >= 1;
-        
-        if (isOffScreen) {
+
+        if (isOffScreen)
+        {
             GameObject indicator = Instantiate(EnemyOffScreenDeathPrefab);
             Vector3 spriteSizeInViewPort = _Camera.WorldToViewportPoint(new Vector3(_OffScreenSpriteWidth, _OffScreenSpriteHeight, 0))
                 - _Camera.WorldToViewportPoint(Vector3.zero);
@@ -316,12 +353,15 @@ public class GameEnemyManager : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             indicator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
 
-            if (direction.x < 0) {
+            if (direction.x < 0)
+            {
                 Vector3 scale = indicator.transform.localScale;
                 scale.y = scale.y * -1;
                 indicator.transform.localScale = scale;
             }
-        } else {
+        }
+        else
+        {
             Instantiate(EnemyOnScreenDeathPrefab, enemy.transform.position, Quaternion.identity);
         }
     }

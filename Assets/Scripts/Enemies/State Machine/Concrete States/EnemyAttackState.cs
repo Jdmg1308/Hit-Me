@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class EnemyAttackState : EnemyState
 {
-    public EnemyAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine) {
+    public EnemyAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+    {
         id = EnemyStateMachine.EnemyStates.Attack;
     }
 
-    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType) {
-        switch (triggerType) {
+    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
+    {
+        switch (triggerType)
+        {
             case Enemy.AnimationTriggerType.StartPunch:
                 e.StartCoroutine(e.Punch());
                 break;
@@ -21,7 +24,7 @@ public class EnemyAttackState : EnemyState
                 break;
         }
     }
-    
+
     public override void EnterState()
     {
         e.Anim.SetBool("isPunching", true);
@@ -31,14 +34,21 @@ public class EnemyAttackState : EnemyState
     {
         // must finish punch animation before considering next action
         // InImpact = taking collisions, ImpactBool = damage hit stun state?
-        if (!e.IsPaused && !e.InImpact && !e.Anim.GetBool("ImpactBool") && !e.InHitStun && !e.InKnockup) {
-            if (!e.Anim.GetBool("isPunching") && !e.InAttackRange) {
-                if (!e.InChaseRange) {
+        if (!e.IsPaused && !e.InImpact && !e.Anim.GetBool("ImpactBool") && !e.InHitStun && !e.InKnockup)
+        {
+            if (!e.Anim.GetBool("isPunching") && !e.InAttackRange)
+            {
+                if (!e.InChaseRange)
+                {
                     enemyStateMachine.changeState(e.IdleState);
-                } else {
+                }
+                else
+                {
                     enemyStateMachine.changeState(e.ChaseState);
                 }
-            } else { // repeatedely punch if in range
+            }
+            else
+            { // repeatedely punch if in range
                 EnterState();
             }
         }
