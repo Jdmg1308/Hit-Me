@@ -10,6 +10,8 @@ public class MenuScript : MonoBehaviour
     public GameObject controls_img;
     public GameObject PlayButton;
     public GameObject QuitButton;
+    private bool showingControls = false;
+
     public void Play()
     {
         SceneManager.LoadScene("MAP");
@@ -18,9 +20,17 @@ public class MenuScript : MonoBehaviour
     public void Controls()
     {
         // disable other stuff and enable controls with exit button
-        controls_img.SetActive(true);
-        PlayButton.SetActive(false);
-        QuitButton.SetActive(false);
+        if (showingControls)
+        {
+            showingControls = false;
+            controls_img.SetActive(showingControls);
+
+        } else
+        {
+            showingControls = true;
+            controls_img.SetActive(showingControls);
+        }
+
     }
 
     public void exitControls()

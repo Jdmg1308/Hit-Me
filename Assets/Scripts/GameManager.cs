@@ -147,7 +147,6 @@ public class GameManager : TheSceneManager
 
         if (PlayScreen)
         {
-            Debug.Log("PLAY SCREEN" + PlayScreen);
             money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
             CardDisplay = PlayScreen.transform.Find("CardDisplay")?.gameObject;
             if (CardDisplay)

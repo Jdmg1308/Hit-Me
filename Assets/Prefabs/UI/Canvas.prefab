@@ -426,8 +426,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
-  m_fontSizeBase: 45
+  m_fontSize: 55
+  m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2190,7 +2190,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   p:
-    GameManager: {fileID: 0}
+    GM: {fileID: 0}
+    spriteRenderer: {fileID: 0}
     ControlsEnabled: 1
     MovementJoystickScript: {fileID: 0}
     ButtonsAndClickScript: {fileID: 0}
@@ -2199,7 +2200,8 @@ MonoBehaviour:
     healCharge: 0
     bleedValue: 0
     vulnerability: 1
-    iFrames: 0.5
+    iFramesTime: 0.7
+    hitStunTime: 0.5
     anim: {fileID: 0}
     money: 0
     grappleRope: {fileID: 0}
@@ -2266,6 +2268,7 @@ MonoBehaviour:
     hitStopScaling: 0
     screenShakeScaling: 0
     hitStopForceThreshold: 0
+    dullColor: {fileID: 0}
   jumpButton: {fileID: 3768005601710219963}
   kickButton: {fileID: 3768005602480187570}
   isJumping: 0

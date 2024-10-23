@@ -2119,7 +2119,7 @@ MonoBehaviour:
   duplicateButton: {fileID: 1723388591}
   destroyButton: {fileID: 2004945781}
   Options: {fileID: 674788286}
-  deckDisplayPanel: {fileID: 0}
+  deckDisplayPanel: {fileID: 7844422403224942832}
   exitButton: {fileID: 558738134}
   dupPrice: 100
   destPrice: 100
