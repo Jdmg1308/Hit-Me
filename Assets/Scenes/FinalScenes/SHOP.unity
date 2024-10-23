@@ -564,6 +564,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CardPair
       objectReference: {fileID: 0}
+    - target: {fileID: 7681925040830748014, guid: 500e4dc6ca5abf346a43a7582228ffcb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7681925040830748015, guid: 500e4dc6ca5abf346a43a7582228ffcb, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -36,21 +36,23 @@ public class CardButton : MonoBehaviour
 
     public void IncreaseSize()
     {
-        Canvas latestCardCanvas = transform.gameObject.GetComponent<Canvas>();
-        if (latestCardCanvas == null)
-        {
-            // If there's no Canvas attached, add one
-            latestCardCanvas = transform.gameObject.AddComponent<Canvas>();
-        }
+        //Canvas latestCardCanvas = transform.gameObject.GetComponent<Canvas>();
+        //if (latestCardCanvas == null)
+        //{
+        //    // If there's no Canvas attached, add one
+        //    latestCardCanvas = transform.gameObject.AddComponent<Canvas>();
+        //}
 
-        // Ensure the canvas renders on top
-        latestCardCanvas.overrideSorting = true;
-        latestCardCanvas.sortingOrder = 100;  // Set a high sorting order value
+        //// Ensure the canvas renders on top
+        //latestCardCanvas.overrideSorting = true;
+        //latestCardCanvas.sortingOrder = 100;  // Set a high sorting order value
+        transform.position = new Vector3(transform.position.x, transform.position.y, -1);
         transform.localScale = scaleLarge;
     }
 
     public void DecreaseSize()
     {
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0);
         transform.localScale = originalScale;
     }
 }

@@ -293,7 +293,7 @@ public class GameManager : TheSceneManager
 
             // Set anchor, pivot, and offset values
             latestRect.anchorMax = cardDisplayRect.anchorMax;
-            latestRect.anchorMin = cardDisplayRect.anchorMin;
+            latestRect.anchorMin = cardDisplayRect.anchorMin - new Vector2(0, 0.021f);
             latestRect.pivot = cardDisplayRect.pivot;
             latestRect.offsetMin = cardDisplayRect.offsetMin; // Left and Bottom
             latestRect.offsetMax = cardDisplayRect.offsetMax; // Right and Top
