@@ -188,7 +188,8 @@ public class GameManager : TheSceneManager
             }
         }
 
-        if (DifficultyScreen) {
+        if (DifficultyScreen)
+        {
             DifficultyScreen.transform.Find("Easy").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(1));
             DifficultyScreen.transform.Find("Medium").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(2));
             DifficultyScreen.transform.Find("Hard").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(3));
@@ -201,7 +202,7 @@ public class GameManager : TheSceneManager
 
         audioSource = GetComponent<AudioSource>();
         GameEnemyManager = GetComponentInChildren<GameEnemyManager>();
-        GameEnemyManager.currentWave = 0;
+        GameEnemyManager.ResetWaves();
     }
 
     void Update()
@@ -228,7 +229,8 @@ public class GameManager : TheSceneManager
             // close deck
             deckDisplayPanel.SetActive(false);
             deckShowing = false;
-        } else
+        }
+        else
         {
             // open deck
             deckDisplayPanel.SetActive(true);
@@ -275,7 +277,7 @@ public class GameManager : TheSceneManager
             Card card = deckController.infinDrawCard(deckController.currentDeck);
             StartCoroutine(playCardSound(card));
             card.use(this);
-            if(card.cardType == CardType.StatusEffect)
+            if (card.cardType == CardType.StatusEffect)
             {
                 statusCard = card;
                 statusApplied = true;
@@ -283,7 +285,8 @@ public class GameManager : TheSceneManager
             // CooldownImg.sprite = card.cardImage;
 
             // Get the RectTransform component of the prefab
-            if (latestCard != null) {
+            if (latestCard != null)
+            {
                 Destroy(latestCard);
             }
             latestCard = showCard(card, PlayScreen);
@@ -368,7 +371,7 @@ public class GameManager : TheSceneManager
         hasWon = false;
         GameEnemyManager.shouldSpawn = true;
         playerController.resetPlayerDamage();
-        healthMax = baseHealth;     
+        healthMax = baseHealth;
         healthCurrent = healthMax;
     }
 
@@ -378,12 +381,12 @@ public class GameManager : TheSceneManager
         {
             playerController.SetControls(false);
             Time.timeScale = 0f;
-        } 
+        }
         else
         {
             playerController.SetControls(true);
             Time.timeScale = 1f;
-        }   
+        }
     }
 
     //method to update UI for health + check death condition
@@ -392,7 +395,7 @@ public class GameManager : TheSceneManager
     {
         if (healthCurrent > healthMax) healthCurrent = healthMax;
         healthBar.value = healthCurrent;
-        if (healthCurrent <= 0) 
+        if (healthCurrent <= 0)
         {
             Death();
         }
@@ -448,7 +451,7 @@ public class GameManager : TheSceneManager
         TextMeshProUGUI ScoreText = DeathScreen.GetComponentInChildren<TextMeshProUGUI>();
         ScoreText.text = "Final Payout: " + money.ToString();
     }
-    
+
     public void Win()
     {
         playerController.SetControls(false);
@@ -462,8 +465,10 @@ public class GameManager : TheSceneManager
 
     #region FX
     // hit stop (scaling) + screen shake (if strong enough)
-    public IEnumerator HitStop(float totalTime) {
-        if (!InHitStop) {
+    public IEnumerator HitStop(float totalTime)
+    {
+        if (!InHitStop)
+        {
             Time.timeScale = 0.01f; // FREEEZE TIME!
             InHitStop = true;
             yield return new WaitForSecondsRealtime(totalTime);
@@ -472,10 +477,12 @@ public class GameManager : TheSceneManager
         }
     }
 
-    public IEnumerator ScreenShake(float totalTime, float shakeMultiplier) {
+    public IEnumerator ScreenShake(float totalTime, float shakeMultiplier)
+    {
         Vector3 startPos = Camera.transform.position;
         float elapsedTime = 0f;
-        while (elapsedTime < totalTime) {
+        while (elapsedTime < totalTime)
+        {
             elapsedTime += Time.unscaledDeltaTime;
             float strength = Curve.Evaluate(elapsedTime / totalTime);
             Camera.transform.position = startPos + UnityEngine.Random.insideUnitSphere * strength * shakeMultiplier;
@@ -486,9 +493,11 @@ public class GameManager : TheSceneManager
     }
 
     // in future can prob do the outline ring like in CoD or smth, and can have its min alpha increase as player hp lowers
-    public IEnumerator HurtFlash() {
+    public IEnumerator HurtFlash()
+    {
         float elapsedTime = 0f;
-        while (elapsedTime < totalHurtFlashTime) {
+        while (elapsedTime < totalHurtFlashTime)
+        {
             float strength = hurtFlashCurve.Evaluate(elapsedTime / totalHurtFlashTime);
             elapsedTime += Time.deltaTime;
             Color c = hurtFlashImage.color;
