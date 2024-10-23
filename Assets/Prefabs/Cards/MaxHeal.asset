@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardName: Max Heal 25
   cardDescription: Increases the players HP by 25 and fully heals player
-  cardImage: {fileID: 21300000, guid: c63094c6209d00b43b4bbeb1e061eb1a, type: 3}
+  cardImage: {fileID: 21300000, guid: be5318f4ce56f704190299e86dec13b7, type: 3}
   effectImage: {fileID: 21300000, guid: 9b975b824c3a46f4e9dfd9ee0062381c, type: 3}
   effectValue: 25
   id: 0

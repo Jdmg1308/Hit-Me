@@ -46,11 +46,11 @@ public class GrapplingGun : MonoBehaviour
     [HideInInspector] public bool isGrappling;
     private GameObject grappledObject;
 
-    public Texture2D defaultCursor;
-    public Texture2D specialCursor;
-    public GameObject Canvas;
-    public GameObject grappleTargetIndicator;
-    public Image grappleTargetIndicatorImg;
+    //public Texture2D defaultCursor;
+    //public Texture2D specialCursor;
+    [HideInInspector] public GameObject Canvas;
+    [HideInInspector] public GameObject grappleTargetIndicator;
+    [HideInInspector] public Image grappleTargetIndicatorImg;
 
     [Header("Grapple Forgiveness")]
     public float GrappleRadius; // set 'thickness' of grapple detection for easier use
@@ -58,6 +58,7 @@ public class GrapplingGun : MonoBehaviour
     private void Awake()
     {
         Canvas = GameObject.FindGameObjectWithTag("Canvas");
+        m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         grappleTargetIndicator = Canvas.transform.Find("GrappleIndicator").gameObject;
         grappleTargetIndicatorImg = grappleTargetIndicator.GetComponent<Image>();
     }

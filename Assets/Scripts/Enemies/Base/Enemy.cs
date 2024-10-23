@@ -394,7 +394,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     // for falling through platforms
     public IEnumerator DisableCollision()
     {
-        BoxCollider2D platformCollider = CurrentOneWayPlatform.GetComponent<BoxCollider2D>();
+        Collider2D platformCollider = CurrentOneWayPlatform.GetComponent<Collider2D>();
         Physics2D.IgnoreCollision(Collider, platformCollider);
         yield return new WaitForSeconds(FallthroughTime);
         Physics2D.IgnoreCollision(Collider, platformCollider, false);
