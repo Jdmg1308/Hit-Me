@@ -592,7 +592,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             if (player != null) 
             {
                 Vector2 force = new Vector2((FacingRight ? 1 : -1) * Math.Abs(PunchForce.x), PunchForce.y);
-                StartCoroutine(player.GetComponent<PlayerController>().TakeDamage(PunchDamage, force));
+                player.GetComponent<PlayerController>().TakeDamage(PunchDamage, force);
             }
             yield return null; // wait a frame
         }
@@ -621,19 +621,19 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         while (elapsedTime < flashDuration)
         {
             // Toggle the sprite's visibility
-            SetSpriteAlpha(spriteRenderer.color.a == 1f ? 0.5f : 1f);
+            SetSpriteColor(spriteRenderer.color.a == 1f ? 0.5f : 1f);
 
             yield return new WaitForSeconds(flashInterval);
             elapsedTime += flashInterval;
         }
         // reset vfx
-        SetSpriteAlpha(1f); 
+        SetSpriteColor(1f); 
     }
 
     // Helper method to set the alpha value of the sprite
-    private void SetSpriteAlpha(float alpha)
+    private void SetSpriteColor(float val)
     {
-        Color dullColor = new Color(alpha, alpha, alpha, alpha);
+        Color dullColor = new Color(val, val, val, val);
         spriteRenderer.color = dullColor;
     }
 

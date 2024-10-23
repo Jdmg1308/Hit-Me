@@ -17,7 +17,7 @@ public class DeathSurface : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             PlayerController player = other.gameObject.GetComponent<PlayerController>();
-            player.GM.Death();
+            player.p.GM.Death();
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {

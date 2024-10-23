@@ -8,7 +8,8 @@ using UnityEngine.Tilemaps;
 public class Player
 {
     // Game Manager
-    public GameManager GameManager;
+    public GameManager GM;
+    public SpriteRenderer spriteRenderer;
 
     [Header("Controls")]
     public bool ControlsEnabled = true;
@@ -21,7 +22,8 @@ public class Player
     public int healCharge;
     public int bleedValue;
     public int vulnerability = 1; //when fragile/vulnerable, take extra damage ex 2x 
-    public float iFrames = .5f;
+    public float iFramesTime = .7f;
+    public float hitStunTime = .5f;
 
     public Animator anim;
 
@@ -105,4 +107,5 @@ public class Player
     [Range(0, 1)] public float hitStopScaling; // how much force affects level of hit stop
     public float screenShakeScaling; // how much force affects level of screen shake
     public float hitStopForceThreshold; // force threshold required before hit stop + screenshake is applied
+    public Material dullColor;
 }

@@ -13,14 +13,12 @@ public class PlayerController : MonoBehaviour
     public HashSet<IDamageable> iDamageableSet = new HashSet<IDamageable>();
     public bool shouldBeDamaging { get; private set; } = false;
 
-    [HideInInspector]
-    public GameManager GM;
-
     AudioManager audioManager;
 
     private void Awake()
     {
-        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        p.GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        p.spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         p.playerChargeMeter = GameObject.Find("Player Charge Meter");
         p.playerExtendedChargeMeter = GameObject.Find("Player Extended Charge Meter");
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
@@ -31,13 +29,13 @@ public class PlayerController : MonoBehaviour
     {
         if (!(SceneManager.GetActiveScene().name == "TUTORIAL" || SceneManager.GetActiveScene().name == "SHOP"))
         {
-            GM.Difficulty();
+            p.GM.Difficulty();
         }
 
         // setting defaults
-        GM.healthCurrent = GM.healthMax; // Set health to max at start
-        GM.healthBar.maxValue = GM.healthMax;
-        GM.healthBar.value = GM.healthCurrent;
+        p.GM.healthCurrent = p.GM.healthMax; // Set health to max at start
+        p.GM.healthBar.maxValue = p.GM.healthMax;
+        p.GM.healthBar.value = p.GM.healthCurrent;
 
         // charge kick values
         p.playerChargeMeter.GetComponent<Slider>().value = 0;
@@ -59,12 +57,12 @@ public class PlayerController : MonoBehaviour
         p.rb = GetComponent<Rigidbody2D>();
         p.anim = GetComponent<Animator>();
 
-        GM.deckController.currentDeck = GM.deckController.GetNewDeck();
+        p.GM.deckController.currentDeck = p.GM.deckController.GetNewDeck();
 
-        if (GM.iOSPanel.activeSelf)
+        if (p.GM.iOSPanel.activeSelf)
         {
-            p.MovementJoystickScript = GM.iOSPanel.GetComponent<MovementJoystick>();
-            p.ButtonsAndClickScript = GM.iOSPanel.GetComponent<ButtonsAndClick>();
+            p.MovementJoystickScript = p.GM.iOSPanel.GetComponent<MovementJoystick>();
+            p.ButtonsAndClickScript = p.GM.iOSPanel.GetComponent<ButtonsAndClick>();
         }
     }
 
@@ -73,7 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         if (p.ControlsEnabled)
         {
-            if (GM.mobile)
+            if (p.GM.mobile)
             {
                 ProcessInputMobile();
                 p.anim.SetBool("midJump", p.midJump);
@@ -111,7 +109,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //helper method called in GM, resets players damage to base levels 
+    //helper method called in p.GM, resets players damage to base levels 
     //and also player speed i guess LOL
     public void resetPlayerDamage()
     {
@@ -205,7 +203,7 @@ public class PlayerController : MonoBehaviour
         if (p.anim.GetBool("canMove")) 
         {
             p.moveDirection = Input.GetAxis("Horizontal");
-            if (Input.GetKeyDown(KeyCode.W) && p.isGrounded)
+            if (Input.GetKeyDown(KeyCode.Space) && p.isGrounded)
             {
                 audioManager.PlaySFX(audioManager.jump);
                 p.isJumping = true;
@@ -223,8 +221,8 @@ public class PlayerController : MonoBehaviour
         HandleGrappleInput();
         
         //card drawing - TODO: ADD COOLDOWN (in battle manager maybe?)
-        if (Input.GetKeyDown(KeyCode.F)) GM.useCard();
-        if (Input.GetKeyDown(KeyCode.Escape)) GM.Pause();
+        if (Input.GetKeyDown(KeyCode.F)) p.GM.useCard();
+        if (Input.GetKeyDown(KeyCode.Escape)) p.GM.Pause();
     }
 
     private void HandleAttackInput() 
@@ -244,11 +242,11 @@ public class PlayerController : MonoBehaviour
         }
         
         // kick, can buffer (i think?)
-        if (Input.GetKey(KeyCode.Space) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit)
+        if (Input.GetKey(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit)
             p.anim.SetBool("isKicking", true);
         
         // while not holding down button to charge, set back to normal
-        if (Input.GetKey(KeyCode.Space) && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit && p.charging) 
+        if (Input.GetKey(KeyCode.Q) && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit && p.charging) 
         {
             p.playerChargeMeter.SetActive(true);
             p.anim.speed = 0; // pause anim
@@ -312,12 +310,12 @@ public class PlayerController : MonoBehaviour
 
         if (p.ButtonsAndClickScript.drawCard)
         {
-            GM.useCard();
+            p.GM.useCard();
             p.ButtonsAndClickScript.drawCard = false;
         }
         if (p.ButtonsAndClickScript.pause)
         {
-            GM.Pause();
+            p.GM.Pause();
             p.ButtonsAndClickScript.pause = false;
         }
     }
@@ -347,8 +345,9 @@ public class PlayerController : MonoBehaviour
         // modding if downward force to replicate feeling that upward force grants
         if (force.y < 0)
         {
-            // force.x += Math.Abs(force.y) * 0.5f;
-            force.y = 0;
+            float magnitude = force.magnitude;
+            float adjustedX =  dir * ((float)Math.Sqrt(Math.Pow(magnitude, 2) - Math.Pow(force.y * 0.5, 2)));
+            force = new Vector2(adjustedX, force.y * 0.5f);
         }
 
         Debug.Log("force: " + force.magnitude);
@@ -390,18 +389,18 @@ public class PlayerController : MonoBehaviour
         // post active-frame processing
         if (iDamageableSet.Count == 0) 
         {
-            GM.audioSource.clip = GM.MissAudio;
-            GM.audioSource.Play();
+            p.GM.audioSource.clip = p.GM.MissAudio;
+            p.GM.audioSource.Play();
         } 
         else 
         {
-            GM.audioSource.clip = GM.KickAudio;
-            GM.audioSource.Play();
+            p.GM.audioSource.clip = p.GM.KickAudio;
+            p.GM.audioSource.Play();
 
             if (force.magnitude > p.hitStopForceThreshold) 
             {
-                StartCoroutine(GM.HitStop(force.magnitude * p.hitStopScaling));
-                StartCoroutine(GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
+                StartCoroutine(p.GM.HitStop(force.magnitude * p.hitStopScaling));
+                StartCoroutine(p.GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
             }
         }
         iDamageableSet.Clear();
@@ -492,21 +491,21 @@ public class PlayerController : MonoBehaviour
 
         // post active-frame processing
         // if (iDamageableSet.Count == 0) {
-        //     GM.audioSource.clip = GM.MissAudio;
-        //     GM.audioSource.Play();
+        //     p.GM.audioSource.clip = p.GM.MissAudio;
+        //     p.GM.audioSource.Play();
         // } else {
-        //     GM.audioSource.clip = GM.KickAudio;
-        //     GM.audioSource.Play();
+        //     p.GM.audioSource.clip = p.GM.KickAudio;
+        //     p.GM.audioSource.Play();
 
             // if (force.magnitude > p.hitStopForceThreshold) {
-            //     StartCoroutine(GM.HitStop(force.magnitude * p.hitStopScaling));
-            //     StartCoroutine(GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
+            //     StartCoroutine(p.GM.HitStop(force.magnitude * p.hitStopScaling));
+            //     StartCoroutine(p.GM.ScreenShake(force.magnitude * p.hitStopScaling, force.magnitude * p.screenShakeScaling));
             // }
         // }
         if (partOfCombo != TypeOfPunch.Jab && iDamageableSet.Count > 0) 
         {
-            StartCoroutine(GM.HitStop(p.uppercutForce.magnitude * p.hitStopScaling));
-            StartCoroutine(GM.ScreenShake(p.uppercutForce.magnitude * p.hitStopScaling, p.uppercutForce.magnitude * p.screenShakeScaling));
+            StartCoroutine(p.GM.HitStop(p.uppercutForce.magnitude * p.hitStopScaling));
+            StartCoroutine(p.GM.ScreenShake(p.uppercutForce.magnitude * p.hitStopScaling, p.uppercutForce.magnitude * p.screenShakeScaling));
         }
         iDamageableSet.Clear();
     }
@@ -556,16 +555,15 @@ public class PlayerController : MonoBehaviour
 
     #region Take Damage
     // Function to take damage + iframes + knockback
-    public IEnumerator TakeDamage(int damage, Vector2 force)
+    public void TakeDamage(int damage, Vector2 force)
     {
         if (!p.isHit && damage > 0) {
             p.isHit = true; // for iframes
-            GM.healthCurrent -= p.vulnerability * damage;
+            p.GM.healthCurrent -= p.vulnerability * damage;
             
             // fx
             audioManager.PlaySFX(audioManager.playerHit);
-            StartCoroutine(GM.HurtFlash());
-            p.anim.SetBool("isHurt", true);
+            StartCoroutine(p.GM.HurtFlash());
 
             // if you get hurt, cancel attacks
             p.anim.SetBool("isKicking", false); 
@@ -578,13 +576,29 @@ public class PlayerController : MonoBehaviour
             p.rb.velocity = Vector2.zero; // so previous velocity doesn't interfere (would super stop player momentum tho? maybe change in future)
             p.rb.AddForce(force, ForceMode2D.Impulse);
 
-            GM.updateHealth();
-            //player didn't die, yay!
-            yield return new WaitForSeconds(p.iFrames);
-            p.isHit = false;
-            p.anim.SetBool("isHurt", false);
-            p.anim.SetBool("canMove", true);
+            p.GM.updateHealth();
+
+            //player didn't die, yay! iframes and hitstun sep to allow playermovement after hitstun while invic (get out of crowds)
+            StartCoroutine(WaitForHitStun());
+            StartCoroutine(WaitForIframes());
         }
+    }
+
+    private IEnumerator WaitForIframes() {
+        Material originalMat = p.spriteRenderer.material;
+
+        p.isHit = true;
+        p.spriteRenderer.material = p.dullColor;
+        yield return new WaitForSeconds(p.iFramesTime);
+        p.isHit = false;
+        p.spriteRenderer.material = originalMat;
+    }
+
+    private IEnumerator WaitForHitStun() {
+        p.anim.SetBool("isHurt", true);
+        yield return new WaitForSeconds(p.hitStunTime);
+        p.anim.SetBool("isHurt", false);
+        p.anim.SetBool("canMove", true);
     }
     #endregion
 
