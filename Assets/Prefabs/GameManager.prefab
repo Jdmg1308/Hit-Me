@@ -62,16 +62,17 @@ MonoBehaviour:
   statusCard: {fileID: 0}
   statusApplied: 0
   cardButtonPrefab: {fileID: 7681925040830748014, guid: 9a2382570e344a94285c5965cf8ec476, type: 3}
+  CardDisplay: {fileID: 0}
   healthCurrent: 100
   healthMax: 100
   baseHealth: 100
   healthBar: {fileID: 0}
   money: 500
-  quota: 2300
   mobile: 0
   iOSPanel: {fileID: 0}
   p:
-    GameManager: {fileID: 0}
+    GM: {fileID: 0}
+    spriteRenderer: {fileID: 0}
     ControlsEnabled: 1
     MovementJoystickScript: {fileID: 0}
     ButtonsAndClickScript: {fileID: 0}
@@ -80,7 +81,8 @@ MonoBehaviour:
     healCharge: 0
     bleedValue: 0
     vulnerability: 1
-    iFrames: 0.5
+    iFramesTime: 0.7
+    hitStunTime: 0.5
     anim: {fileID: 0}
     money: 0
     grappleRope: {fileID: 0}
@@ -109,6 +111,7 @@ MonoBehaviour:
     waitTime: 0
     airControl: 0
     grappleAirControl: 0
+    baseFriction: 0
     friction: 0
     kickPoint: {fileID: 0}
     baseKickForce: 0.5
@@ -142,9 +145,11 @@ MonoBehaviour:
     uppercutForce: {x: 0, y: 0}
     velocityMod: 0
     forwardPunchMovement: {x: 0, y: 0}
+    superUppercutForce: {x: 0, y: 0}
     hitStopScaling: 0
     screenShakeScaling: 0
     hitStopForceThreshold: 0
+    dullColor: {fileID: 0}
   playerController: {fileID: 0}
   money_text: {fileID: 0}
   InHitStop: 0
@@ -215,6 +220,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  hasWon: 0
 --- !u!82 &5376063830636673449
 AudioSource:
   m_ObjectHideFlags: 0
@@ -526,13 +532,15 @@ MonoBehaviour:
   - {fileID: 5376063831353332324}
   - {fileID: 5376063832007169897}
   enemyPrefab: {fileID: 5811921193137224085, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
-  SpawnDelay: 1
-  waveConfigurations: 030000000400000006000000
+  SpawnDelay: 2
+  waveConfigurations: 020000000300000003000000
   currentWave: 0
   isDoubleDamage: 0
   extraEnemySpawns: 0
   EnemyOnScreenDeathPrefab: {fileID: 7508921488299735724, guid: eb53a49b64c63cc49bb88adbdcf8fde3, type: 3}
   EnemyOffScreenDeathPrefab: {fileID: 7508921488299735724, guid: 7f84a877937bfea40ad9fdb8d477e6fd, type: 3}
+  hasSpawned: 0
+  shouldSpawn: 0
 --- !u!1 &5376063832384337724
 GameObject:
   m_ObjectHideFlags: 0

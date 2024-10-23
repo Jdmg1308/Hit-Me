@@ -275,22 +275,6 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 227768275}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: SpawnDelay
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[0]
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[1]
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[2]
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
 --- !u!1001 &880936580770301858
@@ -762,37 +746,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 842034063, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 842034063, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1916012013, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1916012013, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055595, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2990557554159055596, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
-      propertyPath: m_Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2990557554159055596, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2990557554159055596, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
-      propertyPath: m_Color.r
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055597, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: m_RootOrder
