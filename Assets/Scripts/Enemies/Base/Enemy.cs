@@ -74,6 +74,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     // state
     public Vector3 TopEnemyTransform { get; set; }
     public Vector3 BottomEnemyTransform { get; set; }
+    public GameObject groundCheck;
     public float BodyGravity { get; set; }
     public float MaxJumpHeight { get; set; }
     public float MaxJumpDistance { get; set; }
@@ -564,10 +565,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     }
     #endregion
 
+    #region Gizmos
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(BottomEnemyTransform, CheckGroundSize); // isGrounded
+        Gizmos.DrawCube(groundCheck.transform.position, CheckGroundSize); // isGrounded
         // Gizmos.DrawRay(BottomEnemyTransform, Vector2.down * .3f); // isGrounded
         // IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
         
@@ -580,6 +582,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawWireSphere(DetectAttack.transform.position, AttackRadius);
     }
+    #endregion
 
     #region Punching
     // punch active frames
