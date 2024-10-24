@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: EnemyHeal
   cardDescription: Heals the enemies for 15 HP
   cardImage: {fileID: 21300000, guid: 5747d134d38c571498eda7ef2736d103, type: 3}
-  effectImage: {fileID: 21300000, guid: daba7e1bc0963fa43828534de13051b5, type: 3}
+  effectImage: {fileID: 21300000, guid: 4a8d82505d3234349bd2a144f863182c, type: 3}
   effectValue: 15
   id: 0
   cardUserAnim: 

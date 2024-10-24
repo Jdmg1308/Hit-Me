@@ -73,7 +73,7 @@ public class StatusEffectManager : MonoBehaviour
         {
             AboveEffectTemporarily(GM.Player, card, false);
         }
-        AddEffectPermanently(card);
+        // AddEffectPermanently(card);
 
     }
 
@@ -86,26 +86,26 @@ public class StatusEffectManager : MonoBehaviour
 
     public void RemovePermanentStatusEffect(Card card)
     {
-        for (int j = PermanentStatusEffects.Count - 1; j >= 0; j--)
-        {
-            GameObject effect = PermanentStatusEffects[j];
-            // Get the Image component from the GameObject
-            Image imageComponent = effect.GetComponent<Image>();
+        //for (int j = PermanentStatusEffects.Count - 1; j >= 0; j--)
+        //{
+        //    GameObject effect = PermanentStatusEffects[j];
+        //    // Get the Image component from the GameObject
+        //    Image imageComponent = effect.GetComponent<Image>();
 
-            // Check if the GameObject has an Image component and the sprite matches
-            if (imageComponent != null && imageComponent.sprite == card.effectImage)
-            {
-                PermanentStatusEffects.Remove(effect);
-                Destroy(effect);
+        //    // Check if the GameObject has an Image component and the sprite matches
+        //    if (imageComponent != null && imageComponent.sprite == card.effectImage)
+        //    {
+        //        PermanentStatusEffects.Remove(effect);
+        //        Destroy(effect);
 
-                // Re-arrange the positions of the remaining status effects
-                for (int i = 0; i < PermanentStatusEffects.Count; i++)
-                {
-                    float xOffset = -(i * (spacing));
-                    RectTransform rectTransform = PermanentStatusEffects[i].GetComponent<RectTransform>();
-                    rectTransform.anchoredPosition = new Vector2(xOffset - 330, -48); // Adjust for padding
-                }
-            }
-        }
+        //        // Re-arrange the positions of the remaining status effects
+        //        for (int i = 0; i < PermanentStatusEffects.Count; i++)
+        //        {
+        //            float xOffset = -(i * (spacing));
+        //            RectTransform rectTransform = PermanentStatusEffects[i].GetComponent<RectTransform>();
+        //            rectTransform.anchoredPosition = new Vector2(xOffset - 330, -48); // Adjust for padding
+        //        }
+        //    }
+        //}
     }
 }

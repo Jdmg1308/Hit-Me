@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Instakill Half of Wave
   cardDescription: Half of the currently alive enemies are instantly killed
   cardImage: {fileID: 21300000, guid: be5318f4ce56f704190299e86dec13b7, type: 3}
-  effectImage: {fileID: 21300000, guid: 5165d1ea6a7c6894ea1b0072fa296f2a, type: 3}
+  effectImage: {fileID: 21300000, guid: b8f42c6556c8d1b45998e2dc4d6b4c89, type: 3}
   effectValue: -1
   id: 0
   cardUserAnim: 

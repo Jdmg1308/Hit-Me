@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Take Drugs
   cardDescription: go crazy ahhhh
   cardImage: {fileID: 21300000, guid: 5747d134d38c571498eda7ef2736d103, type: 3}
-  effectImage: {fileID: 21300000, guid: 1e1a9abdc087c164fbf94cb0f6fbc699, type: 3}
+  effectImage: {fileID: 21300000, guid: a563866708fe3a845b46348415caf99a, type: 3}
   effectValue: 2
   id: 0
   cardUserAnim: 

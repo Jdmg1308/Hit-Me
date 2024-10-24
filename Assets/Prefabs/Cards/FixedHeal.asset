@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Fixed Heal 15
   cardDescription: Heals the player for 15 HP
   cardImage: {fileID: 21300000, guid: be5318f4ce56f704190299e86dec13b7, type: 3}
-  effectImage: {fileID: 21300000, guid: daba7e1bc0963fa43828534de13051b5, type: 3}
+  effectImage: {fileID: 21300000, guid: 4a8d82505d3234349bd2a144f863182c, type: 3}
   effectValue: 15
   id: 0
   cardUserAnim: 
