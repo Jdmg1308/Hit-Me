@@ -9,6 +9,7 @@ public class CardButton : MonoBehaviour
     public Vector3 scaleLarge = new Vector3(2f, 2f, 2f);  // Double size
     private RectTransform rectTransform;
     private RectTransform parentCanvasRect;
+    private GameObject OGsize;
 
     void Start()
     {
@@ -20,6 +21,8 @@ public class CardButton : MonoBehaviour
 
         // Get the RectTransform of the parent Canvas
         parentCanvasRect = GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+
+        OGsize = transform.Find("OGsize").gameObject;
     }
 
     // When the pointer enters the card
@@ -48,11 +51,13 @@ public class CardButton : MonoBehaviour
         //latestCardCanvas.sortingOrder = 100;  // Set a high sorting order value
         transform.position = new Vector3(transform.position.x, transform.position.y, -1);
         transform.localScale = scaleLarge;
+        OGsize.transform.localScale = new Vector3(1/scaleLarge.x, 1 / scaleLarge.y, 1 / scaleLarge.z);
     }
 
     public void DecreaseSize()
     {
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
         transform.localScale = originalScale;
+        OGsize.transform.localScale = new Vector3(OGsize.transform.localScale.x * scaleLarge.x, OGsize.transform.localScale.y * scaleLarge.y, OGsize.transform.localScale.z * scaleLarge.z);
     }
 }
