@@ -10,6 +10,7 @@ public class CardButton : MonoBehaviour
     private RectTransform rectTransform;
     private RectTransform parentCanvasRect;
     private GameObject OGsize;
+    private Canvas overlayCanvas;
 
     void Start()
     {
@@ -23,6 +24,8 @@ public class CardButton : MonoBehaviour
         parentCanvasRect = GetComponentInParent<Canvas>().GetComponent<RectTransform>();
 
         OGsize = transform.Find("OGsize").gameObject;
+
+        overlayCanvas = transform.GetComponent<Canvas>();
     }
 
     // When the pointer enters the card
@@ -52,6 +55,8 @@ public class CardButton : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, -1);
         transform.localScale = scaleLarge;
         OGsize.transform.localScale = new Vector3(1/scaleLarge.x, 1 / scaleLarge.y, 1 / scaleLarge.z);
+        //overlayCanvas.overrideSorting = true;
+        overlayCanvas.sortingOrder = 2; // Ensure this is above the main canvas sorting order
     }
 
     public void DecreaseSize()
@@ -59,5 +64,6 @@ public class CardButton : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 0);
         transform.localScale = originalScale;
         OGsize.transform.localScale = new Vector3(OGsize.transform.localScale.x * scaleLarge.x, OGsize.transform.localScale.y * scaleLarge.y, OGsize.transform.localScale.z * scaleLarge.z);
+        overlayCanvas.sortingOrder = 1;
     }
 }

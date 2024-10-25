@@ -47,6 +47,7 @@ public class GameManager : TheSceneManager
 
     [Header("Money")]
     public float money = 500;
+    public float level_gathered = 0;
 
     [Header("Mobile")]
     public bool mobile;
@@ -404,7 +405,7 @@ public class GameManager : TheSceneManager
     {
         if (money_text != null)
         {
-            money_text.text = " " + money.ToString();
+            money_text.text = " " + (money + level_gathered).ToString();
         }
     }
 
@@ -456,8 +457,8 @@ public class GameManager : TheSceneManager
         playerController.SetControls(false);
         // animate win here (gangnam style)
         WinScreen.SetActive(true);
-        TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
-        ScoreText.text = "Final Payout: " + money.ToString();
+        //TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
+        //ScoreText.text = "Final Payout: " + money.ToString();
         hasWon = true;
     }
     #endregion
