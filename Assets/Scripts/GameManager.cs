@@ -29,6 +29,7 @@ public class GameManager : TheSceneManager
     public Card statusCard;
     public bool statusApplied = false;
     public GameObject cardButtonPrefab; // Prefab to create buttons for each card in the deck
+    public int deckLimit;
     protected Image UICard;
     protected Image CardCooldownImg;
     protected StatusEffectManager StatusEffectManager;
@@ -37,6 +38,7 @@ public class GameManager : TheSceneManager
     public GameObject CardDisplay;
     protected GameObject deckDisplayPanel;
     protected GameObject latestCard = null;
+    protected GameObject cardDescriptor;
 
     [Header("Health")]
     public int healthCurrent;       // Current health of the player
@@ -162,6 +164,8 @@ public class GameManager : TheSceneManager
             deckDisplayPanel = PlayScreen.transform.Find("DeckDisplayPanel")?.gameObject;
             AssignButton(PlayScreen.transform, "DeckButton", currentCardDeck);
 
+            cardDescriptor = PlayScreen.transform.Find("CardDescriptor")?.gameObject;
+
             money_text.text = " " + money.ToString();
         }
 
@@ -267,7 +271,8 @@ public class GameManager : TheSceneManager
     public void useCard()
     {
         if (cardIsOnCD)
-        { //don't do anything if the card is on CD
+        { 
+            //don't do anything if the card is on CD
             return;
         }
         else
@@ -282,13 +287,10 @@ public class GameManager : TheSceneManager
                 statusCard = card;
                 statusApplied = true;
             }
-            // CooldownImg.sprite = card.cardImage;
 
-            // Get the RectTransform component of the prefab
             if (latestCard != null)
-            {
                 Destroy(latestCard);
-            }
+
             latestCard = showCard(card, PlayScreen);
             //latestCard.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
             RectTransform latestRect = latestCard.GetComponent<RectTransform>();
@@ -302,17 +304,17 @@ public class GameManager : TheSceneManager
             latestRect.offsetMax = cardDisplayRect.offsetMax; // Right and Top
 
             float spaceBetweenCards = 10f; // Optional: Adjust the space between cards as needed
-            latestRect.anchoredPosition = new Vector2(cardDisplayRect.anchoredPosition.x, cardDisplayRect.anchoredPosition.y - cardDisplayRect.rect.height - spaceBetweenCards);
-
-            //// Set the anchor to the top right corner
-            //rectTransform.anchorMin = new Vector2(1, 0.725f);  // Top-right corner
-            //rectTransform.anchorMax = new Vector2(1, 0.725f);  // Top-right corner
-            //rectTransform.pivot = new Vector2(1, 1);
-
-            //// Adjust the position (0,0 will be the top right corner)
-            ////rectTransform.anchoredPosition = new Vector2(193.55f, 266.95f);
-            //obj.transform.localScale = obj.transform.localScale * 0.7f;
+            latestRect.anchoredPosition = new Vector2(cardDisplayRect.anchoredPosition.x, cardDisplayRect.anchoredPosition.y - (cardDisplayRect.rect.height) - spaceBetweenCards);
             StatusEffectManager.AddStatusEffect(card);
+
+            // animate descriptor
+            Animator animator = cardDescriptor.GetComponent<Animator>();
+            TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
+            description.text = card.cardDescription;
+            Image cardDescriptorImage = cardDescriptor.GetComponent<Image>();
+            cardDescriptorImage.sprite = card.effectImage;
+            PlayAnimationOnce(animator, "LookAtMe");
+
             updateHealth();
         }
     }
@@ -361,6 +363,13 @@ public class GameManager : TheSceneManager
             audioSource.clip = GoodPullAudio;
         }
         audioSource.Play();
+    }
+
+    private void PlayAnimationOnce(Animator animator, string animationStateName)
+    {
+        animator.enabled = true;
+        // Play the specified animation state
+        animator.Play(animationStateName, -1, 0f);
     }
     #endregion
 

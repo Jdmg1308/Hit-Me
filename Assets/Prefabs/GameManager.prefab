@@ -62,12 +62,14 @@ MonoBehaviour:
   statusCard: {fileID: 0}
   statusApplied: 0
   cardButtonPrefab: {fileID: 7681925040830748014, guid: 9a2382570e344a94285c5965cf8ec476, type: 3}
+  deckLimit: 0
   CardDisplay: {fileID: 0}
   healthCurrent: 100
   healthMax: 100
   baseHealth: 100
   healthBar: {fileID: 0}
   money: 500
+  level_gathered: 0
   mobile: 0
   iOSPanel: {fileID: 0}
   p:
@@ -639,3 +641,4 @@ MonoBehaviour:
     drawPile: []
     hand: []
     discardPile: []
+  deckLimit: 8

@@ -9,6 +9,7 @@ public class DeckController : MonoBehaviour
     public List<Card> allCards;
     //public List<Card> clanCards;
     public Deck currentDeck;
+    public int deckLimit;
 
     private void Awake()
     {
@@ -107,7 +108,14 @@ public class DeckController : MonoBehaviour
 
     //adds cards to deck
     public void DeckAdd(Card c, Deck deck){
-        deck.deck.Add(c);
+        if (deck.deck.Count + 1 <= deckLimit)
+        {
+            deck.deck.Add(c);
+        }
+        else
+        {
+            Debug.Log("DECK LIMIT REACHED, # of cards:" + deck.deck.Count);
+        }
     }
 
     public void DeckRemove(Card c, Deck deck){
@@ -136,6 +144,4 @@ public class DeckController : MonoBehaviour
             DrawCard(deck);
         }
     }
-
-
 }
