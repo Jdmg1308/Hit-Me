@@ -98,9 +98,12 @@ public class Player
     public int uppercutDamage;  //same as above but just for upper cut 
     public int baseUppercutDamage;
     public Vector2 uppercutForce;
-    [Range(0, 1)] public float velocityMod; // how much normal punches slow down enemy
+    public float airStunTime;
+    public bool inAirCombo;
     public Vector2 forwardPunchMovement; // how much punches move player forward
     public Vector2 superUppercutForce;
+    public int downSlamDamage;
+    public Vector2 downSlamForce;
 
     // fx
     [Header("VFX")]

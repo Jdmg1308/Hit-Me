@@ -134,8 +134,20 @@ PrefabInstance:
       value: -0.55
       objectReference: {fileID: 0}
     - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
+      propertyPath: HitStunLimit
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
+      propertyPath: CheckGroundSize.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: <MaxHealth>k__BackingField
       value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
+      propertyPath: <HitStunTime>k__BackingField
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: <CurrentHealth>k__BackingField
@@ -207,7 +219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5811921193137224085, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
@@ -278,6 +290,10 @@ PrefabInstance:
     - target: {fileID: 5376063830636673451, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: mobile
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: SpawnDelay
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
@@ -654,10 +670,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.airStunTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.velocityMod
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.airStunFrames
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.downSlamDamage
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.downSlamForce.y
+      value: -15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.uppercutForce.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.uppercutForce.y
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.superUppercutForce.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5516453970350294433, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 4699786612742052499}
+    - target: {fileID: 7021618568593065068, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: m_Distance
+      value: 7.544832
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
 --- !u!114 &4699786613988009716
@@ -797,6 +849,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7737867388635562919, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
+      propertyPath: m_Volume
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7737867388980074531, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -844,6 +900,10 @@ PrefabInstance:
     - target: {fileID: 7737867388980074533, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
       propertyPath: m_Name
       value: AudioManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7737867389640086586, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
+      propertyPath: m_Volume
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e297b87fea7992841879bad5d85ffa94, type: 3}

@@ -165,7 +165,7 @@ public class GrapplingGun : MonoBehaviour
             grappleRope.enabled = true;
             grappledObject = _hit.collider.gameObject;
 
-            Debug.Log("grappledObject: " + grappledObject);
+            // Debug.Log("grappledObject: " + grappledObject);
         }
     }
 

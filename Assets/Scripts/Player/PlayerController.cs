@@ -161,6 +161,13 @@ public class PlayerController : MonoBehaviour
             p.midJump = true;
         }
         p.isJumping = false;
+
+        // if punching in air, then freeze
+        if (p.anim.GetBool("inAirCombo"))
+        {
+            p.rb.velocity = p.rb.velocity * 0;
+            p.rb.gravityScale = 0;
+        }
     }
 
     public void FlipCharacter(bool right)
@@ -351,8 +358,6 @@ public class PlayerController : MonoBehaviour
             force = new Vector2(adjustedX, force.y * 0.5f);
         }
 
-        Debug.Log("force: " + force.magnitude);
-
         float kickRadius = p.kickRadius;
         // if (p.kickCharge > 1f) { // during grapple
         //     float t = Mathf.Clamp((p.kickCharge - 1f) / (p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue - 1f), 0f, 1f);
@@ -479,11 +484,18 @@ public class PlayerController : MonoBehaviour
                         force.x = Mathf.Abs(p.superUppercutForce.x) * dir;
                         iDamageable.TakeUppercut(p.uppercutDamage, force);
                     }
+                    else if (partOfCombo == TypeOfPunch.DownSlam)
+                    {
+                        Vector2 force = p.downSlamForce;
+                        force.x = Mathf.Abs(p.downSlamForce.x) * dir;
+                        iDamageable.TakeKick(p.downSlamDamage, force);
+                    }
                     else
                     { // regular punch otherwise (apply slow down)
                         audioManager.PlaySFX(audioManager.punch);
-                        iDamageable.TakePunch(p.punchDamage, p.velocityMod);
+                        iDamageable.TakePunch(p.punchDamage, p.isGrounded ? 0f : p.airStunTime);
                     }
+
                     iDamageable.StopAttack(); // cancel enemy attack
                     iDamageableSet.Add(iDamageable);
                 }

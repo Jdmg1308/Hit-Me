@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     // IDamageable Variables
     [field: SerializeField] public bool InHitStun { get; set; } = false;
+    public bool inAirStun;
 
     // State Machine Variables
     public EnemyStateMachine.EnemyStates enemyState;
@@ -257,6 +258,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             StateMachine.currentEnemyState.PhysicsUpdate();
 
         RB.velocity = Vector2.ClampMagnitude(RB.velocity, maxVelocity); // prob can set clamp in property
+
+        RB.gravityScale = 2.5f;
+        if (inAirStun)
+        {
+            RB.velocity = RB.velocity * 0;
+            RB.gravityScale = 0;
+        }
     }
 
     // receiving impact reaction
@@ -274,7 +282,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
                 // if collide wtih enemy that was inImpact, treat as if you were InImpact
                 if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact)
                 {
-                    Damage(collisionDamage, 0);
+                    Damage(collisionDamage, HitStunTime);
                     InImpact = true;
                     Anim.SetBool("ImpactBool", true);
                 }
@@ -284,7 +292,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
                     // if not one way platform or if hitting one way platform from above (the only allowed bounce, otherwise just go through it)
                     if (!collision.gameObject.CompareTag("OneWayPlatform") || (collision.gameObject.CompareTag("OneWayPlatform") && bounceDirection == Vector2.up))
                     {
-                        Damage(collisionDamage, 0);
+                        Damage(collisionDamage, HitStunTime);
 
                         if (Math.Abs(bounceDirection.x) > 0) FlipCharacter(bounceDirection.x < 0);
                         RB.AddForce(bounceDirection * (impactForce * collisionForceMultiplier), ForceMode2D.Impulse);
@@ -405,13 +413,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     #region Health/Die Functions
     // refers to GM bc to apply card effects
     // if not player attack, shouldn't affect hit stun effects
-    public void Damage(int damage, int hitstun)
+    public void Damage(int damage, float hitStunTime)
     {
-        GameEnemyManager.Damage(this, damage, hitstun);
+        GameEnemyManager.Damage(this, damage, hitStunTime);
     }
 
     // actual damage function that GM will reference
-    public void DamageHelper(int damage, int hitstun)
+    public void DamageHelper(int damage, float hitStunTime)
     {
         CurrentHealth -= damage;
 
@@ -422,23 +430,23 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
         // hit stun limit, if over limit, then become immune to fx of hit stun (not being able to attack) and player knockback for a bit
         // NOTE: still able to take dmg
-        CurrentHitStunAmount += hitstun;
-        if (CurrentHitStunAmount > HitStunLimit && !HitStunImmune)
-        {
-            HitStunImmune = true;
-            StartCoroutine(HitStunImmunity(HitStunImmunityTime));
-            StartCoroutine(HitStunImmunityFlash(flashDuration));
-        }
+        // CurrentHitStunAmount += hitstun;
+        // if (CurrentHitStunAmount > HitStunLimit && !HitStunImmune)
+        // {
+        //     HitStunImmune = true;
+        //     StartCoroutine(HitStunImmunity(HitStunImmunityTime));
+        //     StartCoroutine(HitStunImmunityFlash(flashDuration));
+        // }
 
         if (!HitStunImmune)
         {
             // anim set to impact to cause anim lock
             Anim.SetTrigger("ImpactTrigger");
             Anim.SetBool("ImpactBool", true);
-            StartCoroutine(HitStun(HitStunTime));
+            StartCoroutine(HitStun(hitStunTime));
         }
 
-        outOfCombatTimer = outOfCombatDuration;
+        // outOfCombatTimer = outOfCombatDuration;
     }
 
     // specific hit state (for punches), if in this state then temp can't attack
@@ -487,13 +495,34 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             RB.AddForce(force, ForceMode2D.Impulse);
         }
 
-        Damage(damage, 2);
+        Damage(damage, HitStunTime);
     }
 
-    public void TakePunch(int damage, float velocityMod)
+    private Coroutine airStunCoroutine;
+
+    public void TakePunch(int damage, float airStunTime)
     {
-        Damage(damage, 1);
-        RB.velocity = RB.velocity * velocityMod;
+        Damage(damage, HitStunTime);
+        if (airStunCoroutine != null)
+        {
+            StopCoroutine(airStunCoroutine);
+        }
+        if (airStunTime > 0)
+        {
+            airStunCoroutine = StartCoroutine(AirStun(airStunTime));
+        }
+        
+    }
+
+    // for air combos, stops them mid air
+    private IEnumerator AirStun(float airStunTime) 
+    {
+        inAirStun = true;
+        Debug.Log("air stun enter");
+        yield return new WaitForSeconds(airStunTime);
+        inAirStun = false;
+        Debug.Log("air stun exit");
+        airStunCoroutine = null;
     }
 
     public void TakeUppercut(int damage, Vector2 force)
@@ -512,7 +541,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             RB.AddForce(force, ForceMode2D.Impulse);
         }
 
-        Damage(damage, 1);
+        Damage(damage, HitStunTime);
     }
 
     public void StopAttack()
