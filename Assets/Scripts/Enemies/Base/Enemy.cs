@@ -301,8 +301,12 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             }
         }
     }
-    #endregion
 
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log(collision);
+    }
+    #endregion
     #region Movement
     public void FlipCharacter(bool right)
     {
@@ -418,6 +422,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         GameEnemyManager.Damage(this, damage, hitStunTime);
     }
 
+    private Coroutine hitStunCoroutine;
     // actual damage function that GM will reference
     public void DamageHelper(int damage, float hitStunTime)
     {
@@ -443,7 +448,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             // anim set to impact to cause anim lock
             Anim.SetTrigger("ImpactTrigger");
             Anim.SetBool("ImpactBool", true);
-            StartCoroutine(HitStun(hitStunTime));
+            if (hitStunCoroutine != null)
+                StopCoroutine(hitStunCoroutine);
+            hitStunCoroutine = StartCoroutine(HitStun(hitStunTime));
         }
 
         // outOfCombatTimer = outOfCombatDuration;
@@ -455,6 +462,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         InHitStun = true;
         yield return new WaitForSeconds(time);
         InHitStun = false;
+        hitStunCoroutine = null;
     }
 
     private IEnumerator HitStunImmunity(float time)
@@ -504,13 +512,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     {
         Damage(damage, HitStunTime);
         if (airStunCoroutine != null)
-        {
             StopCoroutine(airStunCoroutine);
-        }
         if (airStunTime > 0)
-        {
             airStunCoroutine = StartCoroutine(AirStun(airStunTime));
-        }
         
     }
 
@@ -518,10 +522,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     private IEnumerator AirStun(float airStunTime) 
     {
         inAirStun = true;
-        Debug.Log("air stun enter");
         yield return new WaitForSeconds(airStunTime);
         inAirStun = false;
-        Debug.Log("air stun exit");
         airStunCoroutine = null;
     }
 

@@ -134,20 +134,8 @@ PrefabInstance:
       value: -0.55
       objectReference: {fileID: 0}
     - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
-      propertyPath: HitStunLimit
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
-      propertyPath: CheckGroundSize.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: <MaxHealth>k__BackingField
       value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
-      propertyPath: <HitStunTime>k__BackingField
-      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 690566456846909353, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: <CurrentHealth>k__BackingField
@@ -219,7 +207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5811921193137224085, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
@@ -293,7 +281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: SpawnDelay
-      value: 1000
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
@@ -687,12 +675,16 @@ PrefabInstance:
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: p.downSlamForce.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: p.downSlamForce.y
-      value: -15
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: p.uppercutForce.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: p.uppercutForce.y
@@ -700,7 +692,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2990557554159055600, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: p.superUppercutForce.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5516453970350294433, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
       propertyPath: m_camera
