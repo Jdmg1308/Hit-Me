@@ -311,8 +311,8 @@ public class GameManager : TheSceneManager
             Animator animator = cardDescriptor.GetComponent<Animator>();
             TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
             description.text = card.cardDescription;
-            Image cardDescriptorImage = cardDescriptor.GetComponent<Image>();
-            cardDescriptorImage.sprite = card.effectImage;
+            //Image cardDescriptorImage = cardDescriptor.GetComponent<Image>();
+            //cardDescriptorImage.sprite = card.effectImage;
             PlayAnimationOnce(animator, "LookAtMe");
 
             updateHealth();

@@ -15,7 +15,7 @@ MonoBehaviour:
   cardName: Knockback Card 1
   cardDescription: Knockback +
   cardImage: {fileID: 21300000, guid: be5318f4ce56f704190299e86dec13b7, type: 3}
-  effectImage: {fileID: 21300000, guid: 2201e2fe6a0eb3d4aa396d17fae9f0eb, type: 3}
+  effectImage: {fileID: 21300000, guid: 7428810d2bf28704e8b6fe59619781f4, type: 3}
   effectValue: 1
   id: 0
   cardUserAnim: 
