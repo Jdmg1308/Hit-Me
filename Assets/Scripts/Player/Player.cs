@@ -99,7 +99,6 @@ public class Player
     public int baseUppercutDamage;
     public Vector2 uppercutForce;
     public float airStunTime;
-    public bool inAirCombo;
     public Vector2 forwardPunchMovement; // how much punches move player forward
     public Vector2 superUppercutForce;
     public int downSlamDamage;

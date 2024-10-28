@@ -34,6 +34,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     // IDamageable Variables
     [field: SerializeField] public bool InHitStun { get; set; } = false;
     public bool inAirStun;
+    [field: SerializeField] public bool inDownSlam { get; set; }
 
     // State Machine Variables
     public EnemyStateMachine.EnemyStates enemyState;
@@ -67,6 +68,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public bool HitStunImmune; // set during immunity
     public float outOfCombatDuration = 5f; // Duration for the timer in seconds
     private float outOfCombatTimer = 0f;   // Current timer value
+    public Vector2 enemyCollisionForce; // force applied when colliding with another enemy
+    private GameObject downSlamExplosionTrigger;
 
     // IMoveable Variables
     // components
@@ -147,6 +150,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         Collider = gameObject.GetComponent<BoxCollider2D>();
         _lineRenderer = gameObject.GetComponent<LineRenderer>();
         spriteRenderer = gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>();
+        downSlamExplosionTrigger = transform.Find("ExplosionDetection").gameObject;
 
         // setting up state machine
         StateMachine = new EnemyStateMachine();
@@ -225,8 +229,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         PlayerAbove = (Player.transform.position.y > TopEnemyTransform.y) ? true : false; // check for need to jump to player level
         PlayerBelow = (Player.transform.position.y < BottomEnemyTransform.y) ? true : false;
 
-        // RaycastHit2D hit = Physics2D.Raycast(BottomEnemyTransform, Vector2.down, .3f, GroundLayer);
-        IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
+        if (IsGrounded)
+        {
+            InKnockup = false;
+            if (inDownSlam)
+                StartCoroutine(downSlamExplosionActive());
+        }
+
+        IsGrounded = Physics2D.OverlapBox(groundCheck.transform.position, CheckGroundSize, 0f, GroundLayer) && !MidJump;
 
         // if low velocity, then no longer InImpact
         if (RB.velocity.magnitude < collisionForceThreshold)
@@ -234,24 +244,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             InImpact = false;
             ClearPath();
 
-            // if in hit stun, don't disable impact bool
-            if (!InHitStun)
-            {
-                // if not in knockup, disable impact
-                if (!InKnockup)
-                {
-                    Anim.SetBool("ImpactBool", false);
-                }
-                // else, only end impact/knockup if grounded while in knockup state
-                else
-                {
-                    if (IsGrounded)
-                    {
-                        Anim.SetBool("ImpactBool", false);
-                        InKnockup = false;
-                    }
-                }
-            }
+            // if in hit stun or knockup, don't disable impact bool (will auto be disabled in future frames where hit stun or knockup as ended)
+            if (!InHitStun && !InKnockup)
+                Anim.SetBool("ImpactBool", false);
         }
 
         if (!IsPaused && !InImpact && !InKnockup)
@@ -267,27 +262,36 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         }
     }
 
+    private IEnumerator downSlamExplosionActive()
+    {
+        downSlamExplosionTrigger.SetActive(true);
+        yield return null;
+        downSlamExplosionTrigger.SetActive(false);
+        inDownSlam = false;
+    }
+
     // receiving impact reaction
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("OneWayPlatform"))
             CurrentOneWayPlatform = collision.gameObject;
 
-        if (InImpact || collision.gameObject.CompareTag("enemy"))
+        if (InImpact)
         {
             float impactForce = collision.relativeVelocity.magnitude;
             if (impactForce > collisionForceThreshold)
             { // if force > threshold, then deal dmg, otherwise no longer in InImpact state
                 int collisionDamage = Mathf.RoundToInt(impactForce * collisionDamageMultiplier); // note: consider log max for extreme cases
                 // if collide wtih enemy that was inImpact, treat as if you were InImpact
-                if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact)
-                {
-                    Damage(collisionDamage, HitStunTime);
-                    InImpact = true;
-                    Anim.SetBool("ImpactBool", true);
-                }
-                else if (!collision.gameObject.CompareTag("enemy"))
-                { // bounce off surfaces, not enemies
+                // if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact)
+                // {
+                //     Damage(collisionDamage, HitStunTime);
+                //     InImpact = true;
+                //     Anim.SetBool("ImpactBool", true);
+                // }
+                // bounce off surfaces, not enemies
+                if (!collision.gameObject.CompareTag("enemy"))
+                { 
                     Vector2 bounceDirection = collision.contacts[0].normal;
                     // if not one way platform or if hitting one way platform from above (the only allowed bounce, otherwise just go through it)
                     if (!collision.gameObject.CompareTag("OneWayPlatform") || (collision.gameObject.CompareTag("OneWayPlatform") && bounceDirection == Vector2.up))
@@ -300,11 +304,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
                 }
             }
         }
-    }
-
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        Debug.Log(collision);
     }
     #endregion
     #region Movement
@@ -539,6 +538,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         {
             InKnockup = true;
 
+            if (IsGrounded)
+                transform.position = new Vector2(transform.position.x, transform.position.y + 0.2f); // slight upward translate to prevent isGrounded autotriggering
+            IsGrounded = false;
+
             RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
             RB.AddForce(force, ForceMode2D.Impulse);
         }
@@ -605,7 +608,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
                                                                           // Gizmos.DrawRay(BottomEnemyTransform, Vector2.down * .3f); // isGrounded
                                                                           // IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
 
-
         Gizmos.color = new Color(0f, 1f, 0f, 0.5f);
         Gizmos.DrawWireCube(PlatformDetectionOrigin, new Vector2(MaxJumpDistance, MaxJumpHeight)); // jump detection box
         Gizmos.DrawLine(BottomEnemyTransform, LandingTarget); // visual for where jumping landing target is
@@ -613,6 +615,12 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         // hitbox
         Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
         Gizmos.DrawWireSphere(DetectAttack.transform.position, AttackRadius);
+
+        if (downSlamExplosionTrigger != null && downSlamExplosionTrigger.activeSelf)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(downSlamExplosionTrigger.transform.position, downSlamExplosionTrigger.GetComponent<CircleCollider2D>().radius);
+        }
     }
     #endregion
 

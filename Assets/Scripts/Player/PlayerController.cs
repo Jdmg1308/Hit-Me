@@ -216,7 +216,7 @@ public class PlayerController : MonoBehaviour
                 audioManager.PlaySFX(audioManager.jump);
                 p.isJumping = true;
             }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) && p.currentOneWayPlatform != null)
+            if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && p.currentOneWayPlatform != null)
                 StartCoroutine(DisableCollision());
         }
         else
@@ -333,6 +333,7 @@ public class PlayerController : MonoBehaviour
     public void StartCharging()
     {
         p.charging = true;
+        p.anim.SetBool("inAirCombo", false);
     }
 
     // kick active frames
@@ -489,6 +490,7 @@ public class PlayerController : MonoBehaviour
                         Vector2 force = p.downSlamForce;
                         force.x = Mathf.Abs(p.downSlamForce.x) * dir;
                         iDamageable.TakeKick(p.downSlamDamage, force);
+                        iDamageable.inDownSlam = true;
                     }
                     else
                     { // regular punch otherwise (apply slow down)
@@ -504,10 +506,12 @@ public class PlayerController : MonoBehaviour
         }
 
         // post active-frame processing
-        // if (iDamageableSet.Count == 0) {
-        //     p.GM.audioSource.clip = p.GM.MissAudio;
-        //     p.GM.audioSource.Play();
-        // } else {
+        if (iDamageableSet.Count == 0) 
+        {
+            p.GM.audioSource.clip = p.GM.MissAudio;
+            p.GM.audioSource.Play();
+            p.anim.SetBool("inAirCombo", false);
+        }
         //     p.GM.audioSource.clip = p.GM.KickAudio;
         //     p.GM.audioSource.Play();
 

@@ -12,6 +12,7 @@ public interface IDamageable
     bool IsDead { get; set; }
     bool InHitStun { get; set; }
     float HitStunTime { get; set; }
+    bool inDownSlam { get; set; }
 
     void Damage(int damage, float hitStunTime);
     void Die();

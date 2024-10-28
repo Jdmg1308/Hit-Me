@@ -311,9 +311,6 @@ public class GameEnemyManager : MonoBehaviour
         enemyRef.ChaseSpeed = enemyStats.ChaseSpeed;
         enemyRef.PunchDamage = enemyStats.PunchDamage;
 
-        Debug.Log(newEnemy.name);
-        Debug.Log(enemyPrefab);
-        Debug.Log(spawnPoint.position);
         spawnedEnemies.Add(newEnemy);
     }
     #endregion

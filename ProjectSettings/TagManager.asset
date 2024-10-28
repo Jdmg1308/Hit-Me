@@ -9,6 +9,7 @@ TagManager:
   - GameManager
   - Canvas
   - Audio
+  - Explosion
   layers:
   - Default
   - TransparentFX
