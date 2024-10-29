@@ -35,10 +35,11 @@ public class GameManager : TheSceneManager
     protected StatusEffectManager StatusEffectManager;
     protected bool deckShowing = false;
     [HideInInspector]
-    public GameObject CardDisplay;
+    public GameObject CardUIDeck;
     protected GameObject deckDisplayPanel;
     protected GameObject latestCard = null;
     protected GameObject cardDescriptor;
+    protected GameObject DrawnCard;
 
     [Header("Health")]
     public int healthCurrent;       // Current health of the player
@@ -151,13 +152,16 @@ public class GameManager : TheSceneManager
         if (PlayScreen)
         {
             money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
-            CardDisplay = PlayScreen.transform.Find("CardDisplay")?.gameObject;
-            if (CardDisplay)
+            CardUIDeck = PlayScreen.transform.Find("CardUIDeck")?.gameObject;
+            if (CardUIDeck)
             {
-                UICard = CardDisplay.GetComponent<Image>();
-                CardCooldownImg = CardDisplay.transform.Find("Cooldown")?.gameObject.GetComponent<Image>();
-                StatusEffectManager = CardDisplay.GetComponent<StatusEffectManager>();
+                UICard = CardUIDeck.GetComponent<Image>();
+                CardCooldownImg = CardUIDeck.transform.Find("Cooldown")?.gameObject.GetComponent<Image>();
+                StatusEffectManager = CardUIDeck.GetComponent<StatusEffectManager>();
             }
+
+            DrawnCard = PlayScreen.transform.Find("DrawnCard")?.gameObject;
+
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
@@ -271,7 +275,7 @@ public class GameManager : TheSceneManager
     public void useCard()
     {
         if (cardIsOnCD)
-        { 
+        {
             //don't do anything if the card is on CD
             return;
         }
@@ -279,51 +283,84 @@ public class GameManager : TheSceneManager
         {
             cardIsOnCD = true;
             cardCDTimer = cardCDTime;
+
             Card card = deckController.infinDrawCard(deckController.currentDeck);
-            StartCoroutine(playCardSound(card));
-            card.use(this);
-            if (card.cardType == CardType.StatusEffect)
-            {
-                statusCard = card;
-                statusApplied = true;
-            }
-
-            if (latestCard != null)
-                Destroy(latestCard);
-
-            latestCard = showCard(card, PlayScreen);
-            //latestCard.transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
-            RectTransform latestRect = latestCard.GetComponent<RectTransform>();
-            RectTransform cardDisplayRect = CardDisplay.GetComponent<RectTransform>();
-
-            // Set anchor, pivot, and offset values
-            latestRect.anchorMax = cardDisplayRect.anchorMax;
-            latestRect.anchorMin = cardDisplayRect.anchorMin - new Vector2(0, 0.021f);
-            latestRect.pivot = cardDisplayRect.pivot;
-            latestRect.offsetMin = cardDisplayRect.offsetMin; // Left and Bottom
-            latestRect.offsetMax = cardDisplayRect.offsetMax; // Right and Top
-
-            float spaceBetweenCards = 10f; // Optional: Adjust the space between cards as needed
-            latestRect.anchoredPosition = new Vector2(cardDisplayRect.anchoredPosition.x, cardDisplayRect.anchoredPosition.y - (cardDisplayRect.rect.height) - spaceBetweenCards);
-            StatusEffectManager.AddStatusEffect(card);
-
-            // animate descriptor
-            Animator animator = cardDescriptor.GetComponent<Animator>();
-            TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
-            description.text = card.cardDescription;
-            //Image cardDescriptorImage = cardDescriptor.GetComponent<Image>();
-            //cardDescriptorImage.sprite = card.effectImage;
-            PlayAnimationOnce(animator, "LookAtMe");
-
+            StartCoroutine(DrawCardSequence(DrawnCard.GetComponent<Animator>(), card));
             updateHealth();
         }
     }
 
+    private IEnumerator DrawCardSequence(Animator cardAnimator, Card card)
+    {
+        // delete previous card if any
+        if (latestCard != null)
+            Destroy(latestCard);
+
+        // Play the "drawCard" animation once
+        cardAnimator.Play("DrawCard");
+        yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+        // Then play the "flipCard" animation
+        Debug.Log("Texture Name: " + card.cardImage.texture.name); // Log the texture name for debugging
+        if (card.cardImage.texture.name == "goodCard")
+        {
+            cardAnimator.Play("FlipCardBlue");
+        }
+        else
+        {
+            cardAnimator.Play("FlipCardRed");
+        }
+        yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+        // PlayAudio
+        StartCoroutine(playCardSound(card));
+
+        // Show what the card actually is
+        latestCard = showCard(card, DrawnCard);
+        RectTransform latestRect = latestCard.GetComponent<RectTransform>();
+        latestRect.anchorMin = Vector2.zero;
+        latestRect.anchorMax = Vector2.one;
+        latestRect.offsetMin = Vector2.zero;
+        latestRect.offsetMax = Vector2.zero;
+
+        // Set effect of card
+        card.use(this);
+        if (card.cardType == CardType.StatusEffect)
+        {
+            statusCard = card;
+            statusApplied = true;
+        }
+
+        StatusEffectManager.AddStatusEffect(card);
+
+        // Show Card Descriptor
+        ShowCardDescriptor(card);
+
+        // Return to idle state
+        cardAnimator.Play("NoCardDrawn");
+    }
+
+    public void ShowCardDescriptor(Card card)
+    {
+        // animate descriptor
+        Animator animator = cardDescriptor.GetComponent<Animator>();
+        TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
+        description.text = card.cardName;
+        PlayAnimationOnce(animator, "LookAtMe");
+    }
+
     public void ApplyCooldown()
     {
+        // Update cooldown timer
         cardCDTimer -= Time.deltaTime;
 
-        if (cardCDTimer < 0)
+        // Check if cooldown timer is below 0
+        if (cardCDTimer < 0.01)
+        {
+            cardCDTimer = 0; // Reset to zero if below 0
+        }
+
+        if (cardCDTimer == 0)
         {
             //call the use function to unapply the status effect if it exists
             if (statusCard)
@@ -339,13 +376,28 @@ public class GameManager : TheSceneManager
             UICard.GetComponentInChildren<TextMeshProUGUI>().text = " ";
             audioSource.clip = DeckShuffle;
             audioSource.Play();
+            StartCoroutine(IdleToShinyCardSequence(CardUIDeck.GetComponent<Animator>()));
         }
         else
         {
             UICard.GetComponentInChildren<TextMeshProUGUI>().text = Mathf.RoundToInt(cardCDTimer).ToString();
+            CardUIDeck.GetComponent<Animator>().Play("IdleDeck");
+        }
+        CardCooldownImg.fillAmount = cardCDTimer / cardCDTime;
+    }
 
-            Debug.Log("COOLDOWN FILL: " + CardCooldownImg.fillAmount);
-            CardCooldownImg.fillAmount = cardCDTimer / cardCDTime;
+    private IEnumerator IdleToShinyCardSequence(Animator drawingDeckAnimator)
+    {
+        // Loop for idle -> shiny -> idle while not on cooldown
+        while (!cardIsOnCD)
+        {
+            // Play the "Shiny" animation once
+            drawingDeckAnimator.Play("Shiny");
+            yield return new WaitForSeconds(drawingDeckAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+            // Play the "Idle" animation for 5 seconds
+            drawingDeckAnimator.Play("IdleDeck");
+            yield return new WaitForSeconds(5f);
         }
     }
 

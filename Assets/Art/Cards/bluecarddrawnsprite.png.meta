@@ -42,7 +42,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -103,7 +103,133 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: bluecarddrawnsprite_0
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 0
+        width: 783
+        height: 1441
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be559d4cdc96b0d4bb634ec3a242c917
+      internalID: -1443981017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bluecarddrawnsprite_1
+      rect:
+        serializedVersion: 2
+        x: 1307
+        y: 0
+        width: 784
+        height: 1441
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10f57fc73dad5a742960aaf199d592de
+      internalID: -591293731
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bluecarddrawnsprite_2
+      rect:
+        serializedVersion: 2
+        x: 2332
+        y: 0
+        width: 784
+        height: 1441
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0befe61f523f1141a7a034a02a1d3e3
+      internalID: -1832573603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bluecarddrawnsprite_3
+      rect:
+        serializedVersion: 2
+        x: 3293
+        y: 0
+        width: 784
+        height: 1441
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10f2b73eb7ff15d41a3f38d5815b889a
+      internalID: -333837877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bluecarddrawnsprite_4
+      rect:
+        serializedVersion: 2
+        x: 4288
+        y: 0
+        width: 784
+        height: 1441
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 139e3123963fe7a4c830f59f29eca6ff
+      internalID: 310661626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bluecarddrawnsprite_5
+      rect:
+        serializedVersion: 2
+        x: 5163
+        y: 0
+        width: 784
+        height: 1441
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d23dac2543b69444bab3472a2ae40556
+      internalID: -1430613528
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -114,7 +240,13 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      bluecarddrawnsprite_0: -1443981017
+      bluecarddrawnsprite_1: -591293731
+      bluecarddrawnsprite_2: -1832573603
+      bluecarddrawnsprite_3: -333837877
+      bluecarddrawnsprite_4: 310661626
+      bluecarddrawnsprite_5: -1430613528
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
