@@ -1216,10 +1216,12 @@ MonoBehaviour:
     basePunchDamage: 5
     uppercutDamage: 7
     baseUppercutDamage: 7
-    uppercutForce: {x: 1, y: 10}
-    velocityMod: 1
+    uppercutForce: {x: 0.5, y: 15}
+    airStunTime: 0.1
     forwardPunchMovement: {x: 250, y: 0}
     superUppercutForce: {x: 0.5, y: 15}
+    downSlamDamage: 7
+    downSlamForce: {x: 0.5, y: -20}
     hitStopScaling: 0.01
     screenShakeScaling: 2.5
     hitStopForceThreshold: 16
@@ -1241,7 +1243,7 @@ SpringJoint2D:
   m_Anchor: {x: 0, y: 0}
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
-  m_Distance: 0.005
+  m_Distance: 7.544832
   m_DampingRatio: 0.5
   m_Frequency: 2
 --- !u!95 &3976756146910260309
@@ -1694,9 +1696,11 @@ MonoBehaviour:
     uppercutDamage: 0
     baseUppercutDamage: 0
     uppercutForce: {x: 0, y: 0}
-    velocityMod: 0
+    airStunTime: 0
     forwardPunchMovement: {x: 0, y: 0}
     superUppercutForce: {x: 0, y: 0}
+    downSlamDamage: 0
+    downSlamForce: {x: 0, y: 0}
     hitStopScaling: 0
     screenShakeScaling: 0
     hitStopForceThreshold: 0

@@ -637,8 +637,8 @@ MonoBehaviour:
   collisionForceMultiplier: 0.5
   baseMass: 1
   postImpactMassScale: 0.9
-  <MaxHealth>k__BackingField: 50
-  <CurrentHealth>k__BackingField: 50
+  <MaxHealth>k__BackingField: 1000
+  <CurrentHealth>k__BackingField: 1000
   <IsDead>k__BackingField: 0
   <HitStunTime>k__BackingField: 0.3
   HitStunLimit: 100
@@ -663,6 +663,7 @@ MonoBehaviour:
   CheckGroundSize: {x: 1.5, y: 0.27}
   IdleRange: 5
   IdleTimeBetweenMove: 1.5
+  canAttack: 1
   <DetectAttack>k__BackingField: {fileID: 1780041902}
   <AttackRadius>k__BackingField: 0.8
   <PunchDamage>k__BackingField: 5

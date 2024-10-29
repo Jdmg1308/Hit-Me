@@ -27,7 +27,8 @@ public class EnemyAttackState : EnemyState
 
     public override void EnterState()
     {
-        e.Anim.SetBool("isPunching", true);
+        if (e.canAttack)
+            e.Anim.SetBool("isPunching", true);
     }
 
     public override void FrameUpdate()
@@ -39,13 +40,9 @@ public class EnemyAttackState : EnemyState
             if (!e.Anim.GetBool("isPunching") && !e.InAttackRange)
             {
                 if (!e.InChaseRange)
-                {
                     enemyStateMachine.changeState(e.IdleState);
-                }
                 else
-                {
                     enemyStateMachine.changeState(e.ChaseState);
-                }
             }
             else
             { // repeatedely punch if in range

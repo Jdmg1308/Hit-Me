@@ -110,7 +110,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public float IdleTimeBetweenMove = 2f;
 
     // Punching Variables
-    [field: SerializeField, Header("Attacking")] public GameObject DetectAttack { get; set; }
+    [Header("Attacking")] 
+    public bool canAttack = true;
+    [field: SerializeField] public GameObject DetectAttack { get; set; }
     [field: SerializeField] public float AttackRadius { get; set; }
     [field: SerializeField] public int PunchDamage { get; set; }
     [field: SerializeField] public Vector2 PunchForce { get; set; }
