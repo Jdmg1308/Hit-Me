@@ -63,7 +63,7 @@ MonoBehaviour:
   statusApplied: 0
   cardButtonPrefab: {fileID: 7681925040830748014, guid: 9a2382570e344a94285c5965cf8ec476, type: 3}
   deckLimit: 0
-  CardDisplay: {fileID: 0}
+  CardUIDeck: {fileID: 0}
   healthCurrent: 100
   healthMax: 100
   baseHealth: 100
@@ -145,9 +145,11 @@ MonoBehaviour:
     uppercutDamage: 0
     baseUppercutDamage: 0
     uppercutForce: {x: 0, y: 0}
-    velocityMod: 0
+    airStunTime: 0
     forwardPunchMovement: {x: 0, y: 0}
     superUppercutForce: {x: 0, y: 0}
+    downSlamDamage: 0
+    downSlamForce: {x: 0, y: 0}
     hitStopScaling: 0
     screenShakeScaling: 0
     hitStopForceThreshold: 0
@@ -534,7 +536,7 @@ MonoBehaviour:
   - {fileID: 5376063831353332324}
   - {fileID: 5376063832007169897}
   enemyPrefab: {fileID: 5811921193137224085, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
-  SpawnDelay: 2
+  SpawnDelay: 1
   waveConfigurations: 020000000300000003000000
   currentWave: 0
   isDoubleDamage: 0
