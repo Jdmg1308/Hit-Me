@@ -30,10 +30,6 @@ public class EnviromentHazard : MonoBehaviour
                 HandleSpikesCollision(other);
                 break;
 
-            case HazardType.MovingPlatform:
-                HandleMovingPlatformCollision(other);
-                break;
-
             case HazardType.BreakableSurface:
                 HandleBreakableSurfaceCollision(other);
                 break;
@@ -71,11 +67,6 @@ public class EnviromentHazard : MonoBehaviour
             Enemy enemyScript = other.gameObject.GetComponent<Enemy>();
             enemyScript.Damage(1000, 1f);
         }
-    }
-
-    private void HandleMovingPlatformCollision(Collision2D other)
-    {
-        // Code to handle moving platform behavior (e.g., movement pattern)
     }
 
     private void HandleBreakableSurfaceCollision(Collision2D other)
