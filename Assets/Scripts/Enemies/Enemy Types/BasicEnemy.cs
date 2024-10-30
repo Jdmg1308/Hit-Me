@@ -30,6 +30,8 @@ public class BasicEnemy : Enemy
     {
         // state machine
         StateMachine.Initialize(IdleState);
+
+        base.Start();
     }
 
     protected override void Update()

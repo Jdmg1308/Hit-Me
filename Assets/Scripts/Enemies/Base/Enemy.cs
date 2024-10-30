@@ -201,8 +201,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         if (IsGrounded)
         {
             InKnockup = false;
-            if (inDownSlam)
-                StartCoroutine(downSlamExplosionActive());
+            if (inDownSlam) StartCoroutine(downSlamExplosionActive());
         }
 
         IsGrounded = Physics2D.OverlapBox(groundCheck.transform.position, CheckGroundSize, 0f, GroundLayer) && !MidJump;
@@ -214,8 +213,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
             ClearPath();
 
             // if in hit stun or knockup, don't disable impact bool (will auto be disabled in future frames where hit stun or knockup as ended)
-            if (!InHitStun && !InKnockup)
-                Anim.SetBool("ImpactBool", false);
+            if (!InHitStun && !InKnockup) Anim.SetBool("ImpactBool", false);
         }
 
         RB.velocity = Vector2.ClampMagnitude(RB.velocity, maxVelocity); // prob can set clamp in property
@@ -497,7 +495,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         {
             InKnockup = true;
 
-            if (IsGrounded)
+            if (IsGrounded) 
                 transform.position = new Vector2(transform.position.x, transform.position.y + 0.2f); // slight upward translate to prevent isGrounded autotriggering
             IsGrounded = false;
 

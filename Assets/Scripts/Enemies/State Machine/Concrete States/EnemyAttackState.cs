@@ -27,7 +27,7 @@ public class EnemyAttackState : EnemyState<BasicEnemy>
 
     public override void EnterState()
     {
-        if (e.canAttack)
+        if (e.canAttack && e.IsGrounded)
             e.Anim.SetBool("isPunching", true);
     }
 
