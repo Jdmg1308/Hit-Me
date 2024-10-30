@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!(SceneManager.GetActiveScene().name == "TUTORIAL" || SceneManager.GetActiveScene().name == "SHOP"))
         {
-            p.GM.Difficulty();
+            // p.GM.Difficulty(); // probably delete this whole if eventually, not sure yet tho
         }
 
         // setting defaults
