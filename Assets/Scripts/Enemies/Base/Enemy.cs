@@ -5,9 +5,8 @@ using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable, IPuncher
+public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 {
-
     #region Variables
     [Header("Game Object Dependencies")]
     public GameEnemyManager GameEnemyManager;
@@ -27,35 +26,21 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     [field: SerializeField] public bool PlayerAbove { get; set; }
     [field: SerializeField] public bool PlayerBelow { get; set; }
 
-    // ITriggerCheckable Variables
-    [field: SerializeField] public bool InChaseRange { get; set; }
-    [field: SerializeField] public bool InAttackRange { get; set; }
-
     // IDamageable Variables
     [field: SerializeField] public bool InHitStun { get; set; } = false;
-    public bool inAirStun;
+    [field: SerializeField] public bool inAirStun { get; set; }
     [field: SerializeField] public bool inDownSlam { get; set; }
-
-    // State Machine Variables
-    public EnemyStateMachine.EnemyStates enemyState;
 
     // Collision Tuning
     [Header("Collision Tuning")]
     public float maxVelocity; // don't want enemies to break game speed
 
-    [Tooltip("Force threshold needed to cause damage and impact state, if not met then return to normal control")]
-    public float collisionForceThreshold;
-
-    [Tooltip("Determines how much collision force is factored into impact damage"), Range(0, 1)]
-    public float collisionDamageMultiplier;
-
-    [Tooltip("Determines how much impact force is factored into bounce"), Range(0, 1)]
-    public float collisionForceMultiplier;
-
+    [Tooltip("Force threshold needed to cause damage and impact state, if not met then return to normal control")] public float collisionForceThreshold;
+    [Tooltip("Determines how much collision force is factored into impact damage"), Range(0, 1)] public float collisionDamageMultiplier;
+    [Tooltip("Determines how much impact force is factored into bounce"), Range(0, 1)] public float collisionForceMultiplier;
     public float baseMass;
-    [Tooltip("Affects enemy floatiness during Impact State (for easier juggles)"), Range(0, 1)]
-    public float postImpactMassScale;
-
+    [Tooltip("Affects enemy floatiness during Impact State (for easier juggles)"), Range(0, 1)] public float postImpactMassScale;
+    
     // IDamageable Variables
     [field: SerializeField, Header("Health/Death")] public int MaxHealth { get; set; }
     [field: SerializeField] public int CurrentHealth { get; set; }
@@ -98,12 +83,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     [field: SerializeField] public LayerMask GroundLayer { get; set; }
     public Vector2 CheckGroundSize;
 
-    // State Machine Variables
-    public EnemyStateMachine StateMachine { get; set; }
-    public EnemyIdleState IdleState { get; set; }
-    public EnemyChaseState ChaseState { get; set; }
-    public EnemyAttackState AttackState { get; set; }
-
     // IdleState Variables
     [Header("Idle Variables")]
     public float IdleRange = 5f;
@@ -142,7 +121,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     #region Universal Functions
     // called before start when script is loaded
-    private void Awake()
+    protected virtual void Awake()
     {
         // accessing components
         Player = GameObject.FindGameObjectWithTag("Player");
@@ -153,16 +132,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         _lineRenderer = gameObject.GetComponent<LineRenderer>();
         spriteRenderer = gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>();
         downSlamExplosionTrigger = transform.Find("ExplosionDetection").gameObject;
-
-        // setting up state machine
-        StateMachine = new EnemyStateMachine();
-        IdleState = new EnemyIdleState(this, StateMachine);
-        ChaseState = new EnemyChaseState(this, StateMachine);
-        AttackState = new EnemyAttackState(this, StateMachine);
     }
 
     // called before first frame after all scripts loaded
-    private void Start()
+    protected virtual void Start()
     {
         // setting properties
 
@@ -176,9 +149,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         MaxJumpDistance = MaxXJumpForce * timeToApex; // Calculate the max horizontal distance AI can jump
         LandingTarget = Vector2.zero;
 
-        // state machine
-        StateMachine.Initialize(IdleState);
-
         // knockback path tracer
         _lastRecordedPosition = transform.position; // Initialize the last recorded position
 
@@ -189,11 +159,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         StartCoroutine(PauseAction(initialSpawnDelay));
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-        StateMachine.currentEnemyState.FrameUpdate();
-        enemyState = StateMachine.currentEnemyState.id; // for debug
-
         // updating transforms
         TopEnemyTransform = transform.position + (Vector3.up * Collider.bounds.extents.y);
         BottomEnemyTransform = transform.position + (Vector3.down * Collider.bounds.extents.y);
@@ -222,7 +189,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         }
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         // exit jump state when landing
         if (RB.velocity.y == 0) MidJump = false;
@@ -250,9 +217,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             if (!InHitStun && !InKnockup)
                 Anim.SetBool("ImpactBool", false);
         }
-
-        if (!IsPaused && !InImpact && !InKnockup)
-            StateMachine.currentEnemyState.PhysicsUpdate();
 
         RB.velocity = Vector2.ClampMagnitude(RB.velocity, maxVelocity); // prob can set clamp in property
 
@@ -284,13 +248,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
             if (impactForce > collisionForceThreshold)
             { // if force > threshold, then deal dmg, otherwise no longer in InImpact state
                 int collisionDamage = Mathf.RoundToInt(impactForce * collisionDamageMultiplier); // note: consider log max for extreme cases
-                // if collide wtih enemy that was inImpact, treat as if you were InImpact
-                // if (collision.gameObject.CompareTag("enemy") && collision.gameObject.GetComponent<Enemy>().InImpact)
-                // {
-                //     Damage(collisionDamage, HitStunTime);
-                //     InImpact = true;
-                //     Anim.SetBool("ImpactBool", true);
-                // }
                 // bounce off surfaces, not enemies
                 if (!collision.gameObject.CompareTag("enemy"))
                 { 
@@ -555,32 +512,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     {
         Anim.SetBool("isPunching", false);
         EndShouldBeDamaging();
-    }
-    #endregion
-
-    #region Animation Triggers
-    public enum AnimationTriggerType
-    {
-        StartPunch,
-        EndPunch,
-        EndPunchDamaging
-    }
-
-    public void AnimationTriggerEvent(AnimationTriggerType triggerType)
-    {
-        StateMachine.currentEnemyState.AnimationTriggerEvent(triggerType);
-    }
-    #endregion
-
-    #region Detection
-    public void SetInChaseRange(bool inChaseRange)
-    {
-        InChaseRange = inChaseRange;
-    }
-
-    public void SetInAttackRange(bool inAttackRange)
-    {
-        InAttackRange = inAttackRange;
     }
     #endregion
 

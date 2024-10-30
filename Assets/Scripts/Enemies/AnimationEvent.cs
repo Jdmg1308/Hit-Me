@@ -4,29 +4,29 @@ using UnityEngine;
 
 public class AnimationEvent : MonoBehaviour
 {
-    private Enemy _enemy;
+    private BasicEnemy _enemy;
     private SpriteRenderer sprite;
 
     void Start()
     {
-        _enemy = GetComponentInParent<Enemy>();
+        _enemy = GetComponentInParent<BasicEnemy>();
         sprite = GetComponent<SpriteRenderer>();
     }
 
     public void Punch()
     {
-        _enemy.AnimationTriggerEvent(Enemy.AnimationTriggerType.StartPunch);
+        _enemy.AnimationTriggerEvent(EnemyState<BasicEnemy>.AnimationTriggerType.StartPunch);
     }
 
     public void EndPunch()
     {
         sprite.color = Color.white;
-        _enemy.AnimationTriggerEvent(Enemy.AnimationTriggerType.EndPunch);
+        _enemy.AnimationTriggerEvent(EnemyState<BasicEnemy>.AnimationTriggerType.EndPunch);
     }
 
     public void EndShouldBeDamaging()
     {
-        _enemy.AnimationTriggerEvent(Enemy.AnimationTriggerType.EndPunchDamaging);
+        _enemy.AnimationTriggerEvent(EnemyState<BasicEnemy>.AnimationTriggerType.EndPunchDamaging);
     }
 
     // temp until we get polish animations

@@ -5,12 +5,12 @@ using UnityEngine;
 public class InChaseRangeCheck : MonoBehaviour
 {
     public GameObject Player { get; set; }
-    private Enemy _enemy;
+    private BasicEnemy _enemy;
 
     private void Awake()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        _enemy = GetComponentInParent<Enemy>();
+        _enemy = GetComponentInParent<BasicEnemy>();
     }
 
     void OnTriggerEnter2D(Collider2D collision)

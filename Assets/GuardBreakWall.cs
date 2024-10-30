@@ -35,7 +35,8 @@ public class GuardBreakWall : MonoBehaviour, IDamageable
     [HideInInspector] public bool InHitStun { get; set; }
     [HideInInspector] public float HitStunTime { get; set; }
     [HideInInspector] public bool inDownSlam { get; set; }
-    
+    [HideInInspector] public bool inAirStun { get; set; }
+
     public void Damage(int damage, float hitStunTime)
     {
         return;

@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyState
+public class EnemyState<T> where T : Enemy
 {
-    protected Enemy e;
-    protected EnemyStateMachine enemyStateMachine;
-    public EnemyStateMachine.EnemyStates id;
+    protected T e;
+    protected EnemyStateMachine<T> enemyStateMachine;
+    public EnemyStateMachine<T>.EnemyStates id;
 
-    public EnemyState(Enemy enemy, EnemyStateMachine enemyStateMachine)
+    public EnemyState(T enemy, EnemyStateMachine<T> enemyStateMachine)
     {
         this.e = enemy;
         this.enemyStateMachine = enemyStateMachine;
@@ -18,5 +18,12 @@ public class EnemyState
     public virtual void ExitState() { }
     public virtual void FrameUpdate() { }
     public virtual void PhysicsUpdate() { }
-    public virtual void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType) { }
+
+    public enum AnimationTriggerType
+    {
+        StartPunch,
+        EndPunch,
+        EndPunchDamaging
+    }
+    public virtual void AnimationTriggerEvent(AnimationTriggerType triggerType) { }
 }

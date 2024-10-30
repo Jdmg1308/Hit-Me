@@ -2,24 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttackState : EnemyState
+public class EnemyAttackState : EnemyState<BasicEnemy>
 {
-    public EnemyAttackState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+    public EnemyAttackState(BasicEnemy enemy, EnemyStateMachine<BasicEnemy> enemyStateMachine) : base(enemy, enemyStateMachine)
     {
-        id = EnemyStateMachine.EnemyStates.Attack;
+        id = EnemyStateMachine<BasicEnemy>.EnemyStates.Attack;
     }
 
-    public override void AnimationTriggerEvent(Enemy.AnimationTriggerType triggerType)
+    public override void AnimationTriggerEvent(AnimationTriggerType triggerType)
     {
         switch (triggerType)
         {
-            case Enemy.AnimationTriggerType.StartPunch:
+            case AnimationTriggerType.StartPunch:
                 e.StartCoroutine(e.Punch());
                 break;
-            case Enemy.AnimationTriggerType.EndPunch:
+            case AnimationTriggerType.EndPunch:
                 e.EndPunch();
                 break;
-            case Enemy.AnimationTriggerType.EndPunchDamaging:
+            case AnimationTriggerType.EndPunchDamaging:
                 e.EndShouldBeDamaging();
                 break;
         }

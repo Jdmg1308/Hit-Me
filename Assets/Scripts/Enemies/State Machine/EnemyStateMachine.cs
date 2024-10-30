@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStateMachine
+public class EnemyStateMachine<T> where T : Enemy
 {
     public enum EnemyStates
     {
@@ -10,15 +11,15 @@ public class EnemyStateMachine
         Chase,
         Attack
     }
-    public EnemyState currentEnemyState { get; set; }
+    public EnemyState<T> currentEnemyState { get; set; }
 
-    public void Initialize(EnemyState startingState)
+    public void Initialize(EnemyState<T> startingState)
     {
         currentEnemyState = startingState;
         currentEnemyState.EnterState();
     }
 
-    public void changeState(EnemyState newState)
+    public void changeState(EnemyState<T> newState)
     {
         currentEnemyState.ExitState();
         currentEnemyState = newState;

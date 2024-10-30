@@ -2,26 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyChaseState : EnemyState
+public class EnemyChaseState : EnemyState<BasicEnemy>
 {
-    public EnemyChaseState(Enemy enemy, EnemyStateMachine enemyStateMachine) : base(enemy, enemyStateMachine)
+    public EnemyChaseState(BasicEnemy enemy, EnemyStateMachine<BasicEnemy> enemyStateMachine) : base(enemy, enemyStateMachine)
     {
-        id = EnemyStateMachine.EnemyStates.Chase;
+        id = EnemyStateMachine<BasicEnemy>.EnemyStates.Chase;
     }
 
     public override void FrameUpdate()
     {
         // check state
-        if (!e.IsPaused && !e.InImpact && e.IsGrounded && !e.InKnockup)
+        if (!e.IsPaused && !e.InImpact && e.IsGrounded && !e.InKnockup && !e.InHitStun)
         { // can only change state if on ground and not paused
-            if (e.InAttackRange)
-            {
+            if (e.canAttack && e.InAttackRange)
                 enemyStateMachine.changeState(e.AttackState);
-            }
             else if (!e.InChaseRange)
-            {
                 enemyStateMachine.changeState(e.IdleState);
-            }
         }
     }
 
