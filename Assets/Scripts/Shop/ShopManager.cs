@@ -10,7 +10,9 @@ public class ShopManager : TheSceneManager
     public Button destroyButton;
     public GameObject Options; // Panel containing the player's current deck of cards
     public GameObject deckDisplayPanel; // Panel containing the player's current deck of cards
-    public Button exitButton; // Prefab to create buttons for each card in the deck
+    private GameObject Canvas;
+    private GameObject ShopScreen;
+    public Button NextLevelButton; // Prefab to create buttons for each card in the deck
     public float dupPrice;
     public float destPrice;
 
@@ -20,15 +22,22 @@ public class ShopManager : TheSceneManager
     {
         // Buttons should be assigned in the Inspector, no need to assign them here unless necessary
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        Canvas = GameObject.FindGameObjectWithTag("Canvas");
+
+        if (Canvas)
+        {
+            ShopScreen = Canvas.transform.Find("Shop Screen")?.gameObject;
+        }
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
         SetUpShop();
-        duplicateButton.onClick.AddListener(DisplayDeckForDuplication);
         destroyButton.onClick.AddListener(DisplayDeckForDestruction);
-        exitButton.onClick.AddListener(OpenMap);
+        NextLevelSetup();
+
     }
 
     /*
@@ -144,6 +153,32 @@ public class ShopManager : TheSceneManager
         {
             GM.money -= destPrice;
             GM.deckController.DeckRemove(card, GM.deckController.currentDeck); // Correcting to remove the card
+        }
+    }
+
+    public void NextLevelSetup()
+    {
+        switch (GM.LastScene)
+        {
+            case "TUTORIAL":
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl1);
+                break;
+
+            case "LEVEL_1":
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl2);
+                break;
+
+            case "LEVEL_2":
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl3);
+                break;
+
+            case "LEVEL_3":
+                GM.AssignButton(ShopScreen.transform, "NextLevel", FinalLvl);
+                break;
+
+            default:
+                Debug.LogWarning("HELL NAWWWW" + GM.LastScene);
+                break;
         }
     }
 }

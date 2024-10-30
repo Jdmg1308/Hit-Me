@@ -313,7 +313,7 @@ GameObject:
   - component: {fileID: 1667829834687669964}
   - component: {fileID: 1795744082280894315}
   - component: {fileID: 1419710306}
-  - component: {fileID: 690566456846909353}
+  - component: {fileID: 2028937914}
   m_Layer: 9
   m_Name: BasicEnemy
   m_TagString: enemy
@@ -602,7 +602,7 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &690566456846909353
+--- !u!114 &2028937914
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -611,7 +611,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5811921193137224085}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee95f2efde76c604dbf7186587ab9524, type: 3}
+  m_Script: {fileID: 11500000, guid: d506f4091091d004d9ae5b930f46def3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   GameEnemyManager: {fileID: 0}
@@ -625,20 +625,17 @@ MonoBehaviour:
   <MidJump>k__BackingField: 0
   <PlayerAbove>k__BackingField: 0
   <PlayerBelow>k__BackingField: 0
-  <InChaseRange>k__BackingField: 0
-  <InAttackRange>k__BackingField: 0
   <InHitStun>k__BackingField: 0
-  inAirStun: 0
+  <inAirStun>k__BackingField: 0
   <inDownSlam>k__BackingField: 0
-  enemyState: 0
   maxVelocity: 60
   collisionForceThreshold: 10
   collisionDamageMultiplier: 0.5
   collisionForceMultiplier: 0.5
   baseMass: 1
   postImpactMassScale: 0.9
-  <MaxHealth>k__BackingField: 1000
-  <CurrentHealth>k__BackingField: 1000
+  <MaxHealth>k__BackingField: 50
+  <CurrentHealth>k__BackingField: 50
   <IsDead>k__BackingField: 0
   <HitStunTime>k__BackingField: 0.3
   HitStunLimit: 100
@@ -660,7 +657,7 @@ MonoBehaviour:
   <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  CheckGroundSize: {x: 1.5, y: 0.27}
+  CheckGroundSize: {x: 1.5, y: 0.1}
   IdleRange: 5
   IdleTimeBetweenMove: 1.5
   canAttack: 1
@@ -679,6 +676,9 @@ MonoBehaviour:
   flashDuration: 0
   flashInterval: 0.15
   initialSpawnDelay: 1.5
+  InChaseRange: 0
+  InAttackRange: 0
+  enemyState: 0
 --- !u!1 &6430424488172574266
 GameObject:
   m_ObjectHideFlags: 0

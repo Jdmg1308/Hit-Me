@@ -13,6 +13,9 @@ public class GameManager : TheSceneManager
     public GameObject Canvas;
     public GameObject Camera;
 
+    public bool CheatWin = false;
+    public string LastScene = "TUTORIAL";
+
     [Header("Art/Audio")]
     public AudioSource audioSource;
     public AudioClip KickAudio;
@@ -158,6 +161,8 @@ public class GameManager : TheSceneManager
                 UICard = CardUIDeck.GetComponent<Image>();
                 CardCooldownImg = CardUIDeck.transform.Find("Cooldown")?.gameObject.GetComponent<Image>();
                 StatusEffectManager = CardUIDeck.GetComponent<StatusEffectManager>();
+
+                StartCoroutine(IdleToShinyCardSequence(CardUIDeck.GetComponent<Animator>()));
             }
 
             DrawnCard = PlayScreen.transform.Find("DrawnCard")?.gameObject;
@@ -177,18 +182,18 @@ public class GameManager : TheSceneManager
         {
             if (DeathScreen)
             {
-                AssignButton(DeathScreen.transform, "Map", OpenMap);
+                AssignButton(PauseScreen.transform, "Menu", OpenMenu);
                 AssignButton(DeathScreen.transform, "Restart", Restart);
             }
 
             if (WinScreen)
             {
-                AssignButton(WinScreen.transform, "Map", OpenMap);
+                AssignButton(WinScreen.transform, "Shop", OpenShop);
             }
 
             if (PauseScreen)
             {
-                AssignButton(PauseScreen.transform, "Map", OpenMap);
+                //AssignButton(PauseScreen.transform, "Menu", OpenShop);
                 AssignButton(PauseScreen.transform, "Resume", Pause);
 
                 deckDisplayPanel = PauseScreen.transform.Find("DeckDisplayPanel")?.gameObject;
@@ -196,12 +201,12 @@ public class GameManager : TheSceneManager
             }
         }
 
-        if (DifficultyScreen)
-        {
-            DifficultyScreen.transform.Find("Easy").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(1));
-            DifficultyScreen.transform.Find("Medium").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(2));
-            DifficultyScreen.transform.Find("Hard").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(3));
-        }
+        //if (DifficultyScreen)
+        //{
+        //    DifficultyScreen.transform.Find("Easy").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(1));
+        //    DifficultyScreen.transform.Find("Medium").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(2));
+        //    DifficultyScreen.transform.Find("Hard").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(3));
+        //}
 
         if (IBuild)
         {
@@ -213,9 +218,11 @@ public class GameManager : TheSceneManager
         GameEnemyManager.ResetWaves();
     }
 
+    
+
     void Update()
     {
-        if (GameEnemyManager.currentWave > GameEnemyManager.waveConfigurations.Count && !hasWon)
+        if ((GameEnemyManager.currentWave > GameEnemyManager.waveConfigurations.Count && !hasWon) || CheatWin)
         {
             Win();
         }
@@ -388,8 +395,9 @@ public class GameManager : TheSceneManager
 
     private IEnumerator IdleToShinyCardSequence(Animator drawingDeckAnimator)
     {
+        Scene startingScene = SceneManager.GetActiveScene();
         // Loop for idle -> shiny -> idle while not on cooldown
-        while (!cardIsOnCD)
+        while (!cardIsOnCD && !hasWon)
         {
             // Play the "Shiny" animation once
             drawingDeckAnimator.Play("Shiny");
@@ -518,6 +526,7 @@ public class GameManager : TheSceneManager
         playerController.SetControls(false);
         // animate win here (gangnam style)
         WinScreen.SetActive(true);
+        CheatWin = false;
         //TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
         //ScoreText.text = "Final Payout: " + money.ToString();
         hasWon = true;
@@ -569,9 +578,10 @@ public class GameManager : TheSceneManager
     }
     #endregion
 
-    public new void OpenMap()
+    public new void OpenShop()
     {
+        LastScene = SceneManager.GetActiveScene().name;
         GameEnemyManager.shouldSpawn = false; // THIS
-        SceneManager.LoadScene("MAP");
+        SceneManager.LoadScene("SHOP");
     }
 }

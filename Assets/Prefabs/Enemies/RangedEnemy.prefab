@@ -450,7 +450,7 @@ MonoBehaviour:
   <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
-  CheckGroundSize: {x: 1.5, y: 0.27}
+  CheckGroundSize: {x: 1.5, y: 0.1}
   IdleRange: 5
   IdleTimeBetweenMove: 1.5
   canAttack: 1
