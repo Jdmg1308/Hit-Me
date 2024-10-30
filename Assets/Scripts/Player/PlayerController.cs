@@ -438,15 +438,8 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PunchCombo(TypeOfPunch partOfCombo)
     {
-        // 1-2 = first two hits
-        // 3 = uppercut
         shouldBeDamaging = true;
-
-        // calculate kick force properties
         int dir = p.facingRight ? 1 : -1;
-        // punches apply a little bit of force
-        // uppercut applies a lot of upward force
-        // if grappling, just do upper cut (not yet implemented)
 
         // use special larger radius if doing anything but jabs
         float radius = partOfCombo != TypeOfPunch.Jab ? p.uppercutRadius : p.punchRadius;
@@ -484,6 +477,7 @@ public class PlayerController : MonoBehaviour
                         Vector2 force = p.superUppercutForce;
                         force.x = Mathf.Abs(p.superUppercutForce.x) * dir;
                         iDamageable.TakeUppercut(p.uppercutDamage, force);
+
                     }
                     else if (partOfCombo == TypeOfPunch.DownSlam)
                     {
