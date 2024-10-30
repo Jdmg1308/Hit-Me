@@ -97,6 +97,7 @@ public class GameEnemyManager : MonoBehaviour
         EnemiesLeftInWave = 0;
         hasSpawned = false;
         _WaveInProgress = false;
+        spawnedEnemies.Clear();
     }
 
     public IEnumerator StartWaves(int enemiesToSpawn)

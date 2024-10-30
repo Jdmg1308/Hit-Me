@@ -194,15 +194,15 @@ public class ShopManager : TheSceneManager
                 break;
 
             case "LEVEL_1":
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl2);
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl1);
                 break;
 
             case "LEVEL_2":
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl3);
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl1);
                 break;
 
             case "LEVEL_3":
-                GM.AssignButton(ShopScreen.transform, "NextLevel", FinalLvl);
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl1);
                 break;
 
             default:

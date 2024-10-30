@@ -13,12 +13,8 @@ public class EnemyDespawn : Card
      */
     public override void use(GameManager GM) {
         if (effectValue == -1) 
-        {
             GM.GameEnemyManager.DestroyExtraEnemies(GM.GameEnemyManager.EnemiesLeftInWave / 2);
-        }
         else 
-        {
             GM.GameEnemyManager.DestroyExtraEnemies(effectValue);
-        }
     }
 }

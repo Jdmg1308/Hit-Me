@@ -109,9 +109,7 @@ public class GameManager : TheSceneManager
     public static GameManager GetInstance()
     {
         if (instance == null)
-        {
             Debug.LogError("GameManager instance is not assigned.");
-        }
         return instance;
     }
 
@@ -187,9 +185,7 @@ public class GameManager : TheSceneManager
             }
 
             if (WinScreen)
-            {
                 AssignButton(WinScreen.transform, "Shop", OpenShop);
-            }
 
             if (PauseScreen)
             {
@@ -209,9 +205,7 @@ public class GameManager : TheSceneManager
         //}
 
         if (IBuild)
-        {
             iOSPanel = IBuild.transform.Find("iOS Panel")?.gameObject;
-        }
 
         audioSource = GetComponent<AudioSource>();
         GameEnemyManager = GetComponentInChildren<GameEnemyManager>();
@@ -223,14 +217,10 @@ public class GameManager : TheSceneManager
     void Update()
     {
         if ((GameEnemyManager.currentWave > GameEnemyManager.waveConfigurations.Count && !hasWon) || CheatWin)
-        {
             Win();
-        }
 
         if (cardIsOnCD && UICard)
-        {
             ApplyCooldown();
-        }
 
         updateWager();
     }
@@ -318,13 +308,9 @@ public class GameManager : TheSceneManager
             if (cardAnimator != null)
             {
                 if (card.cardImage.texture.name == "goodCard")
-                {
                     cardAnimator.Play("FlipCardBlue");
-                }
                 else
-                {
                     cardAnimator.Play("FlipCardRed");
-                }
                 yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
             }
 
@@ -354,9 +340,7 @@ public class GameManager : TheSceneManager
 
             // Return to idle state
             if (cardAnimator != null)
-            {
                 cardAnimator.Play("NoCardDrawn");
-            }
         }
     }
 
@@ -376,9 +360,7 @@ public class GameManager : TheSceneManager
 
         // Check if cooldown timer is below 0
         if (cardCDTimer < 0.01)
-        {
             cardCDTimer = 0; // Reset to zero if below 0
-        }
 
         if (cardCDTimer == 0)
         {
@@ -414,9 +396,7 @@ public class GameManager : TheSceneManager
         {
             // Check if the animator still exists to avoid null reference errors
             if (drawingDeckAnimator == null)
-            {
                 yield break; // Exit the coroutine if the Animator is missing
-            }
 
             // Play the "Shiny" animation once
             drawingDeckAnimator.Play("Shiny");
@@ -424,9 +404,7 @@ public class GameManager : TheSceneManager
 
             // Check if the animator still exists to avoid null reference errors
             if (drawingDeckAnimator == null)
-            {
                 yield break; // Exit the coroutine if the Animator is missing
-            }
 
             // Play the "Idle" animation for 5 seconds
             drawingDeckAnimator.Play("IdleDeck");
@@ -440,13 +418,9 @@ public class GameManager : TheSceneManager
         audioSource.Play();
         yield return new WaitForSeconds(CardPullAudio.length);
         if (card.cardType == CardType.EnemyBuff)
-        {
             audioSource.clip = BadPullAudio;
-        }
         else
-        {
             audioSource.clip = GoodPullAudio;
-        }
         audioSource.Play();
     }
 
@@ -490,17 +464,13 @@ public class GameManager : TheSceneManager
         if (healthCurrent > healthMax) healthCurrent = healthMax;
         healthBar.value = healthCurrent;
         if (healthCurrent <= 0)
-        {
             Death();
-        }
     }
 
     public void updateWager()
     {
         if (money_text != null)
-        {
             money_text.text = " " + (money + level_gathered).ToString();
-        }
     }
 
     public void Difficulty()
