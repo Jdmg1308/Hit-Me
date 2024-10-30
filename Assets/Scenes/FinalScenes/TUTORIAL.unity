@@ -12675,6 +12675,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 281142954660847228, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3768005602822016113, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -12769,6 +12773,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3768005602839562070, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768005603020878596, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -17436,7 +17444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b5c06cc4a3dfc041ba5e44727d9bcc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 5
 --- !u!1 &7638544351307242955
 GameObject:
   m_ObjectHideFlags: 0

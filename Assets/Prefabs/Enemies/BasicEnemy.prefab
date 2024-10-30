@@ -690,7 +690,7 @@ GameObject:
   - component: {fileID: 6430424488172574261}
   - component: {fileID: 6430424488172574260}
   - component: {fileID: 6430424488172574263}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: DetectChase
   m_TagString: Untagged
   m_Icon: {fileID: 0}

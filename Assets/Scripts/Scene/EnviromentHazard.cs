@@ -8,7 +8,8 @@ public enum HazardType
     MovingPlatform,
     BreakableSurface,
     ExplodingBarrel,
-    ElectricityField
+    ElectricityField,
+    DeathSurface
 }
 
 public class EnviromentHazard : MonoBehaviour
@@ -43,6 +44,10 @@ public class EnviromentHazard : MonoBehaviour
 
             case HazardType.ElectricityField:
                 HandleElectricityFieldCollision(other);
+                break;
+
+            case HazardType.DeathSurface:
+                HandleDeathSurfaceCollision(other);
                 break;
 
             default:
@@ -86,5 +91,20 @@ public class EnviromentHazard : MonoBehaviour
     private void HandleElectricityFieldCollision(Collision2D other)
     {
         // Code to handle electricity field behavior (e.g., apply knockback or stun)
+    }
+
+    private void HandleDeathSurfaceCollision(Collision2D other)
+    {
+        // Code to handle electricity field behavior (e.g., apply knockback or stun)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            PlayerController player = other.gameObject.GetComponent<PlayerController>();
+            player.TakeDamage(10000, this.transform.position);
+        }
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            Enemy enemyScript = other.gameObject.GetComponent<Enemy>();
+            enemyScript.Damage(1000, 1f);
+        }
     }
 }

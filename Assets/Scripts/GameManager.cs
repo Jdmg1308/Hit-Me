@@ -299,52 +299,65 @@ public class GameManager : TheSceneManager
 
     private IEnumerator DrawCardSequence(Animator cardAnimator, Card card)
     {
-        // delete previous card if any
-        if (latestCard != null)
-            Destroy(latestCard);
-
-        // Play the "drawCard" animation once
-        cardAnimator.Play("DrawCard");
-        yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        // Then play the "flipCard" animation
-        Debug.Log("Texture Name: " + card.cardImage.texture.name); // Log the texture name for debugging
-        if (card.cardImage.texture.name == "goodCard")
+        if (cardAnimator != null)
         {
-            cardAnimator.Play("FlipCardBlue");
+            // delete previous card if any
+            if (latestCard != null)
+                Destroy(latestCard);
+
+            // Play the "drawCard" animation once
+            if (cardAnimator != null)
+            {
+                cardAnimator.Play("DrawCard");
+                yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+            }
+
+            // Then play the "flipCard" animation
+            Debug.Log("Texture Name: " + card.cardImage.texture.name); // Log the texture name for debugging
+                                                                       // Check if the animator still exists to avoid null reference errors
+            if (cardAnimator != null)
+            {
+                if (card.cardImage.texture.name == "goodCard")
+                {
+                    cardAnimator.Play("FlipCardBlue");
+                }
+                else
+                {
+                    cardAnimator.Play("FlipCardRed");
+                }
+                yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
+            }
+
+            // PlayAudio
+            StartCoroutine(playCardSound(card));
+
+            // Show what the card actually is
+            latestCard = showCard(card, DrawnCard);
+            RectTransform latestRect = latestCard.GetComponent<RectTransform>();
+            latestRect.anchorMin = Vector2.zero;
+            latestRect.anchorMax = Vector2.one;
+            latestRect.offsetMin = Vector2.zero;
+            latestRect.offsetMax = Vector2.zero;
+
+            // Set effect of card
+            card.use(this);
+            if (card.cardType == CardType.StatusEffect)
+            {
+                statusCard = card;
+                statusApplied = true;
+            }
+
+            StatusEffectManager.AddStatusEffect(card);
+
+            // Show Card Descriptor
+            ShowCardDescriptor(card);
+
+            // Return to idle state
+            if (cardAnimator != null)
+            {
+                cardAnimator.Play("NoCardDrawn");
+            }
         }
-        else
-        {
-            cardAnimator.Play("FlipCardRed");
-        }
-        yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
-
-        // PlayAudio
-        StartCoroutine(playCardSound(card));
-
-        // Show what the card actually is
-        latestCard = showCard(card, DrawnCard);
-        RectTransform latestRect = latestCard.GetComponent<RectTransform>();
-        latestRect.anchorMin = Vector2.zero;
-        latestRect.anchorMax = Vector2.one;
-        latestRect.offsetMin = Vector2.zero;
-        latestRect.offsetMax = Vector2.zero;
-
-        // Set effect of card
-        card.use(this);
-        if (card.cardType == CardType.StatusEffect)
-        {
-            statusCard = card;
-            statusApplied = true;
-        }
-
-        StatusEffectManager.AddStatusEffect(card);
-
-        // Show Card Descriptor
-        ShowCardDescriptor(card);
-
-        // Return to idle state
-        cardAnimator.Play("NoCardDrawn");
     }
 
     public void ShowCardDescriptor(Card card)
@@ -397,11 +410,23 @@ public class GameManager : TheSceneManager
     {
         Scene startingScene = SceneManager.GetActiveScene();
         // Loop for idle -> shiny -> idle while not on cooldown
-        while (!cardIsOnCD && !hasWon)
+        while (!cardIsOnCD && !hasWon && startingScene == SceneManager.GetActiveScene())
         {
+            // Check if the animator still exists to avoid null reference errors
+            if (drawingDeckAnimator == null)
+            {
+                yield break; // Exit the coroutine if the Animator is missing
+            }
+
             // Play the "Shiny" animation once
             drawingDeckAnimator.Play("Shiny");
             yield return new WaitForSeconds(drawingDeckAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+            // Check if the animator still exists to avoid null reference errors
+            if (drawingDeckAnimator == null)
+            {
+                yield break; // Exit the coroutine if the Animator is missing
+            }
 
             // Play the "Idle" animation for 5 seconds
             drawingDeckAnimator.Play("IdleDeck");
@@ -516,6 +541,7 @@ public class GameManager : TheSceneManager
     {
         playerController.SetControls(false);
         // animate death here
+        hasWon = true;
         DeathScreen.SetActive(true);
         TextMeshProUGUI ScoreText = DeathScreen.GetComponentInChildren<TextMeshProUGUI>();
         ScoreText.text = "Final Payout: " + money.ToString();

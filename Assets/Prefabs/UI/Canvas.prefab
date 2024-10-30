@@ -2565,6 +2565,34 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2344067621810166848, guid: 34fe22a787a2c97479b4add16831bda6, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0.52285194
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344067621810166848, guid: 34fe22a787a2c97479b4add16831bda6, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0.44474053
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344067621810166848, guid: 34fe22a787a2c97479b4add16831bda6, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344067621810166848, guid: 34fe22a787a2c97479b4add16831bda6, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344067621810166849, guid: 34fe22a787a2c97479b4add16831bda6, type: 3}
+      propertyPath: m_Name
+      value: Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344067621810166849, guid: 34fe22a787a2c97479b4add16831bda6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2344067622463274263, guid: 34fe22a787a2c97479b4add16831bda6, type: 3}
+      propertyPath: m_text
+      value: Menu
+      objectReference: {fileID: 0}
     - target: {fileID: 3966995621370773751, guid: 34fe22a787a2c97479b4add16831bda6, type: 3}
       propertyPath: m_fontSize
       value: 40
@@ -2607,6 +2635,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3768005602822016125}
     m_Modifications:
+    - target: {fileID: 5847703957007697361, guid: 06df5b1a4d18ddc499b1df9f57b78cb0, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7793940645475203459, guid: 06df5b1a4d18ddc499b1df9f57b78cb0, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
