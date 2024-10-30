@@ -161,6 +161,8 @@ public class GameManager : TheSceneManager
                 UICard = CardUIDeck.GetComponent<Image>();
                 CardCooldownImg = CardUIDeck.transform.Find("Cooldown")?.gameObject.GetComponent<Image>();
                 StatusEffectManager = CardUIDeck.GetComponent<StatusEffectManager>();
+
+                StartCoroutine(IdleToShinyCardSequence(CardUIDeck.GetComponent<Animator>()));
             }
 
             DrawnCard = PlayScreen.transform.Find("DrawnCard")?.gameObject;
@@ -215,6 +217,8 @@ public class GameManager : TheSceneManager
         GameEnemyManager = GetComponentInChildren<GameEnemyManager>();
         GameEnemyManager.ResetWaves();
     }
+
+    
 
     void Update()
     {
@@ -391,8 +395,9 @@ public class GameManager : TheSceneManager
 
     private IEnumerator IdleToShinyCardSequence(Animator drawingDeckAnimator)
     {
+        Scene startingScene = SceneManager.GetActiveScene();
         // Loop for idle -> shiny -> idle while not on cooldown
-        while (!cardIsOnCD)
+        while (!cardIsOnCD && !hasWon)
         {
             // Play the "Shiny" animation once
             drawingDeckAnimator.Play("Shiny");
