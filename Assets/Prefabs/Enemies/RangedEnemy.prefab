@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 8067167058523136083}
   - component: {fileID: 6934070552387029492}
   - component: {fileID: 8705748174914275837}
-  - component: {fileID: 214462030334125398}
+  - component: {fileID: 457071703722495764}
   m_Layer: 9
   m_Name: RangedEnemy
   m_TagString: enemy
@@ -397,7 +397,7 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &214462030334125398
+--- !u!114 &457071703722495764
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -406,7 +406,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2916380234357440266}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d506f4091091d004d9ae5b930f46def3, type: 3}
+  m_Script: {fileID: 11500000, guid: c3b992cb84696454c8ef8b70a282304f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   GameEnemyManager: {fileID: 0}
@@ -437,9 +437,8 @@ MonoBehaviour:
   CurrentHitStunAmount: 0
   HitStunImmunityTime: 3
   HitStunImmune: 0
-  outOfCombatDuration: 3
+  outOfCombatDuration: 5
   enemyCollisionForce: {x: 0.5, y: 1.5}
-  groundCheck: {fileID: 865413005055817834}
   <ChaseSpeed>k__BackingField: 3
   <MaxYJumpForce>k__BackingField: 15
   <MaxXJumpForce>k__BackingField: 5
@@ -456,7 +455,6 @@ MonoBehaviour:
   IdleRange: 5
   IdleTimeBetweenMove: 1.5
   canAttack: 1
-  <DetectAttack>k__BackingField: {fileID: 8705748175543275057}
   <AttackRadius>k__BackingField: 0.8
   <PunchDamage>k__BackingField: 5
   <PunchForce>k__BackingField: {x: 45, y: 7}
@@ -467,13 +465,10 @@ MonoBehaviour:
   fxRadius: 1.5
   strongFXThreshold: 10
   damageToSizeScaling: 0.01
-  spriteRenderer: {fileID: 0}
-  flashDuration: 0
   flashInterval: 0.15
   initialSpawnDelay: 1.5
-  InChaseRange: 0
-  InAttackRange: 0
   enemyState: 0
+  AllowShyAttack: 0
 --- !u!1 &2916380235385307057
 GameObject:
   m_ObjectHideFlags: 0
@@ -550,7 +545,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 154214088, guid: e9ba881bb52b1344d8b7e302a8d9c19f, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.17070645, g: 0.91194963, b: 0.11757835, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -664,6 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd72d5a00bda70049a1830291c1b8432, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ExplosionMultiplier: 1
 --- !u!1 &4344805625839527371
 GameObject:
   m_ObjectHideFlags: 0

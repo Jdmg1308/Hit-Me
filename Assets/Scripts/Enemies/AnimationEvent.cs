@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class AnimationEvent : MonoBehaviour
 {
-    private BasicEnemy _enemy;
+    private Enemy _enemy;
     private SpriteRenderer sprite;
 
     void Start()
     {
-        _enemy = GetComponentInParent<BasicEnemy>();
+        _enemy = GetComponentInParent<Enemy>();
         sprite = GetComponent<SpriteRenderer>();
     }
 

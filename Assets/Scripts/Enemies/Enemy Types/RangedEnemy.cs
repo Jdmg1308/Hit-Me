@@ -8,10 +8,10 @@ using UnityEngine;
 public class RangedEnemy : Enemy, HasBasicStates, HasRangedStates
 {
     // transition bools
-    public bool InAttackRange { get; set; }
-    public bool InRunAwayRange { get; set; }
-    public bool InRangedAttackRange { get; set;}
-    public bool InChaseRange { get; set; }
+    [field: SerializeField] public bool InAttackRange { get; set; }
+    [field: SerializeField] public bool InRunAwayRange { get; set; }
+    [field: SerializeField] public bool InRangedAttackRange { get; set;}
+    [field: SerializeField] public bool InChaseRange { get; set; }
     public bool AllowShyAttack;
 
     // states
@@ -61,15 +61,15 @@ public class RangedEnemy : Enemy, HasBasicStates, HasRangedStates
     {
         if (!Anim.GetBool("ImpactBool"))
         {
-            if (!Anim.GetBool("isPunching") && !InRangedAttackRange) // replace isPunching withr espective range anim
+            if (!Anim.GetBool("isPunching")) // replace isPunching withr respective range anim
             {
                 if (canAttack && InAttackRange)
                     StateMachine.changeState(AttackState);
                 else if (InRunAwayRange)
                     StateMachine.changeState(RunAwayState);
-                else if (InChaseRange)
+                else if (InChaseRange && !InRangedAttackRange)
                     StateMachine.changeState(ChaseState);
-                else
+                else if (!InRangedAttackRange)
                     StateMachine.changeState(IdleState);
             }
             else
@@ -112,8 +112,7 @@ public class RangedEnemy : Enemy, HasBasicStates, HasRangedStates
     protected override void Awake()
     {
         base.Awake();
-        // setting up state machine
-        StateMachine = new EnemyStateMachine();
+        // setting up states
         AttackState = new EnemyAttackState(this, AttackTransitionDecision);
         RunAwayState = new EnemyRunAwayState(this, RunAwayTransitionDecision);
         RangedAttackState = new EnemyRangedAttackState(this, RangedAttackTransitionDecision);

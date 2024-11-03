@@ -629,7 +629,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("Triggered by " + collider.name);
         // if you are not in impact and an enemy that is in impact collides with you, take damage
         if (collider.gameObject.layer == LayerMask.NameToLayer("Explosion"))
         {

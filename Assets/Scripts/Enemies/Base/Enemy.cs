@@ -33,27 +33,27 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     // Collision Tuning
     [Header("Collision Tuning")]
-    public float maxVelocity; // don't want enemies to break game speed
+    public float maxVelocity = 60; // don't want enemies to break game speed
 
-    [Tooltip("Force threshold needed to cause damage and impact state, if not met then return to normal control")] public float collisionForceThreshold;
-    [Tooltip("Determines how much collision force is factored into impact damage"), Range(0, 1)] public float collisionDamageMultiplier;
-    [Tooltip("Determines how much impact force is factored into bounce"), Range(0, 1)] public float collisionForceMultiplier;
-    public float baseMass;
-    [Tooltip("Affects enemy floatiness during Impact State (for easier juggles)"), Range(0, 1)] public float postImpactMassScale;
+    [Tooltip("Force threshold needed to cause damage and impact state, if not met then return to normal control")] public float collisionForceThreshold = 10;
+    [Tooltip("Determines how much collision force is factored into impact damage"), Range(0, 1)] public float collisionDamageMultiplier = 0.5f;
+    [Tooltip("Determines how much impact force is factored into bounce"), Range(0, 1)] public float collisionForceMultiplier = 0.5f;
+    public float baseMass = 1;
+    [Tooltip("Affects enemy floatiness during Impact State (for easier juggles)"), Range(0, 1)] public float postImpactMassScale = 0.9f;
     
     // IDamageable Variables
-    [field: SerializeField, Header("Health/Death")] public int MaxHealth { get; set; }
-    [field: SerializeField] public int CurrentHealth { get; set; }
+    [field: SerializeField, Header("Health/Death")] public int MaxHealth { get; set; } = 50;
+    [field: SerializeField] public int CurrentHealth { get; set; } = 50;
     public object DeathLock { get; set; } = new object();
     [field: SerializeField] public bool IsDead { get; set; } = false;
-    [field: SerializeField] public float HitStunTime { get; set; } = 1f;
-    public int HitStunLimit; // amount of hits can receive before getting hit stun immunity
+    [field: SerializeField] public float HitStunTime { get; set; } = 0.3f;
+    public int HitStunLimit = 100; // amount of hits can receive before getting hit stun immunity
     public int CurrentHitStunAmount = 0;
-    public float HitStunImmunityTime; // how long hit stun immunity lasts
+    public float HitStunImmunityTime = 3; // how long hit stun immunity lasts
     public bool HitStunImmune; // set during immunity
     public float outOfCombatDuration = 5f; // Duration for the timer in seconds
     private float outOfCombatTimer = 0f;   // Current timer value
-    public Vector2 enemyCollisionForce; // force applied when colliding with another enemy
+    public Vector2 enemyCollisionForce = new Vector2(0.5f, 1.5f); // force applied when colliding with another enemy
     private GameObject downSlamExplosionTrigger;
 
     // IMoveable Variables
@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     // state
     public Vector3 TopEnemyTransform { get; set; }
     public Vector3 BottomEnemyTransform { get; set; }
-    public GameObject groundCheck;
+    private GameObject groundCheck;
     public float BodyGravity { get; set; }
     public float MaxJumpHeight { get; set; }
     public float MaxJumpDistance { get; set; }
@@ -73,30 +73,30 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     public BoxCollider2D Collider { get; set; }
 
     // editor properties
-    [field: SerializeField, Header("Movement")] public float ChaseSpeed { get; set; }
-    [field: SerializeField] public float MaxYJumpForce { get; set; }
-    [field: SerializeField] public float MaxXJumpForce { get; set; }
+    [field: SerializeField, Header("Movement")] public float ChaseSpeed { get; set; } = 3f;
+    [field: SerializeField] public float MaxYJumpForce { get; set; } = 15f;
+    [field: SerializeField] public float MaxXJumpForce { get; set; } = 5f;
     [field: SerializeField] public LayerMask PlatformDetectionMask { get; set; }
-    [field: SerializeField] public float FallthroughTime { get; set; } = 0.5f;
+    [field: SerializeField] public float FallthroughTime { get; set; } = 1f;
     [field: SerializeField] public float LandingOffset { get; set; } = 1.5f;
-    [field: SerializeField] public float JumpDelay { get; set; } = 0.3f;
+    [field: SerializeField] public float JumpDelay { get; set; } = 0.15f;
     [field: SerializeField] public LayerMask GroundLayer { get; set; }
     public Vector2 CheckGroundSize;
 
     // IdleState Variables
     [Header("Idle Variables")]
     public float IdleRange = 5f;
-    public float IdleTimeBetweenMove = 2f;
+    public float IdleTimeBetweenMove = 1.5f;
 
     // Punching Variables
     [Header("Attacking")] 
     public bool canAttack = true;
-    [field: SerializeField] public GameObject DetectAttack { get; set; }
-    [field: SerializeField] public float AttackRadius { get; set; }
-    [field: SerializeField] public int PunchDamage { get; set; }
-    [field: SerializeField] public Vector2 PunchForce { get; set; }
+    public GameObject DetectAttack { get; set; }
+    [field: SerializeField] public float AttackRadius { get; set; } = 0.8f;
+    [field: SerializeField] public int PunchDamage { get; set; } = 5;
+    [field: SerializeField] public Vector2 PunchForce { get; set; } = new Vector2(45, 7);
     public bool ShouldBeDamaging { get; set; } = false;
-    [field: SerializeField] public float AttackWait { get; set; } = 1f;
+    [field: SerializeField] public float AttackWait { get; set; } = 0.75f;
 
     [Header("Knockback Path Tracer")]
     public float PointSpacing = 0.5f;  // Minimum distance between recorded points
@@ -108,14 +108,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     // hurt fx
     public GameObject weakPowPrefab;
     public GameObject strongPowPrefab;
-    public float fxRadius;
-    public float strongFXThreshold;
-    public float damageToSizeScaling; // dmg = size of vfx
+    public float fxRadius = 1.5f;
+    public float strongFXThreshold = 10f;
+    public float damageToSizeScaling = 0.01f; // dmg = size of vfx
 
     // hit stun immunity fx
-    public SpriteRenderer spriteRenderer;
-    public float flashDuration; // total duration of flashing, will be set to hit stun immunity time
-    public float flashInterval = 0.1f; // time between flashes
+    private SpriteRenderer spriteRenderer;
+    private float flashDuration; // total duration of flashing, will be set to hit stun immunity time
+    public float flashInterval = 0.15f; // time between flashes
 
     public float initialSpawnDelay = 1.5f;
 
@@ -136,6 +136,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         _lineRenderer = gameObject.GetComponent<LineRenderer>();
         spriteRenderer = gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>();
         downSlamExplosionTrigger = transform.Find("ExplosionDetection").gameObject;
+        DetectAttack = gameObject.transform.Find("DetectAttack").gameObject;
+        groundCheck = transform.Find("GroundCheck").gameObject;
 
         // setting up state machine
         StateMachine = new EnemyStateMachine();
@@ -555,10 +557,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     #region Gizmos
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawCube(groundCheck.transform.position, CheckGroundSize); // isGrounded
-                                                                          // Gizmos.DrawRay(BottomEnemyTransform, Vector2.down * .3f); // isGrounded
-                                                                          // IsGrounded = Physics2D.OverlapBox(BottomEnemyTransform, CheckGroundSize, 0f, GroundLayer) && !MidJump;
+        if (groundCheck)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawCube(groundCheck.transform.position, CheckGroundSize); // isGrounded
+        }
 
         Gizmos.color = new Color(0f, 1f, 0f, 0.5f);
         Gizmos.DrawWireCube(PlatformDetectionOrigin, new Vector2(MaxJumpDistance, MaxJumpHeight)); // jump detection box

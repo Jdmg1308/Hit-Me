@@ -10,7 +10,7 @@ public class InRangedAttackRangeCheck : MonoBehaviour
     private void Awake()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        _enemy = GetComponentInParent<RangedEnemy>();
+        _enemy = GetComponentInParent<HasRangedStates>();
     }
 
     void OnTriggerEnter2D(Collider2D collision)

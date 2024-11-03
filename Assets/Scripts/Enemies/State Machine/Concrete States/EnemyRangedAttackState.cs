@@ -7,6 +7,6 @@ public class EnemyRangedAttackState : EnemyState
     public EnemyRangedAttackState(Enemy enemy, TransitionDecisionDelegate transitionDecision) 
         : base(enemy, transitionDecision)
     {
-        id = EnemyStateMachine.EnemyStates.Attack;
+        id = EnemyStateMachine.EnemyStates.RangedAttack;
     }
 }

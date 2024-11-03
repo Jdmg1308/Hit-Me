@@ -10,7 +10,7 @@ public class InChaseRangeCheck : MonoBehaviour
     private void Awake()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        _enemy = GetComponentInParent<BasicEnemy>();
+        _enemy = GetComponentInParent<HasBasicStates>();
     }
 
     void OnTriggerEnter2D(Collider2D collision)

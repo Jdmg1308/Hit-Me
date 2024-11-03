@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class EnemyRunAwayState : EnemyState
 {
-    public EnemyRunAwayState(Enemy enemy, TransitionDecisionDelegate transitionDecision) : base(enemy, transitionDecision)
+    public EnemyRunAwayState(Enemy enemy, TransitionDecisionDelegate transitionDecision) 
+        : base(enemy, transitionDecision)
     {
         id = EnemyStateMachine.EnemyStates.RunAway;
     }
