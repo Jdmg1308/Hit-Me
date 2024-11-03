@@ -9,9 +9,9 @@ public class ExplodingBarrel : Hazards, IDamageable
     private Animator anim;
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
-    public GameObject strongPowPrefab;
     public Vector2 punchVector = new Vector2();
     public Rigidbody2D RB { get; set; }
+    //private GameObject Explosion;
 
     void Start()
     {
@@ -19,6 +19,7 @@ public class ExplodingBarrel : Hazards, IDamageable
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color; // Store the original color of the barrel
         RB = GetComponent<Rigidbody2D>();
+        //Explosion = this.transform.Find("Explosion")?.gameObject;
     }
 
     public void TakeKick(int damage, Vector2 force)
@@ -88,26 +89,14 @@ public class ExplodingBarrel : Hazards, IDamageable
         anim.Play("BarrelExplosion");
 
         // Wait for the animation to complete
-        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-
+        yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length - 0.55f);
+        //Explosion.SetActive(true);
+        yield return StartCoroutine(TemporaryPrefab(explosionPrefab, transform.position, 0.1f));
+        
         anim.Play("BarrelGone");
-
-        // Instantiate explosion effect
-        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
 
         // Destroy the barrel game object
         Destroy(gameObject);
-    }
-
-
-    private void SpawnDamageVFX(float xForce)
-    {
-        Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * 1.5f;
-        Vector3 spawnPosition = new Vector3(randomPoint.x, randomPoint.y, 0) + transform.position;
-        GameObject newVFX = Instantiate(strongPowPrefab, spawnPosition, Quaternion.identity);
-        // make vfx 'weaker' if kick not strong enough
-        // newVFX.GetComponent<SpriteRenderer>().color = newVFX.GetComponent<SpriteRenderer>().color * 0.5f;
-
     }
 
 
