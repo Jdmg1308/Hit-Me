@@ -5,6 +5,7 @@ using UnityEngine;
 public class Hazards : MonoBehaviour
 {
     private GameManager GM;
+
     void Awake()
     {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
@@ -24,5 +25,14 @@ public class Hazards : MonoBehaviour
     public Vector2 PlayerHitKnockBackVectorNormalized()
     {
         return (GM.Player.transform.position - this.transform.position).normalized;
+    }
+
+    public IEnumerator TemporaryPrefab(GameObject prefab, Vector2 position, float time)
+    {
+        GameObject temp = Instantiate(prefab, position, Quaternion.identity);
+        Debug.Log("bruh" + time);
+        yield return new WaitForSeconds(time);
+        Debug.Log("zamn");
+        Destroy(temp);
     }
 }
