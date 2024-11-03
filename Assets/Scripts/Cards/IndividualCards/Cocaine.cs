@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Player Drugs Card Data", menuName = "ScriptableObjects/Card/PlayerDrugsCard")]
-public class PlayerDrugs : Card
+[CreateAssetMenu(fileName = "New Cocaine Card Data", menuName = "ScriptableObjects/Card/Cocaine")]
+public class Cocaine : Card
 {
     public override CardType cardType{get{return CardType.StatusEffect;}}
     public float oldHPRatio = 0.0f;
@@ -11,7 +11,8 @@ public class PlayerDrugs : Card
 
     /* 
      * player is on too many drugs to count
-     * increased damage, HP, and movement speed
+     * increased damage, dec HP, and inc movement speed
+     * UPDATE: accidentally inverted controls, that works tho so it's staying 
      */
     public override void use(GameManager GM) {
         if (!GM.statusApplied) 
@@ -24,10 +25,10 @@ public class PlayerDrugs : Card
             //oldHPRatio = ((float)GM.healthCurrent / GM.healthMax);
             GM.healthMax -= effectValue * 10;
             GM.healthCurrent -= effectValue * 10;
-            GM.playerController.p.kickDamage -= effectValue;
-            GM.playerController.p.punchDamage -= effectValue;
-            GM.playerController.p.uppercutDamage -= effectValue;
-            GM.playerController.p.moveSpeed -= effectValue * 10;
+            GM.playerController.p.kickDamage -= (int)effectValue;
+            GM.playerController.p.punchDamage -= (int)effectValue;
+            GM.playerController.p.uppercutDamage -= (int)effectValue;
+            GM.playerController.p.moveSpeed -= (int)effectValue * 10;
             Debug.Log("new HP: " + GM.healthCurrent);
         } 
         else 
@@ -36,10 +37,10 @@ public class PlayerDrugs : Card
             //unapply the status efect
             GM.healthMax += effectValue * 10;
             GM.healthCurrent += effectValue * 10;
-            GM.playerController.p.kickDamage += effectValue;
-            GM.playerController.p.punchDamage += effectValue;
-            GM.playerController.p.uppercutDamage += effectValue;
-            GM.playerController.p.moveSpeed += effectValue * 10;
+            GM.playerController.p.kickDamage += (int)effectValue;
+            GM.playerController.p.punchDamage += (int)effectValue;
+            GM.playerController.p.uppercutDamage += (int)effectValue;
+            GM.playerController.p.moveSpeed += (int)effectValue * 10;
             Debug.Log("new HP: " + GM.healthCurrent);
         }
     }
