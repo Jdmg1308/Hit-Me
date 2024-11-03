@@ -29,6 +29,10 @@ public class EnemyAttackState : EnemyState
     public override void EnterState()
     {
         if (e.canAttack && e.IsGrounded)
+        {
+            float dirToPlayer = e.Player.transform.position.x - e.transform.position.x;
+            e.FlipCharacter(dirToPlayer > 0);
             e.Anim.SetBool("isPunching", true);
+        }
     }
 }

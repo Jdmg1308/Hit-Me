@@ -338,7 +338,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     {
         Vector2 boxSize = new Vector2(MaxJumpDistance, MaxJumpHeight);
         Collider2D[] hits = Physics2D.OverlapBoxAll(PlatformDetectionOrigin, boxSize, 0f, PlatformDetectionMask);
-        Debug.Log(PlatformDetectionOrigin);
         LandingTarget = Vector2.zero; // special val
         if (hits.Length == 0)
         { // No platforms detected, exit early
@@ -353,8 +352,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
                 // Check if the hit object has the "OneWayPlatform" tag
                 if (hit.CompareTag("OneWayPlatform"))
                 {
-                    Debug.Log(hit.gameObject.name);
-                    Debug.Log(hit.gameObject.transform.position);
                     // Calculate the distance between the enemy and the hit platform
                     float distance = Vector2.Distance(BottomEnemyTransform, hit.transform.position);
                     if (distance > maxDistance)

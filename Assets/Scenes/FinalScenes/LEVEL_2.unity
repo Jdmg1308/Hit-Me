@@ -478,8 +478,38 @@ PrefabInstance:
       propertyPath: m_Name
       value: BasicEnemy
       objectReference: {fileID: 0}
+    - target: {fileID: 5811921193137224085, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
+--- !u!1 &129830973 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6473432826295868782, guid: 753c1980ecf887446b3e8c72ffb36601, type: 3}
+  m_PrefabInstance: {fileID: 1588537302}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &129830978
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129830973}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &314931779
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -534,6 +564,10 @@ PrefabInstance:
     - target: {fileID: 4745988560934552255, guid: 883b4096eb464b24abb3487e7a0d069d, type: 3}
       propertyPath: m_Name
       value: ExplodingBarrel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4745988560934552255, guid: 883b4096eb464b24abb3487e7a0d069d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 883b4096eb464b24abb3487e7a0d069d, type: 3}
@@ -1754,6 +1788,10 @@ PrefabInstance:
     - target: {fileID: 5376063830636673450, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: SpawnDelay
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
@@ -3361,7 +3399,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1603400338
 Transform:
   m_ObjectHideFlags: 0

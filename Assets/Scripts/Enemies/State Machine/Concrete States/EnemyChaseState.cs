@@ -32,6 +32,7 @@ public class EnemyChaseState : EnemyState
                 if (e.ShouldJump)
                 {
                     Vector2 val = e.CalculateJumpForce(e.LandingTarget + (Vector2.up * e.LandingOffset));
+                    e.FlipCharacter(val.x > 0);
 
                     yield return e.PauseAction(e.JumpDelay);
 
