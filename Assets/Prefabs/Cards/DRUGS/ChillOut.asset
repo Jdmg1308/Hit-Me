@@ -16,7 +16,7 @@ MonoBehaviour:
   cardDescription: Nothing phases you anymore
   cardImage: {fileID: -1430613528, guid: e7fb2498a1dbbd44296382dcc37989c5, type: 3}
   effectImage: {fileID: 0}
-  effectValue: 75
+  effectValue: 65
   id: 0
   cardUserAnim: 
   price: 0

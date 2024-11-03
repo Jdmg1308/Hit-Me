@@ -243,6 +243,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'Main Camera '
       objectReference: {fileID: 0}
+    - target: {fileID: 5487765817233552504, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: waveSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487765817233552504, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: waveStrength
+      value: 0.05
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
 --- !u!1001 &457071703722495762
@@ -371,12 +379,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.size
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 31f9a894542870042a78ac643cefdd51, type: 2}
+      objectReference: {fileID: 11400000, guid: affabd4ccdb85db4385084f851672666, type: 2}
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.data[1]
       value: 
@@ -392,11 +400,11 @@ PrefabInstance:
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.data[4]
       value: 
-      objectReference: {fileID: 11400000, guid: affabd4ccdb85db4385084f851672666, type: 2}
+      objectReference: {fileID: 11400000, guid: 31f9a894542870042a78ac643cefdd51, type: 2}
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.data[5]
       value: 
-      objectReference: {fileID: 11400000, guid: e015b186915226b48acfa1d60887ce6d, type: 2}
+      objectReference: {fileID: 11400000, guid: 4e6c99c78f73be346ab94f92096867a3, type: 2}
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.data[6]
       value: 
@@ -404,7 +412,7 @@ PrefabInstance:
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.data[7]
       value: 
-      objectReference: {fileID: 11400000, guid: ce388740fce6c3443816867af0a1c4b0, type: 2}
+      objectReference: {fileID: 11400000, guid: e015b186915226b48acfa1d60887ce6d, type: 2}
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.data[8]
       value: 
