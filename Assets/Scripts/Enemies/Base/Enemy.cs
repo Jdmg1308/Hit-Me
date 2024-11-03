@@ -319,7 +319,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     public Vector2 CalculateJumpForce(Vector2 landingPosition)
     {
         // Horizontal and vertical distances
-        float deltaX = Math.Abs(landingPosition.x - transform.position.x);
+        float deltaX = landingPosition.x - transform.position.x;
         float deltaY = Math.Abs(landingPosition.y - BottomEnemyTransform.y);
 
         // Calculate the vertical velocity needed to reach the platform height
@@ -327,7 +327,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         // Time to reach the apex (top of the jump) at platform height
         float timeToApex = verticalVelocity / BodyGravity;
         // Calculate the horizontal velocity needed to reach the platform during that time
-        float horizontalVelocity = (FacingRight ? 1 : -1) * Math.Min(MaxXJumpForce, deltaX / timeToApex);
+        float horizontalVelocity = (deltaX > 0 ? 1 : -1) * Math.Min(MaxXJumpForce, Math.Abs(deltaX) / timeToApex);
 
         // Return the calculated initial velocity as a 2D vector (x, y)
         return new Vector2(horizontalVelocity, verticalVelocity);
@@ -338,6 +338,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     {
         Vector2 boxSize = new Vector2(MaxJumpDistance, MaxJumpHeight);
         Collider2D[] hits = Physics2D.OverlapBoxAll(PlatformDetectionOrigin, boxSize, 0f, PlatformDetectionMask);
+        Debug.Log(PlatformDetectionOrigin);
         LandingTarget = Vector2.zero; // special val
         if (hits.Length == 0)
         { // No platforms detected, exit early
@@ -352,6 +353,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
                 // Check if the hit object has the "OneWayPlatform" tag
                 if (hit.CompareTag("OneWayPlatform"))
                 {
+                    Debug.Log(hit.gameObject.name);
+                    Debug.Log(hit.gameObject.transform.position);
                     // Calculate the distance between the enemy and the hit platform
                     float distance = Vector2.Distance(BottomEnemyTransform, hit.transform.position);
                     if (distance > maxDistance)
@@ -366,8 +369,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
             if (furthestPlatform != null)
             {
                 Bounds platformBounds = furthestPlatform.bounds;
-                float platformXDist = Math.Abs(RB.transform.position.x - (FacingRight ? platformBounds.max.x : platformBounds.min.x));
-                float jumpX = (FacingRight ? 1 : -1) * Math.Min(platformXDist, MaxJumpDistance);
+                float platformXDist = (FacingRight ? platformBounds.max.x : platformBounds.min.x) - RB.transform.position.x;
+                float jumpX = (platformXDist > 0 ? 1 : -1) * Math.Min(Math.Abs(platformXDist), MaxJumpDistance);
                 LandingTarget = new Vector2(
                     RB.transform.position.x + jumpX,
                     platformBounds.max.y
@@ -568,8 +571,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         Gizmos.DrawLine(BottomEnemyTransform, LandingTarget); // visual for where jumping landing target is
 
         // hitbox
-        Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
-        Gizmos.DrawWireSphere(DetectAttack.transform.position, AttackRadius);
+        if (DetectAttack)
+        {
+            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
+            Gizmos.DrawWireSphere(DetectAttack.transform.position, AttackRadius);
+        }
 
         if (downSlamExplosionTrigger != null && downSlamExplosionTrigger.activeSelf)
         {
