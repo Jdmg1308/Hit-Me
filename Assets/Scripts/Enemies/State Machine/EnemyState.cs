@@ -20,7 +20,7 @@ public class EnemyState
     public virtual void ExitState() { }
     public void FrameUpdate() { 
         // default anti-decision making variables
-        if (!e.IsPaused && !e.InImpact && !e.InHitStun && !e.InKnockup)
+        if (!e.IsPaused && !e.InImpact && !e.InHitStun && !e.InKnockup && !e.Anim.GetBool("ImpactBool"))
             transitionDecision?.Invoke();
     }
     public virtual void PhysicsUpdate() { }

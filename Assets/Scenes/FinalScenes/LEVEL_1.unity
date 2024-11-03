@@ -231,7 +231,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 457071703722495764, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: <ChaseSpeed>k__BackingField
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2916380234357440266, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: m_Name
@@ -280,6 +280,10 @@ PrefabInstance:
     - target: {fileID: 2916380234357440276, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5031418386481587153, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+      propertyPath: m_Radius
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 233442461669149810, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
