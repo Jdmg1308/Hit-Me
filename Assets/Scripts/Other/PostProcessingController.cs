@@ -5,50 +5,68 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PostProcessingController : MonoBehaviour
 {
-    public PostProcessVolume postProcessVolume; // assign in the Inspector
+    public PostProcessVolume postProcessVolume; // Assign in the Inspector
+    // Wavy Wobble Effect
+    public WiggleWobble wiggleWobble; // Reference to the wigglinig script
     private ColorGrading colorGrading;
+
+    // LSD effect parameters
     public bool rainbowEnabled;
     public float rainbowCycleSpeed = 1.0f; // Speed of the rainbow cycle
+
+    // High (weed) effect parameters
     public bool greenEnabled;
     public float greenPulseSpeed = 1.5f; // Speed of the green pulse
     private float pulseTime;
 
-    // Start is called before the first frame update
+    // Drunk effect parameters
+    public bool isDrunk;
+    public float wobbleAmount = 0.1f; // Amount of wobble
+    public float wobbleSpeed = 2f; // Speed of wobble
+
     void Start()
     {
-         // Access the Color Grading effect from the post-processing profile
         postProcessVolume.profile.TryGetSettings(out colorGrading);
+        
+        // Start with effects disabled
         rainbowEnabled = false;
         greenEnabled = false;
+        isDrunk = false;
+        if (wiggleWobble != null)
+        {
+            wiggleWobble.enabled = false; // Disable wobble effect initially
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        // Handle color grading effects
         if (colorGrading != null)
         {
             if (rainbowEnabled)
             {
                 // Cycle through colors using a hue shift
-                float hue = Mathf.PingPong(Time.time * rainbowCycleSpeed, 1.0f); // Loops between 0 and 1
-                Color rainbowColor = Color.HSVToRGB(hue, 1.0f, 1.0f); // Full saturation and brightness
-
-                // Apply the rainbow color filter
+                float hue = Mathf.PingPong(Time.time * rainbowCycleSpeed, 1.0f);
+                Color rainbowColor = Color.HSVToRGB(hue, 1.0f, 1.0f);
                 colorGrading.colorFilter.value = rainbowColor;
             } 
             else if (greenEnabled)
             {
-                // Create a pulsating effect using a sine wave
+                // Pulsating green effect
                 pulseTime += Time.deltaTime * greenPulseSpeed;
-                float intensity = Mathf.Abs(Mathf.Sin(pulseTime)); // Oscillates between 0 and 1
-                // Apply the pulse to a green color filter
-                colorGrading.colorFilter.value = Color.Lerp(Color.white, Color.green, intensity);   
+                float intensity = Mathf.Abs(Mathf.Sin(pulseTime));
+                colorGrading.colorFilter.value = Color.Lerp(Color.white, Color.green, intensity);
             }
             else
             {
-                // reset the color so we aren't stuck 
-                colorGrading.colorFilter.value = Color.white;
+                colorGrading.colorFilter.value = Color.white; // Reset to white
             }
+        }
+
+        // Handle drunk effect
+        if (wiggleWobble != null)
+        {
+            wiggleWobble.enabled = isDrunk;
         }
     }
 
@@ -62,4 +80,8 @@ public class PostProcessingController : MonoBehaviour
         rainbowEnabled = isEnabled;
     }
 
+    public void ToggleDrunkEffect(bool isEnabled)
+    {
+        isDrunk = isEnabled;
+    }
 }
