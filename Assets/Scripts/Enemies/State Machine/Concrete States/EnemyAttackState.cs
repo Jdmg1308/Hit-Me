@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttackState : EnemyState<BasicEnemy>
+public class EnemyAttackState : EnemyState
 {
-    public EnemyAttackState(BasicEnemy enemy, EnemyStateMachine<BasicEnemy> enemyStateMachine) : base(enemy, enemyStateMachine)
+    public EnemyAttackState(Enemy enemy, TransitionDecisionDelegate transitionDecision) 
+        : base(enemy, transitionDecision)
     {
-        id = EnemyStateMachine<BasicEnemy>.EnemyStates.Attack;
+        id = EnemyStateMachine.EnemyStates.Attack;
     }
 
     public override void AnimationTriggerEvent(AnimationTriggerType triggerType)
@@ -29,25 +30,5 @@ public class EnemyAttackState : EnemyState<BasicEnemy>
     {
         if (e.canAttack && e.IsGrounded)
             e.Anim.SetBool("isPunching", true);
-    }
-
-    public override void FrameUpdate()
-    {
-        // must finish punch animation before considering next action
-        // InImpact = taking collisions, ImpactBool = damage hit stun state?
-        if (!e.IsPaused && !e.InImpact && !e.Anim.GetBool("ImpactBool") && !e.InHitStun && !e.InKnockup)
-        {
-            if (!e.Anim.GetBool("isPunching") && !e.InAttackRange)
-            {
-                if (!e.InChaseRange)
-                    enemyStateMachine.changeState(e.IdleState);
-                else
-                    enemyStateMachine.changeState(e.ChaseState);
-            }
-            else
-            { // repeatedely punch if in range
-                EnterState();
-            }
-        }
     }
 }

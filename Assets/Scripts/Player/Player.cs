@@ -61,7 +61,8 @@ public class Player
     public GameObject kickPoint;
 
     // properties of actual kick
-    public float baseKickForce = 0.5f; // non-charged kick force
+    public float fastKickForce; // weak kick force for fast kick, static and sep from charging
+    public float heavyKickForce = 0.5f; // non-charged kick force for heavy attack, used for charge calculations
     public float maxKickForce; // non-extended fully charged kick force
     public float forceIncrease; // diff increase in force from base to max (private)
     public float extendedMaxKickForce; // extended fully charged kick force (for grapple kick) (determines amount of extension relative to maxKickForce)

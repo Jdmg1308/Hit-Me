@@ -1188,7 +1188,8 @@ MonoBehaviour:
     baseFriction: 0.2
     friction: 0.2
     kickPoint: {fileID: 6114587614926986967}
-    baseKickForce: 12
+    fastKickForce: 9
+    heavyKickForce: 12
     maxKickForce: 18
     forceIncrease: 0
     extendedMaxKickForce: 24
@@ -1667,7 +1668,8 @@ MonoBehaviour:
     baseFriction: 0
     friction: 0
     kickPoint: {fileID: 0}
-    baseKickForce: 0.5
+    fastKickForce: 0
+    heavyKickForce: 0.5
     maxKickForce: 0
     forceIncrease: 0
     extendedMaxKickForce: 0

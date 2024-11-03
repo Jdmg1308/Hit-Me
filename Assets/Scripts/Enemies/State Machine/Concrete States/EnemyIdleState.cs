@@ -2,39 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyIdleState : EnemyState<BasicEnemy>
+public class EnemyIdleState : EnemyState
 {
     private Vector2 _targetPos;
     private float _currentTime = 0f;
 
-    public EnemyIdleState(BasicEnemy enemy, EnemyStateMachine<BasicEnemy> enemyStateMachine) : base(enemy, enemyStateMachine)
+    private TransitionDecisionDelegate Timing(TransitionDecisionDelegate transitionDecision)
     {
-        id = EnemyStateMachine<BasicEnemy>.EnemyStates.Idle;
+        return () =>
+        {
+            transitionDecision?.Invoke();
+
+            // regular logic
+            if (_currentTime > e.IdleTimeBetweenMove)
+            {
+                _currentTime = 0f;
+                SetTarget();
+            }
+            _currentTime += Time.deltaTime;
+        };
+    }
+
+    public EnemyIdleState(Enemy enemy, TransitionDecisionDelegate transitionDecision) : base(enemy, transitionDecision)
+    {
+        id = EnemyStateMachine.EnemyStates.Idle;
+        this.transitionDecision = Timing(transitionDecision);
     }
 
     public override void EnterState()
     {
         _targetPos = e.transform.position;
-    }
-
-    public override void FrameUpdate()
-    {
-        // check state
-        if (!e.IsPaused && !e.InImpact && !e.InHitStun && !e.InKnockup)
-        {
-            if (e.InAttackRange)
-                enemyStateMachine.changeState(e.AttackState);
-            else if (e.InChaseRange)
-                enemyStateMachine.changeState(e.ChaseState);
-        }
-
-        // regular logic
-        if (_currentTime > e.IdleTimeBetweenMove)
-        {
-            _currentTime = 0f;
-            SetTarget();
-        }
-        _currentTime += Time.deltaTime;
     }
 
     public override void PhysicsUpdate()

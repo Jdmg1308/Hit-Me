@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-
     public Player p;
     public HashSet<IDamageable> iDamageableSet = new HashSet<IDamageable>();
     public bool shouldBeDamaging { get; private set; } = false;
@@ -44,9 +43,9 @@ public class PlayerController : MonoBehaviour
 
         p.playerExtendedChargeMeter.GetComponent<Slider>().value = 0; // reset value
         p.playerExtendedChargeMeter.SetActive(false); // hide
-        p.forceIncrease = p.maxKickForce - p.baseKickForce;
+        p.forceIncrease = p.maxKickForce - p.heavyKickForce;
         // below is setting seondary bar to be proportionally larger than original bar based on extended max force
-        float extendedPercent = (p.extendedMaxKickForce - p.baseKickForce) / p.forceIncrease; // 1 + percent increase
+        float extendedPercent = (p.extendedMaxKickForce - p.heavyKickForce) / p.forceIncrease; // 1 + percent increase
         p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue = extendedPercent;
         p.playerExtendedChargeMeter.GetComponent<RectTransform>().sizeDelta = new Vector2(
             p.playerChargeMeter.GetComponent<RectTransform>().sizeDelta.x * extendedPercent,
@@ -133,7 +132,7 @@ public class PlayerController : MonoBehaviour
         if (!p.isGrounded) adjustAirControl = !p.grapplingGun.isGrappling ? p.airControl : p.grappleAirControl;
 
         // for slight momentum during kick charge        
-        p.friction = Input.GetKey(KeyCode.Space) && p.anim.GetBool("isKicking") ? 1 : p.baseFriction;
+        p.friction = p.anim.GetBool("isKicking") ? 0.9f : p.baseFriction;
 
         // if in air/grappling, maintain prev x for momentum (else add ground friction), add directed movement with air control restrictions
         float xVelocity = (p.rb.velocity.x * (!p.isGrounded || p.grapplingGun.isGrappling ? 1 : p.friction))
@@ -336,15 +335,21 @@ public class PlayerController : MonoBehaviour
         p.anim.SetBool("inAirCombo", false);
     }
 
+    public enum TypeOfKick
+    {
+        FastKick,
+        HeavyKick
+    }
     // kick active frames
-    public IEnumerator Kick()
+    public IEnumerator Kick(TypeOfKick type)
     {
         shouldBeDamaging = true;
 
         // calculate kick force properties
         int dir = p.facingRight ? 1 : -1;
         float chargeIncrease = p.kickCharge * p.forceIncrease;
-        float weightedXForce = dir * (p.baseKickForce + chargeIncrease);
+        float baseKickForce = type == TypeOfKick.FastKick ? p.fastKickForce : p.heavyKickForce;
+        float weightedXForce = dir * (baseKickForce + chargeIncrease);
         Vector2 force = new Vector2(weightedXForce, 0);
         float weightedYForce = p.kickUpForce + (chargeIncrease * p.chargeUpForceMultiplier);
 

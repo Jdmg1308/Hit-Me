@@ -5,7 +5,7 @@ using UnityEngine;
 public class InAttackRangeCheck : MonoBehaviour
 {
     public GameObject Player { get; set; }
-    private BasicEnemy _enemy;
+    private HasBasicStates _enemy;
 
     private void Awake()
     {
@@ -16,17 +16,13 @@ public class InAttackRangeCheck : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject == Player)
-        {
             _enemy.SetInAttackRange(true);
-        }
     }
 
     void OnTriggerExit2D(Collider2D collision)
     {
         // Check if the collided xobject is on the "Player" layer
         if (collision.gameObject == Player)
-        {
             _enemy.SetInAttackRange(false);
-        }
     }
 }

@@ -119,6 +119,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     public float initialSpawnDelay = 1.5f;
 
+    // State Machine Variables
+    public EnemyStateMachine.EnemyStates enemyState; // for debug
+    public EnemyStateMachine StateMachine { get; set; }
+
     #region Universal Functions
     // called before start when script is loaded
     protected virtual void Awake()
@@ -132,6 +136,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         _lineRenderer = gameObject.GetComponent<LineRenderer>();
         spriteRenderer = gameObject.transform.Find("Sprite").GetComponent<SpriteRenderer>();
         downSlamExplosionTrigger = transform.Find("ExplosionDetection").gameObject;
+
+        // setting up state machine
+        StateMachine = new EnemyStateMachine();
     }
 
     // called before first frame after all scripts loaded
@@ -161,6 +168,10 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     protected virtual void Update()
     {
+        // updating state
+        StateMachine.currentEnemyState.FrameUpdate();
+        enemyState = StateMachine.currentEnemyState.id; // for debug
+
         // updating transforms
         TopEnemyTransform = transform.position + (Vector3.up * Collider.bounds.extents.y);
         BottomEnemyTransform = transform.position + (Vector3.down * Collider.bounds.extents.y);
@@ -224,6 +235,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
             RB.velocity = RB.velocity * 0;
             RB.gravityScale = 0;
         }
+
+        if (!IsPaused && !InImpact && !InKnockup)
+            StateMachine.currentEnemyState.PhysicsUpdate();
     }
 
     private IEnumerator downSlamExplosionActive()
@@ -528,6 +542,13 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     private void ClearPath()
     {
         _lineRenderer.positionCount = 0;
+    }
+    #endregion
+
+    #region Animation Triggers
+    public void AnimationTriggerEvent(EnemyState.AnimationTriggerType triggerType)
+    {
+        StateMachine.currentEnemyState.AnimationTriggerEvent(triggerType);
     }
     #endregion
 

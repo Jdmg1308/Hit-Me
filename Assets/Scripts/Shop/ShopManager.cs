@@ -25,10 +25,7 @@ public class ShopManager : TheSceneManager
         Canvas = GameObject.FindGameObjectWithTag("Canvas");
 
         if (Canvas)
-        {
             ShopScreen = Canvas.transform.Find("Shop Screen")?.gameObject;
-        }
-
     }
 
     // Start is called before the first frame update
@@ -144,13 +141,9 @@ public class ShopManager : TheSceneManager
             cardButton.GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
                 if (duplicateCard)
-                {
                     DuplicateCard(card);
-                }
                 else
-                {
                     DestroyCard(card);
-                }
                 deckDisplayPanel.SetActive(false); // Hide after selection
                 Options.SetActive(true);
             });

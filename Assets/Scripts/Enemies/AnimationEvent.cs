@@ -15,18 +15,18 @@ public class AnimationEvent : MonoBehaviour
 
     public void Punch()
     {
-        _enemy.AnimationTriggerEvent(EnemyState<BasicEnemy>.AnimationTriggerType.StartPunch);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.StartPunch);
     }
 
     public void EndPunch()
     {
         sprite.color = Color.white;
-        _enemy.AnimationTriggerEvent(EnemyState<BasicEnemy>.AnimationTriggerType.EndPunch);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndPunch);
     }
 
     public void EndShouldBeDamaging()
     {
-        _enemy.AnimationTriggerEvent(EnemyState<BasicEnemy>.AnimationTriggerType.EndPunchDamaging);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndPunchDamaging);
     }
 
     // temp until we get polish animations

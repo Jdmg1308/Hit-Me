@@ -11,7 +11,8 @@ public class KnockbackCard : Card
      * using this card increases the knockback (kick force) for the player by effectValue
      */
     public override void use(GameManager GM) {
-        GM.p.baseKickForce += effectValue;
+        GM.p.fastKickForce += effectValue;
+        GM.p.heavyKickForce += effectValue;
         GM.p.maxKickForce += effectValue;
         GM.p.extendedMaxKickForce += effectValue;
     }

@@ -3,23 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStateMachine<T> where T : Enemy
+public class EnemyStateMachine
 {
     public enum EnemyStates
     {
         Idle,
         Chase,
-        Attack
+        Attack,
+        RangedAttack,
+        RunAway
     }
-    public EnemyState<T> currentEnemyState { get; set; }
+    public EnemyState currentEnemyState { get; set; }
 
-    public void Initialize(EnemyState<T> startingState)
+    public void Initialize(EnemyState startingState)
     {
         currentEnemyState = startingState;
         currentEnemyState.EnterState();
     }
 
-    public void changeState(EnemyState<T> newState)
+    public void changeState(EnemyState newState)
     {
         currentEnemyState.ExitState();
         currentEnemyState = newState;

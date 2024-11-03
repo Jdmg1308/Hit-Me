@@ -209,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2916380234357440276, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.56
+      value: 16.37
       objectReference: {fileID: 0}
     - target: {fileID: 2916380234357440276, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: m_LocalPosition.y
@@ -246,6 +246,18 @@ PrefabInstance:
     - target: {fileID: 2916380234357440276, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2916380235385307059, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+      propertyPath: m_Color.b
+      value: 0.11757835
+      objectReference: {fileID: 0}
+    - target: {fileID: 2916380235385307059, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+      propertyPath: m_Color.g
+      value: 0.91194963
+      objectReference: {fileID: 0}
+    - target: {fileID: 2916380235385307059, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+      propertyPath: m_Color.r
+      value: 0.17070645
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
@@ -751,6 +763,10 @@ PrefabInstance:
       propertyPath: m_camera
       value: 
       objectReference: {fileID: 4699786612742052499}
+    - target: {fileID: 7021618568593065068, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
+      propertyPath: m_Distance
+      value: 7.544832
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdb22645942123143ba7da51b1a71b5c, type: 3}
 --- !u!114 &4699786613988009716

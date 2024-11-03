@@ -5,25 +5,63 @@ using System.Data;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class BasicEnemy : Enemy
+public class BasicEnemy : Enemy, HasBasicStates
 {
-    public bool InChaseRange;
-    public bool InAttackRange;
-    public EnemyChaseState ChaseState;
-    public EnemyAttackState AttackState;
-    public EnemyIdleState IdleState;
+    // transition bools
+    public bool InChaseRange { get; set; }
+    public bool InAttackRange { get; set; }
 
-    public EnemyStateMachine<BasicEnemy>.EnemyStates enemyState;
-    public EnemyStateMachine<BasicEnemy> StateMachine { get; set; }
+    // states
+    public EnemyChaseState ChaseState;
+    private void ChaseTransitionDecision()
+    {
+        // check state
+        if (IsGrounded)
+        { // can only change state if on ground and not paused
+            if (canAttack && InAttackRange)
+                StateMachine.changeState(AttackState);
+            else if (!InChaseRange)
+                StateMachine.changeState(IdleState);
+        }
+    }
+
+    public EnemyAttackState AttackState;
+    private void AttackTransitionDecision()
+    {
+        // must finish punch animation before considering next action
+        // InImpact = taking collisions, ImpactBool = damage hit stun state
+        if (!Anim.GetBool("ImpactBool") )
+        {
+            if (!Anim.GetBool("isPunching") && !InAttackRange)
+            {
+                if (InChaseRange)
+                    StateMachine.changeState(ChaseState);
+                else
+                    StateMachine.changeState(IdleState);
+            }
+            else
+            { // repeatedely punch if in range
+                AttackState.EnterState();
+            }
+        }
+    }
+    
+    public EnemyIdleState IdleState;
+    private void IdleTransitionDecision()
+    {
+        if (canAttack && InAttackRange)
+            StateMachine.changeState(AttackState);
+        else if (InChaseRange)
+            StateMachine.changeState(ChaseState);
+    }
 
     protected override void Awake()
     {
         base.Awake();
         // setting up state machine
-        StateMachine = new EnemyStateMachine<BasicEnemy>();
-        ChaseState = new EnemyChaseState(this, StateMachine);
-        AttackState = new EnemyAttackState(this, StateMachine);
-        IdleState = new EnemyIdleState(this, StateMachine);
+        ChaseState = new EnemyChaseState(this, ChaseTransitionDecision);
+        AttackState = new EnemyAttackState(this, AttackTransitionDecision);
+        IdleState = new EnemyIdleState(this, IdleTransitionDecision);
     }
 
     protected override void Start()
@@ -33,39 +71,4 @@ public class BasicEnemy : Enemy
 
         base.Start();
     }
-
-    protected override void Update()
-    {
-        StateMachine.currentEnemyState.FrameUpdate();
-        enemyState = StateMachine.currentEnemyState.id; // for debug
-
-        base.Update();
-    }
-
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-
-        if (!IsPaused && !InImpact && !InKnockup)
-            StateMachine.currentEnemyState.PhysicsUpdate();
-    }
-
-    #region Detection
-    public void SetInChaseRange(bool inChaseRange)
-    {
-        InChaseRange = inChaseRange;
-    }
-
-    public void SetInAttackRange(bool inAttackRange)
-    {
-        InAttackRange = inAttackRange;
-    }
-    #endregion
-
-    #region Animation Triggers
-    public void AnimationTriggerEvent(EnemyState<BasicEnemy>.AnimationTriggerType triggerType)
-    {
-        StateMachine.currentEnemyState.AnimationTriggerEvent(triggerType);
-    }
-    #endregion
 }
