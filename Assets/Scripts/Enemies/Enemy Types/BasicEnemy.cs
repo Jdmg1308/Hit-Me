@@ -8,7 +8,7 @@ using UnityEngine;
 public class BasicEnemy : Enemy, HasBasicStates
 {
     // transition bools
-    [field: SerializeField] public bool InChaseRange { get; set; }
+    [field: SerializeField, Header("Transition Bools")] public bool InChaseRange { get; set; }
     [field: SerializeField] public bool InAttackRange { get; set; }
 
     // states

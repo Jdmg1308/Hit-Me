@@ -28,7 +28,7 @@ public class EnemyAttackState : EnemyState
 
     public override void EnterState()
     {
-        if (e.canAttack && e.IsGrounded)
+        if (e.canAttack && e.IsGrounded && !e.MidJump)
         {
             float dirToPlayer = e.Player.transform.position.x - e.transform.position.x;
             e.FlipCharacter(dirToPlayer > 0);

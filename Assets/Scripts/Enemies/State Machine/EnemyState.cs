@@ -29,7 +29,9 @@ public class EnemyState
     {
         StartPunch,
         EndPunch,
-        EndPunchDamaging
+        EndPunchDamaging,
+        Shoot,
+        EndShoot
     }
     public virtual void AnimationTriggerEvent(AnimationTriggerType triggerType) { }
 }

@@ -439,7 +439,7 @@ MonoBehaviour:
   HitStunImmune: 0
   outOfCombatDuration: 5
   enemyCollisionForce: {x: 0.5, y: 1.5}
-  <ChaseSpeed>k__BackingField: 3
+  <ChaseSpeed>k__BackingField: 5
   <MaxYJumpForce>k__BackingField: 15
   <MaxXJumpForce>k__BackingField: 5
   <PlatformDetectionMask>k__BackingField:
@@ -468,6 +468,12 @@ MonoBehaviour:
   flashInterval: 0.15
   initialSpawnDelay: 1.5
   enemyState: 0
+  <InAttackRange>k__BackingField: 0
+  <InRunAwayRange>k__BackingField: 0
+  <InRangedAttackRange>k__BackingField: 0
+  <InChaseRange>k__BackingField: 0
+  TimeBetweenRangedAttack: 5
+  BulletPrefab: {fileID: 0}
   AllowShyAttack: 0
 --- !u!1 &2916380235385307057
 GameObject:

@@ -246,8 +246,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 457071703722495764, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
-      propertyPath: <ChaseSpeed>k__BackingField
-      value: 3
+      propertyPath: BulletSpeed
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 457071703722495764, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+      propertyPath: BulletPrefab
+      value: 
+      objectReference: {fileID: 8274352306245459534, guid: cc6a30528ff970f46be7240ed8be98cb, type: 3}
+    - target: {fileID: 457071703722495764, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+      propertyPath: TimeBetweenRangedAttack
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2444454969074880683, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+      propertyPath: m_Radius
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2916380234357440266, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: m_Name
@@ -301,9 +313,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2916380235385307058, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: b7db3c5aad4d0d749a5fc49a786bb5ac, type: 2}
     - target: {fileID: 5031418386481587153, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: m_Radius
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8705748175543275055, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
       propertyPath: m_Radius

@@ -81,9 +81,7 @@ public class PlayerController : MonoBehaviour
                 ProcessInput();
                 p.anim.SetBool("midJump", p.midJump);
                 if (p.grapplingGun.isGrappling)
-                {
                     p.anim.SetBool("midJump", true);
-                }
                 DirectionPlayerFaces();
             }
         }

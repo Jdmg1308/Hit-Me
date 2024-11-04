@@ -8,10 +8,15 @@ using UnityEngine;
 public class RangedEnemy : Enemy, HasBasicStates, HasRangedStates
 {
     // transition bools
-    [field: SerializeField] public bool InAttackRange { get; set; }
+    [field: SerializeField, Header("Transition Bools")] public bool InAttackRange { get; set; }
     [field: SerializeField] public bool InRunAwayRange { get; set; }
     [field: SerializeField] public bool InRangedAttackRange { get; set;}
     [field: SerializeField] public bool InChaseRange { get; set; }
+
+    // props for states
+    [Header("Ranged Enemy Props")]
+    public float TimeBetweenRangedAttack = 5f;
+    public GameObject BulletPrefab;
     public bool AllowShyAttack;
 
     // states
@@ -56,7 +61,7 @@ public class RangedEnemy : Enemy, HasBasicStates, HasRangedStates
     public EnemyRangedAttackState RangedAttackState;
     private void RangedAttackTransitionDecision()
     {
-        if (!Anim.GetBool("isPunching")) // replace isPunching withr respective range anim
+        if (!Anim.GetBool("isShooting"))
         {
             if (canAttack && InAttackRange)
                 StateMachine.changeState(AttackState);
@@ -109,7 +114,7 @@ public class RangedEnemy : Enemy, HasBasicStates, HasRangedStates
         // setting up states
         AttackState = new EnemyAttackState(this, AttackTransitionDecision);
         RunAwayState = new EnemyRunAwayState(this, RunAwayTransitionDecision);
-        RangedAttackState = new EnemyRangedAttackState(this, RangedAttackTransitionDecision);
+        RangedAttackState = new EnemyRangedAttackState(this, RangedAttackTransitionDecision, TimeBetweenRangedAttack, BulletPrefab);
         ChaseState = new EnemyChaseState(this, ChaseTransitionDecision);
         IdleState = new EnemyIdleState(this, IdleTransitionDecision);
     }
