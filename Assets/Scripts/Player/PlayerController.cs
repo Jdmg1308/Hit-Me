@@ -585,6 +585,7 @@ public class PlayerController : MonoBehaviour
             // if you get hurt, cancel attacks
             p.anim.SetBool("isKicking", false);
             p.anim.SetBool("isPunching", false);
+            p.anim.SetBool("inAirCombo", false);
             EndShouldBeDamaging();
             p.playerChargeMeter.SetActive(false);
             p.grapplingGun.stopGrappling();

@@ -313,6 +313,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         RB.velocity = new Vector2(isOutOfReach ? xDirection * ChaseSpeed : 0, RB.velocity.y);
         FlipCharacter(isOutOfReach ? xDirection > 0 : FacingRight); // Maintain direction if idle
         Anim.SetBool("isWalking", isOutOfReach);
+        Debug.Log(isOutOfReach);
     }
 
     // find x and y jump force needed to reach landingPosition

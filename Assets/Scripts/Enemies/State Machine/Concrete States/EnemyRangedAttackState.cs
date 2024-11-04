@@ -26,7 +26,6 @@ public class EnemyRangedAttackState : EnemyState
                 break;
             case AnimationTriggerType.EndShoot:
                 e.Anim.SetBool("isShooting", false);
-                e.Anim.SetBool("isWalking", false);
                 break;
         }
     }
@@ -35,6 +34,7 @@ public class EnemyRangedAttackState : EnemyState
     {
         if (e.canAttack && e.IsGrounded && !e.MidJump)
         {
+            e.Anim.SetBool("isWalking", false);
             float dirToPlayer = e.Player.transform.position.x - e.transform.position.x;
             e.FlipCharacter(dirToPlayer > 0);
             if (_canShoot) e.Anim.SetBool("isShooting", true);

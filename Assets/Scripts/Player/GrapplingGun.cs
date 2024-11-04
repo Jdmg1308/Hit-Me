@@ -164,8 +164,6 @@ public class GrapplingGun : MonoBehaviour
             grappleDistanceVector = grapplePoint - (Vector2)gunPivot.position;
             grappleRope.enabled = true;
             grappledObject = _hit.collider.gameObject;
-
-            Debug.Log("grappledObject: " + grappledObject);
         }
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyChaseState : EnemyState
 {
+    private Coroutine movementRoutine;
+
     public EnemyChaseState(Enemy enemy, TransitionDecisionDelegate transitionDecision) : base(enemy, transitionDecision)
     {
         id = EnemyStateMachine.EnemyStates.Chase;
@@ -11,12 +13,13 @@ public class EnemyChaseState : EnemyState
 
     public override void PhysicsUpdate()
     {
-        e.StartCoroutine(enemyAI(!e.IsPaused));
+        if (movementRoutine == null)
+            movementRoutine = e.StartCoroutine(enemyAI());
     }
 
-    private IEnumerator enemyAI(bool enabled)
+    private IEnumerator enemyAI()
     {
-        if (enabled)
+        if (!e.IsPaused)
         {
             // grounded and in control abilities
             if (e.IsGrounded)
@@ -33,13 +36,18 @@ public class EnemyChaseState : EnemyState
                 {
                     Vector2 val = e.CalculateJumpForce(e.LandingTarget + (Vector2.up * e.LandingOffset));
                     e.FlipCharacter(val.x > 0);
+                    e.RB.velocity = Vector2.zero;
 
                     yield return e.PauseAction(e.JumpDelay);
 
-                    e.RB.velocity = new Vector2(val.x, 0f);
-                    e.RB.AddForce(new Vector2(0f, val.y), ForceMode2D.Impulse);
-                    e.ShouldJump = false;
-                    e.MidJump = true;
+                    // getting hit cancels jump
+                    if (!e.InImpact && !e.InHitStun && !e.InKnockup && !e.Anim.GetBool("ImpactBool"))
+                    {
+                        e.RB.velocity = new Vector2(val.x, 0f);
+                        e.RB.AddForce(new Vector2(0f, val.y), ForceMode2D.Impulse);
+                        e.ShouldJump = false;
+                        e.MidJump = true;
+                    }
                 }
 
                 // looking to drop down to player
@@ -52,6 +60,8 @@ public class EnemyChaseState : EnemyState
 
             if (e.MidJump && e.RB.velocity.y < 0) // if falling from a jump, regain control
                 e.WalkToTarget(e.Player.transform.position);
+            
+            movementRoutine = null;
         }
     }
 }
