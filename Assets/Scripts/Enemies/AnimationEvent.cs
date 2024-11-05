@@ -29,16 +29,13 @@ public class AnimationEvent : MonoBehaviour
         _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndPunchDamaging);
     }
 
-    // temp until we get polish animations
-    // indicating beginning to windup
-    public void StartPunch()
+    public void Shoot()
     {
-        // sprite.color = new Color(0, 1, 0, 0.5f);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.Shoot);
     }
 
-    // indicating punch is about to come out and in danger zone
-    public void AboutToPunch()
+    public void EndShoot()
     {
-        // sprite.color = new Color(1, 0, 0, 0.5f);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndShoot);
     }
 }

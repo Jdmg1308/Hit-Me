@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     // state
     public Vector3 TopEnemyTransform { get; set; }
     public Vector3 BottomEnemyTransform { get; set; }
-    private GameObject groundCheck;
+    public GameObject groundCheck;
     public float BodyGravity { get; set; }
     public float MaxJumpHeight { get; set; }
     public float MaxJumpDistance { get; set; }
@@ -253,9 +253,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     // receiving impact reaction
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("OneWayPlatform"))
-            CurrentOneWayPlatform = collision.gameObject;
-
         if (InImpact)
         {
             float impactForce = collision.relativeVelocity.magnitude;
@@ -319,7 +316,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     public Vector2 CalculateJumpForce(Vector2 landingPosition)
     {
         // Horizontal and vertical distances
-        float deltaX = Math.Abs(landingPosition.x - transform.position.x);
+        float deltaX = landingPosition.x - transform.position.x;
         float deltaY = Math.Abs(landingPosition.y - BottomEnemyTransform.y);
 
         // Calculate the vertical velocity needed to reach the platform height
@@ -327,10 +324,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         // Time to reach the apex (top of the jump) at platform height
         float timeToApex = verticalVelocity / BodyGravity;
         // Calculate the horizontal velocity needed to reach the platform during that time
-        float horizontalVelocity = (FacingRight ? 1 : -1) * Math.Min(MaxXJumpForce, deltaX / timeToApex);
+        float horizontalVelocity = (deltaX > 0 ? 1 : -1) * Math.Min(MaxXJumpForce, Math.Abs(deltaX) / timeToApex);
 
-        // Return the calculated initial velocity as a 2D vector (x, y)
-        return new Vector2(horizontalVelocity, verticalVelocity);
+        // Convert velocity to force by multiplying by mass (F = m * a)
+        float horizontalForce = horizontalVelocity * RB.mass;
+        float verticalForce = verticalVelocity * RB.mass;
+
+        // Return the calculated initial force as a 2D vector (x, y)
+        return new Vector2(horizontalForce, verticalForce);
     }
 
     // look for platforms within detection box (max jump dist/height) and find furthest landing target within max jump
@@ -366,8 +367,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
             if (furthestPlatform != null)
             {
                 Bounds platformBounds = furthestPlatform.bounds;
-                float platformXDist = Math.Abs(RB.transform.position.x - (FacingRight ? platformBounds.max.x : platformBounds.min.x));
-                float jumpX = (FacingRight ? 1 : -1) * Math.Min(platformXDist, MaxJumpDistance);
+                float platformXDist = (FacingRight ? platformBounds.max.x : platformBounds.min.x) - RB.transform.position.x;
+                float jumpX = (platformXDist > 0 ? 1 : -1) * Math.Min(Math.Abs(platformXDist), MaxJumpDistance);
                 LandingTarget = new Vector2(
                     RB.transform.position.x + jumpX,
                     platformBounds.max.y
@@ -568,8 +569,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         Gizmos.DrawLine(BottomEnemyTransform, LandingTarget); // visual for where jumping landing target is
 
         // hitbox
-        Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
-        Gizmos.DrawWireSphere(DetectAttack.transform.position, AttackRadius);
+        if (DetectAttack)
+        {
+            Gizmos.color = new Color(1f, 0f, 0f, 0.5f);
+            Gizmos.DrawWireSphere(DetectAttack.transform.position, AttackRadius);
+        }
 
         if (downSlamExplosionTrigger != null && downSlamExplosionTrigger.activeSelf)
         {

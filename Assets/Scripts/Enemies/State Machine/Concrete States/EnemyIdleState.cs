@@ -32,6 +32,7 @@ public class EnemyIdleState : EnemyState
     public override void EnterState()
     {
         _targetPos = e.transform.position;
+        e.Anim.SetBool("isWalking", false);
     }
 
     public override void PhysicsUpdate()

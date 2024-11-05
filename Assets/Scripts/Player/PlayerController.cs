@@ -81,9 +81,7 @@ public class PlayerController : MonoBehaviour
                 ProcessInput();
                 p.anim.SetBool("midJump", p.midJump);
                 if (p.grapplingGun.isGrappling)
-                {
                     p.anim.SetBool("midJump", true);
-                }
                 DirectionPlayerFaces();
             }
         }
@@ -538,6 +536,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("OneWayPlatform")) p.currentOneWayPlatform = other.gameObject;
+        if (other.gameObject.CompareTag("Explosion")) Debug.Log("PLAYER LETS GO");
     }
 
     private IEnumerator DisableCollision()
@@ -586,6 +585,7 @@ public class PlayerController : MonoBehaviour
             // if you get hurt, cancel attacks
             p.anim.SetBool("isKicking", false);
             p.anim.SetBool("isPunching", false);
+            p.anim.SetBool("inAirCombo", false);
             EndShouldBeDamaging();
             p.playerChargeMeter.SetActive(false);
             p.grapplingGun.stopGrappling();
@@ -629,28 +629,6 @@ public class PlayerController : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collider)
     {
-        // if you are not in impact and an enemy that is in impact collides with you, take damage
-        if (collider.gameObject.layer == LayerMask.NameToLayer("Explosion"))
-        {
-            Debug.Log("Explode");
-            Rigidbody2D RB = GetComponent<Rigidbody2D>();
-            RB.velocity = Vector2.zero;
-
-            // Determine the direction for the force
-            int dir = (transform.position.x - collider.transform.position.x) > 0 ? 1 : -1;
-
-            // Calculate the distance factor to scale the force; add an offset to avoid extreme values for very close distances
-            float distance = Vector2.Distance(transform.position, collider.transform.position);
-            float distanceFactor = Mathf.Clamp(1 / (distance + 0.5f), 0.1f, 10.5f); // Limit force scaling for very close/very far
-
-            // Create an initial force vector with horizontal direction
-            Vector2 force = new Vector2(dir * distanceFactor * 300f, 50f); // Increase multiplier if you want a larger effect
-
-            int collisionDamage = Mathf.RoundToInt(distanceFactor * 10f); // note: consider log max for extreme cases
-            this.TakeDamage(collisionDamage,  force);
-        }
-
-
         if (collider.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             IDamageable enemyScript = collider.gameObject.GetComponent<IDamageable>();

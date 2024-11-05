@@ -331,6 +331,7 @@ public class GameManager : TheSceneManager
             {
                 statusCard = card;
                 statusApplied = true;
+                updateHealth();
             }
 
             StatusEffectManager.AddStatusEffect(card);

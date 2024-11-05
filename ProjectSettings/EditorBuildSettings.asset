@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Scenes/FinalScenes/MAP.unity
     guid: f32daaedf85ebe44a9d93587db17d202
   - enabled: 1
-    path: Assets/Scenes/FinalScenes/TUTORIAL.unity
+    path: Assets/Scenes/FinalScenes/TUTORIAL/GRAPPLE.unity
     guid: 5f01b5a49702635489f4a542dfbd102d
   - enabled: 1
     path: Assets/Scenes/FinalScenes/SHOP.unity

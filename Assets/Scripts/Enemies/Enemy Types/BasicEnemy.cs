@@ -8,7 +8,7 @@ using UnityEngine;
 public class BasicEnemy : Enemy, HasBasicStates
 {
     // transition bools
-    [field: SerializeField] public bool InChaseRange { get; set; }
+    [field: SerializeField, Header("Transition Bools")] public bool InChaseRange { get; set; }
     [field: SerializeField] public bool InAttackRange { get; set; }
 
     // states
@@ -20,7 +20,9 @@ public class BasicEnemy : Enemy, HasBasicStates
         { // can only change state if on ground and not paused
             if (canAttack && InAttackRange)
                 StateMachine.changeState(AttackState);
-            else if (!InChaseRange)
+            else if (InChaseRange)
+                return;
+            else
                 StateMachine.changeState(IdleState);
         }
     }
@@ -30,19 +32,14 @@ public class BasicEnemy : Enemy, HasBasicStates
     {
         // must finish punch animation before considering next action
         // InImpact = taking collisions, ImpactBool = damage hit stun state
-        if (!Anim.GetBool("ImpactBool") )
+        if (!Anim.GetBool("isPunching"))
         {
-            if (!Anim.GetBool("isPunching") && !InAttackRange)
-            {
-                if (InChaseRange)
-                    StateMachine.changeState(ChaseState);
-                else
-                    StateMachine.changeState(IdleState);
-            }
-            else
-            { // repeatedely punch if in range
+            if (canAttack && InAttackRange) // repeatedely punch if in range
                 AttackState.EnterState();
-            }
+            else if (InChaseRange)
+                StateMachine.changeState(ChaseState);
+            else
+                StateMachine.changeState(IdleState);
         }
     }
     

@@ -16,7 +16,7 @@ public class Hallucinate : Card
         if (!GM.statusApplied) 
         {
             Debug.Log("applying status effect");
-            GM.GameEnemyManager.SpawnHallucinationClones(effectValue);
+            GM.GameEnemyManager.SpawnHallucinationClones((int)effectValue);
                     // Ensure you get the PostProcessingController component
             var postProcessingController = GM.Camera.GetComponent<PostProcessingController>();
             if (postProcessingController != null)

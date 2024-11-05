@@ -32,8 +32,8 @@ public class EnemyCollisionTrigger : MonoBehaviour
 
         if (collider.gameObject.CompareTag("Explosion"))
         {
-            Debug.Log("hit by explosion");
             Vector2 impactVelocity;
+            // barrel explosion
             if (collider.gameObject.layer == LayerMask.NameToLayer("Explosion"))
             {
                 // Determine the direction for the force
@@ -51,9 +51,9 @@ public class EnemyCollisionTrigger : MonoBehaviour
                 // Apply the force to launch the enemy
                 parent.InImpact = true;
                 parent.TakeUppercut(collisionDamage, force);
-
-            } else
-            {
+            }
+            else
+            {   // down slam explosion
                 impactVelocity = collider.GetComponentInParent<Rigidbody2D>().velocity;
 
                 int collisionDamage = Mathf.RoundToInt(impactVelocity.magnitude * parent.collisionDamageMultiplier); // note: consider log max for extreme cases
