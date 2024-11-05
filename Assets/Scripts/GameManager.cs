@@ -36,7 +36,7 @@ public class GameManager : TheSceneManager
     protected Image UICard;
     protected Image CardCooldownImg;
     protected StatusEffectManager StatusEffectManager;
-    protected bool deckShowing = false;
+    //protected bool deckShowing = false;
     [HideInInspector]
     public GameObject CardUIDeck;
     protected GameObject deckDisplayPanel;
@@ -74,6 +74,9 @@ public class GameManager : TheSceneManager
     protected GameObject DeathScreen;
     protected GameObject WinScreen;
     protected GameObject IBuild;
+    protected GameObject ChecklistScreen;
+
+    protected ChecklistScreen ChecklistScript;
 
     protected bool paused = false;
 
@@ -148,6 +151,7 @@ public class GameManager : TheSceneManager
             DeathScreen = Canvas.transform.Find("Death Screen")?.gameObject;
             WinScreen = Canvas.transform.Find("Win Screen")?.gameObject;
             IBuild = Canvas.transform.Find("InclusivityBuildPanel")?.gameObject;
+            ChecklistScreen = Canvas.transform.Find("Checklist Screen")?.gameObject;
         }
 
         if (PlayScreen)
@@ -169,7 +173,6 @@ public class GameManager : TheSceneManager
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
             deckDisplayPanel = PlayScreen.transform.Find("DeckDisplayPanel")?.gameObject;
-            AssignButton(PlayScreen.transform, "DeckButton", currentCardDeck);
 
             cardDescriptor = PlayScreen.transform.Find("CardDescriptor")?.gameObject;
 
@@ -193,19 +196,19 @@ public class GameManager : TheSceneManager
                 AssignButton(PauseScreen.transform, "Resume", Pause);
 
                 deckDisplayPanel = PauseScreen.transform.Find("DeckDisplayPanel")?.gameObject;
-                AssignButton(PauseScreen.transform, "DeckButton", currentCardDeck);
             }
         }
 
-        //if (DifficultyScreen)
-        //{
-        //    DifficultyScreen.transform.Find("Easy").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(1));
-        //    DifficultyScreen.transform.Find("Medium").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(2));
-        //    DifficultyScreen.transform.Find("Hard").GetComponent<Button>().onClick.AddListener(() => DifficultyChoice(3));
-        //}
+        if (ChecklistScreen)
+        {
+            ChecklistScript = ChecklistScreen.GetComponent<ChecklistScreen>();
+        }
 
         if (IBuild)
             iOSPanel = IBuild.transform.Find("iOS Panel")?.gameObject;
+
+        if (deckDisplayPanel)
+            updateDeckPanel();
 
         audioSource = GetComponent<AudioSource>();
         GameEnemyManager = GetComponentInChildren<GameEnemyManager>();
@@ -227,23 +230,6 @@ public class GameManager : TheSceneManager
     #endregion
 
     #region Cards
-    public void currentCardDeck()
-    {
-        if (deckShowing)
-        {
-            // close deck
-            deckDisplayPanel.SetActive(false);
-            deckShowing = false;
-        }
-        else
-        {
-            // open deck
-            deckDisplayPanel.SetActive(true);
-            displayDeck();
-            deckShowing = true;
-        }
-    }
-
     public GameObject showCard(Card card, GameObject parent)
     {
         GameObject cardButton = Instantiate(cardButtonPrefab, parent.transform);
@@ -255,7 +241,7 @@ public class GameManager : TheSceneManager
         return cardButton;
     }
 
-    public void displayDeck()
+    public void updateDeckPanel()
     {
         // Clear previous buttons
         foreach (Transform child in deckDisplayPanel.transform)
@@ -492,6 +478,7 @@ public class GameManager : TheSceneManager
 
     public void Pause()
     {
+        updateDeckPanel();
         if (!paused)
         {
             // pause

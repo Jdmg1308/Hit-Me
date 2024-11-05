@@ -58,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
         p.GM.deckController.currentDeck = p.GM.deckController.GetNewDeck();
 
-        if (p.GM.iOSPanel.activeSelf)
+        if (p.GM.iOSPanel && p.GM.iOSPanel.activeSelf)
         {
             p.MovementJoystickScript = p.GM.iOSPanel.GetComponent<MovementJoystick>();
             p.ButtonsAndClickScript = p.GM.iOSPanel.GetComponent<ButtonsAndClick>();
@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.Escape)) p.GM.Pause();
         p.playerChargeMeter.GetComponent<Slider>().value = p.kickCharge; // just in case
         p.playerExtendedChargeMeter.GetComponent<Slider>().value = p.kickCharge;
     }
@@ -227,7 +228,7 @@ public class PlayerController : MonoBehaviour
 
         //card drawing - TODO: ADD COOLDOWN (in battle manager maybe?)
         if (Input.GetKeyDown(KeyCode.F)) p.GM.useCard();
-        if (Input.GetKeyDown(KeyCode.Escape)) p.GM.Pause();
+        //if (Input.GetKeyDown(KeyCode.Escape)) p.GM.Pause();
     }
 
     private void HandleAttackInput()

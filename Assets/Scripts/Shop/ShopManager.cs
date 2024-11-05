@@ -54,33 +54,7 @@ public class ShopManager : TheSceneManager
         GameObject child0 = GM.showCard(allPurchasableCards[_randCards[0]], displayPanel);
         child0.GetComponentInChildren<Button>().onClick.AddListener(() => PurchaseCard(_randCards[0], child0));
 
-        //if (child0 == null)
-        //{
-        //    Debug.LogError("child0 is null, cannot add listener.");
-        //    return;
-        //}
-        //if (child0 != null)
-        //{
-        //    Debug.Log("child0 created successfully with name: " + child0.name);
-        //}
-        //else
-        //{
-        //    Debug.LogError("child0 returned null from GM.showCard.");
-        //}
-
-        //Button button = child0.GetComponent<Button>();
-        //if (button != null)
-        //{
-        //    button.onClick.AddListener(() => Debug.Log("Button clicked!"));
-        //    Debug.Log("Listener count: " + button.onClick.GetPersistentEventCount());
-        //}
-        //else
-        //{
-        //    Debug.LogWarning("No Button component found on child0.");
-        //}
-
-
-        Debug.Log("Gets HERE: " + child0.name);
+        //Debug.Log("Gets HERE: " + child0.name);
 
         GameObject child1 = GM.showCard(allPurchasableCards[_randCards[1]], displayPanel);
         child1.GetComponentInChildren<Button>().onClick.AddListener(() => PurchaseCard(_randCards[1], child1));
@@ -111,22 +85,17 @@ public class ShopManager : TheSceneManager
             GM.money -= selectedCard.price;
             GM.deckController.DeckAdd(selectedCard, GM.deckController.currentDeck);
             Destroy(buttonCard);
+            GM.updateDeckPanel();
         }
-    }
-
-    void DisplayDeckForDuplication()
-    {
-        ShopDisplayDeck(true);
     }
 
     void DisplayDeckForDestruction()
     {
-        ShopDisplayDeck(false);
+        ShopDisplayDestroyableDeck(false);
     }
 
-    void ShopDisplayDeck(bool duplicateCard)
+    void ShopDisplayDestroyableDeck(bool duplicateCard)
     {
-        deckDisplayPanel.SetActive(true);
         Options.SetActive(false);
 
         // Clear previous buttons
@@ -140,27 +109,9 @@ public class ShopManager : TheSceneManager
             GameObject cardButton = GM.showCard(card, deckDisplayPanel);
             cardButton.GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
-                if (duplicateCard)
-                    DuplicateCard(card);
-                else
-                    DestroyCard(card);
-                deckDisplayPanel.SetActive(false); // Hide after selection
+                DestroyCard(card);
                 Options.SetActive(true);
             });
-        }
-    }
-
-    void DuplicateCard(Card card)
-    {
-        if (GM.money < dupPrice)
-        {
-            Debug.Log("Not enough money to duplicate this card!");
-            return;
-        }
-        else
-        {
-            GM.money -= dupPrice;
-            GM.deckController.DeckAdd(card, GM.deckController.currentDeck);
         }
     }
 
@@ -175,6 +126,7 @@ public class ShopManager : TheSceneManager
         {
             GM.money -= destPrice;
             GM.deckController.DeckRemove(card, GM.deckController.currentDeck); // Correcting to remove the card
+            GM.updateDeckPanel();
         }
     }
 
