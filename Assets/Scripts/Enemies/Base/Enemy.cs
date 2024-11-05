@@ -63,7 +63,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     // state
     public Vector3 TopEnemyTransform { get; set; }
     public Vector3 BottomEnemyTransform { get; set; }
-    private GameObject groundCheck;
+    public GameObject groundCheck;
     public float BodyGravity { get; set; }
     public float MaxJumpHeight { get; set; }
     public float MaxJumpDistance { get; set; }
@@ -253,9 +253,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     // receiving impact reaction
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("OneWayPlatform"))
-            CurrentOneWayPlatform = collision.gameObject;
-
         if (InImpact)
         {
             float impactForce = collision.relativeVelocity.magnitude;
@@ -313,7 +310,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         RB.velocity = new Vector2(isOutOfReach ? xDirection * ChaseSpeed : 0, RB.velocity.y);
         FlipCharacter(isOutOfReach ? xDirection > 0 : FacingRight); // Maintain direction if idle
         Anim.SetBool("isWalking", isOutOfReach);
-        Debug.Log(isOutOfReach);
     }
 
     // find x and y jump force needed to reach landingPosition
@@ -330,8 +326,12 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         // Calculate the horizontal velocity needed to reach the platform during that time
         float horizontalVelocity = (deltaX > 0 ? 1 : -1) * Math.Min(MaxXJumpForce, Math.Abs(deltaX) / timeToApex);
 
-        // Return the calculated initial velocity as a 2D vector (x, y)
-        return new Vector2(horizontalVelocity, verticalVelocity);
+        // Convert velocity to force by multiplying by mass (F = m * a)
+        float horizontalForce = horizontalVelocity * RB.mass;
+        float verticalForce = verticalVelocity * RB.mass;
+
+        // Return the calculated initial force as a 2D vector (x, y)
+        return new Vector2(horizontalForce, verticalForce);
     }
 
     // look for platforms within detection box (max jump dist/height) and find furthest landing target within max jump

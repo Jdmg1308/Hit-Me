@@ -79,7 +79,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 13
 --- !u!114 &2444454969074880680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -439,7 +439,7 @@ MonoBehaviour:
   HitStunImmune: 0
   outOfCombatDuration: 5
   enemyCollisionForce: {x: 0.5, y: 1.5}
-  <ChaseSpeed>k__BackingField: 5
+  <ChaseSpeed>k__BackingField: 4.5
   <MaxYJumpForce>k__BackingField: 15
   <MaxXJumpForce>k__BackingField: 5
   <PlatformDetectionMask>k__BackingField:

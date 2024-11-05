@@ -21,7 +21,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 9a24776a6a14e3e448dbda4053c67cc1, type: 2}
+  m_Motion: {fileID: 7400000, guid: 2fae6beeaf4b4a343b53c9b6bbb68196, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -127,7 +127,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c7bf816f632a0174e90b1780288b9789, type: 2}
+  m_Motion: {fileID: 7400000, guid: e619f201b82fafa48823cc1a9af416bf, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -197,7 +197,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Enemy_Basic Controller
+  m_Name: HeavyEnemy
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: ImpactBool
@@ -259,7 +259,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 221f5f00c32a9454f83ce1b0045dadfa, type: 2}
+  m_Motion: {fileID: 7400000, guid: ac22ec23fc37d3f4ebe0aa4d573defbc, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -412,7 +412,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: a299ed4f8e4bb614187e7b9cbf3a0661, type: 2}
+  m_Motion: {fileID: 7400000, guid: ed145c68b5d11f94baa53c1e6f73c6e5, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
