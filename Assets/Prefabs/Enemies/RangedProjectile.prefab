@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8274352306245459532}
   - component: {fileID: 8274352306245459533}
   - component: {fileID: 4166536564441876919}
+  - component: {fileID: 3408217560298498959}
   m_Layer: 2
   m_Name: RangedProjectile
   m_TagString: Untagged
@@ -139,3 +140,24 @@ MonoBehaviour:
   BulletSpeed: 7
   Force: {x: 45, y: 7}
   Damage: 5
+--- !u!95 &3408217560298498959
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8274352306245459534}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 46a59c145190bf04ea4390f5bb8d988c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
