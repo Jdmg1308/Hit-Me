@@ -40,8 +40,8 @@ public class GameEnemyManager : MonoBehaviour
     private float _OffScreenSpriteWidth;
     private float _OffScreenSpriteHeight;
 
-    public bool hasSpawned = false;
-    public bool shouldSpawn = false;
+    public bool hasSpawned = false; // for waves, so only spawn one wave the frame it is called
+    public bool shouldSpawn = false; // for GM, to turn on or off wave function in general
 
     void Awake()
     {
@@ -91,6 +91,12 @@ public class GameEnemyManager : MonoBehaviour
         }
     }
 
+    // for GM progress bar enemy counter
+    public int TotalEnemyCount()
+    {
+        return waveConfigurations.Sum();
+    }
+
     public void ResetWaves()
     {
         currentWave = 0;
@@ -122,6 +128,7 @@ public class GameEnemyManager : MonoBehaviour
         {
             EnemiesLeftInWave -= 1;
             spawnedEnemies.Remove(enemy);
+            GM.updatePoints(enemy.GetComponent<Enemy>().pointAmount);
             StartCoroutine(WaitForSpawn(enemy));
 
             // Check if all enemies are dead

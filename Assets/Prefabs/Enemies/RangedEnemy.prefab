@@ -439,6 +439,7 @@ MonoBehaviour:
   HitStunImmune: 0
   outOfCombatDuration: 5
   enemyCollisionForce: {x: 0.5, y: 1.5}
+  groundCheck: {fileID: 0}
   <ChaseSpeed>k__BackingField: 4.5
   <MaxYJumpForce>k__BackingField: 15
   <MaxXJumpForce>k__BackingField: 5
@@ -550,8 +551,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 154214088, guid: e9ba881bb52b1344d8b7e302a8d9c19f, type: 3}
-  m_Color: {r: 0.17070645, g: 0.91194963, b: 0.11757835, a: 1}
+  m_Sprite: {fileID: 437211816, guid: f1276317b2278e94ba43fe5d546ad236, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

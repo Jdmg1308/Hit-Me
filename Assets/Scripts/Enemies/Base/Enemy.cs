@@ -123,6 +123,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     public EnemyStateMachine.EnemyStates enemyState; // for debug
     public EnemyStateMachine StateMachine { get; set; }
 
+    [Header("Props for GM")]
+    public int pointAmount = 5;
+
     #region Universal Functions
     // called before start when script is loaded
     protected virtual void Awake()
