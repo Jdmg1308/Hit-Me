@@ -189,6 +189,7 @@ MonoBehaviour:
   enemyHit: {fileID: 0}
   playerHit: {fileID: 8300000, guid: 18faf45639ebf8b43850b66bd12a1030, type: 3}
   jump: {fileID: 8300000, guid: 3b831df61fd3c9945836efccc6d1d58c, type: 3}
+  pointMeterGoesUp: {fileID: 8300000, guid: 91d6bf3c7e6c78846b92a8bd2d43ed3c, type: 3}
 --- !u!1 &7737867389640086588
 GameObject:
   m_ObjectHideFlags: 0

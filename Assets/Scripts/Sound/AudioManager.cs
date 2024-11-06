@@ -21,6 +21,7 @@ public class AudioManager : MonoBehaviour
     public AudioClip enemyHit;
     public AudioClip playerHit;
     public AudioClip jump;
+    public AudioClip pointMeterGoesUp;
 
     private Dictionary<string, AudioClip> levelMusic;
 
