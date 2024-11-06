@@ -29,7 +29,7 @@ public class Explosion : Hazards, IDamageable
 
             Vector2 force = new Vector2(dir * distanceFactor * 300f, 50f); // Increase multiplier if you want a larger effect
 
-            int collisionDamage = Mathf.RoundToInt(distanceFactor * 10f); // note: consider log max for extreme cases
+            int collisionDamage = Mathf.RoundToInt(distanceFactor * 100f); // note: consider log max for extreme cases
             p.TakeDamage(collisionDamage, force);
         }
     }

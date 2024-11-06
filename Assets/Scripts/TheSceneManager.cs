@@ -52,12 +52,12 @@ public class TheSceneManager : MonoBehaviour
 
     public void PlayLvl2()
     {
-        SceneManager.LoadScene("LEVEL_2");
+        SceneManager.LoadScene("SEWER_1");
     }
 
     public void PlayLvl3()
     {
-        SceneManager.LoadScene("LEVEL_3");
+        SceneManager.LoadScene("SEWER_2");
     }
 
     public void FinalLvl()
