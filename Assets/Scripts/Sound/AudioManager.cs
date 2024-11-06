@@ -10,7 +10,11 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource FootstepsSource;
 
     [Header("------------ Audio Clip -----------")]
-    public AudioClip background;
+    public AudioClip alleywayMusic;
+    public AudioClip sewerMusic;
+    public AudioClip shopMusic;
+    public AudioClip titleScreenMusic;
+    public AudioClip tutorialMusic;
     public AudioClip punch;
     public AudioClip uppercut;
     public AudioClip footsteps;
@@ -18,11 +22,44 @@ public class AudioManager : MonoBehaviour
     public AudioClip playerHit;
     public AudioClip jump;
 
-    private void Start()
-    {
-        musicSource.clip = background;
-        musicSource.Play();
+    private Dictionary<string, AudioClip> levelMusic;
 
+    private void Awake()
+    {
+        // Initialize level music dictionary
+        levelMusic = new Dictionary<string, AudioClip>
+        {
+            // testing right now
+            {"Combat_GOON", alleywayMusic },
+            {"Combat_RANGED", alleywayMusic },
+            {"Combat_MORERANGED", alleywayMusic },
+            {"LEVEL_1", alleywayMusic },
+            {"SHOP", shopMusic },
+            {"MENU", titleScreenMusic },
+            {"CARDS", tutorialMusic },
+            {"GRAPPLE", tutorialMusic },
+            {"MOVEMENT_COMBAT", tutorialMusic }
+        };
+    }
+
+    // private void Start()
+    //{
+    //    musicSource.clip = titleScreenMusic;
+    //    musicSource.Play();
+
+    //}
+
+    public void PlayLevelMusic(string levelName)
+    {
+        if (levelMusic.TryGetValue(levelName, out AudioClip clip))
+        {
+            musicSource.clip = clip;
+            musicSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning("No music found for: " + levelName);
+        }
     }
 
     public void PlaySFX(AudioClip clip)

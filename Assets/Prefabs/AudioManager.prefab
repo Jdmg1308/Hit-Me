@@ -44,7 +44,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.511
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -178,7 +178,11 @@ MonoBehaviour:
   musicSource: {fileID: 7737867388635562919}
   SFXSource: {fileID: 7737867390151377479}
   FootstepsSource: {fileID: 7737867389640086586}
-  background: {fileID: 8300000, guid: 7ca5dd0b011ee9f4a8b8d608101c3ea0, type: 3}
+  alleywayMusic: {fileID: 8300000, guid: 58d033148caac0a4d876df054ec55dca, type: 3}
+  sewerMusic: {fileID: 8300000, guid: ac12f9944c293f045810551110293cee, type: 3}
+  shopMusic: {fileID: 8300000, guid: 30531ea356af39345990d6983ddd2089, type: 3}
+  titleScreenMusic: {fileID: 8300000, guid: 2b47b048c5231134fbd508f2f8bef7aa, type: 3}
+  tutorialMusic: {fileID: 8300000, guid: e2e8f65515e780241bbc65d3d0c40964, type: 3}
   punch: {fileID: 8300000, guid: 97f613546e209fd4888e63a86e9a39d9, type: 3}
   uppercut: {fileID: 8300000, guid: 619f879f9392ef4469f744209f7951ec, type: 3}
   footsteps: {fileID: 8300000, guid: 8b3d6baab02e31a409ac8b1170276a09, type: 3}

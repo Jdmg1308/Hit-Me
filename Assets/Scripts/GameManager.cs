@@ -106,6 +106,8 @@ public class GameManager : TheSceneManager
 
     public bool hasWon = false;
 
+    AudioManager audioManager;
+
     #region Setup and update data
     void Awake()
     {
@@ -119,6 +121,7 @@ public class GameManager : TheSceneManager
         {
             Destroy(gameObject); // Prevent duplicate instances
         }
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     public static GameManager GetInstance()
@@ -131,6 +134,18 @@ public class GameManager : TheSceneManager
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         AssignReferences(); // Reassign UI references
+        string levelName = scene.name;
+
+        Debug.Log("Loaded scene: " + levelName);
+
+        if (audioManager != null)
+        {
+            audioManager.PlayLevelMusic(levelName);
+        }
+        else
+        {
+            Debug.LogWarning("AudioManager not found!");
+        }
     }
 
     public void AssignButton(Transform screen, string buttonName, UnityEngine.Events.UnityAction action)
@@ -618,5 +633,6 @@ public class GameManager : TheSceneManager
         LastScene = SceneManager.GetActiveScene().name;
         GameEnemyManager.shouldSpawn = false; // THIS
         SceneManager.LoadScene("SHOP");
+
     }
 }
