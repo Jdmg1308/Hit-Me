@@ -23,13 +23,13 @@ public class MapScript : TheSceneManager
 
         if (MapScreen)
         {
-            GM.AssignButton(MapScreen.transform, "Menu", GM.OpenMenu);
-            GM.AssignButton(MapScreen.transform, "Tutorial", PlayTutorial);
-            GM.AssignButton(MapScreen.transform, "Shop", GM.OpenShop);
-            GM.AssignButton(MapScreen.transform, "Level 1", PlayLvl1);
-            GM.AssignButton(MapScreen.transform, "Level 2", PlayLvl2);
-            GM.AssignButton(MapScreen.transform, "Level 3", PlayLvl3);
-            GM.AssignButton(MapScreen.transform, "Final Level", FinalLvl);
+            //GM.AssignButton(MapScreen.transform, "Menu", GM.OpenMenu);
+            //GM.AssignButton(MapScreen.transform, "Tutorial", PlayTutorial);
+            //GM.AssignButton(MapScreen.transform, "Shop", GM.OpenShop);
+            //GM.AssignButton(MapScreen.transform, "Level 1", PlayLvl1);
+            //GM.AssignButton(MapScreen.transform, "Level 2", PlayLvl2);
+            //GM.AssignButton(MapScreen.transform, "Level 3", PlayLvl3);
+            //GM.AssignButton(MapScreen.transform, "Final Level", FinalLvl);
         }
 
     }

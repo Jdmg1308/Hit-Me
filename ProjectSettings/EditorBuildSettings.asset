@@ -12,8 +12,23 @@ EditorBuildSettings:
     path: Assets/Scenes/FinalScenes/MAP.unity
     guid: f32daaedf85ebe44a9d93587db17d202
   - enabled: 1
+    path: Assets/Scenes/FinalScenes/TUTORIAL/MOVEMENT_COMBAT.unity
+    guid: ab0abf52db3fffa4191807fda68605da
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/TUTORIAL/Combat_GOON.unity
+    guid: e9c10a3cda2ee674d8c8856063335c37
+  - enabled: 1
     path: Assets/Scenes/FinalScenes/TUTORIAL/GRAPPLE.unity
     guid: 5f01b5a49702635489f4a542dfbd102d
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/TUTORIAL/Combat_RANGED.unity
+    guid: 747bb43b4f2fc3c428801c46a7cc419d
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/TUTORIAL/CARDS.unity
+    guid: 34ea86897ab183b4eb73babc9b9cfa3b
+  - enabled: 1
+    path: Assets/Scenes/FinalScenes/TUTORIAL/Combat_MORERANGED.unity
+    guid: fadc1b834c80ad2449bed9e21ad539bc
   - enabled: 1
     path: Assets/Scenes/FinalScenes/SHOP.unity
     guid: 8615d7074364cb94eae12d85cbcf4c91
@@ -21,24 +36,12 @@ EditorBuildSettings:
     path: Assets/Scenes/FinalScenes/ALLEYWAY_1.unity
     guid: 20cabe3f57517f2409e362e14b376247
   - enabled: 1
+    path: Assets/Scenes/FinalScenes/ALLEYWAY_2.unity
+    guid: 595ad2fc4de35ce4e810dff14804b51f
+  - enabled: 1
     path: Assets/Scenes/FinalScenes/LEVEL_2.unity
     guid: de4589d025a189e4aa7a7b8140587251
   - enabled: 1
     path: Assets/Scenes/FinalScenes/LEVEL_3.unity
     guid: b560f8dea81c51a46a9db3322b9261e7
-  - enabled: 1
-    path: Assets/Scenes/FinalScenes/TUTORIAL/MOVEMENT_COMBAT.unity
-    guid: ab0abf52db3fffa4191807fda68605da
-  - enabled: 1
-    path: Assets/Scenes/FinalScenes/TUTORIAL/Combat_1.unity
-    guid: 73a457358f9994e4eb2c468c2ce58fa2
-  - enabled: 1
-    path: Assets/Scenes/FinalScenes/TUTORIAL/Combat_2.unity
-    guid: 93830e633ccc2eb4e83512dd08246857
-  - enabled: 1
-    path: Assets/Scenes/FinalScenes/TUTORIAL/MORERANGED.unity
-    guid: dfabd1934a7553a49bea6ac04a95a370
-  - enabled: 1
-    path: Assets/Scenes/FinalScenes/TUTORIAL/CARDS.unity
-    guid: 34ea86897ab183b4eb73babc9b9cfa3b
   m_configObjects: {}

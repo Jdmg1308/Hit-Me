@@ -37,21 +37,20 @@ public class SpatialTrigger : MonoBehaviour
         Debug.Log("THIS SHIT GOT CALLED");
         switch (SceneName)
         {
-            case "MOVEMENT COMBAT":
+            case "MOVEMENT_COMBAT":
                 return (true);
-            case "Combat_1":
+            case "Combat_GOON":
                 return (GM.ChecklistScript.taskNameToBool["PC"] && GM.ChecklistScript.taskNameToBool["PAC"] && GM.ChecklistScript.taskNameToBool["TK"] && GM.ChecklistScript.taskNameToBool["FCK"] && GM.ChecklistScript.taskNameToBool["PKC"]);
             case "GRAPPLE":
                 return (true);
-            case "Combat_2":
+            case "Combat_RANGED":
                 return (GM.ChecklistScript.taskNameToBool["GE"] && GM.ChecklistScript.taskNameToBool["GP"] && GM.ChecklistScript.taskNameToBool["SCK"]);
             case "CARDS":
                 return (true);
-            case "Combat_3":
+            case "Combat_MORERANGED":
                 return (GM.ChecklistScript.taskNameToBool["DC"]);
             case "SHOP":
                 return (true);
-
             default:
                 return false;
         }
