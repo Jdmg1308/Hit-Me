@@ -75,11 +75,11 @@ MonoBehaviour:
   progressBar: {fileID: 0}
   points: 0
   milestone1: 0
-  milestone1Points: 0
+  milestone1Points: 33
   milestone2: 0
-  milestone2Points: 0
+  milestone2Points: 66
   milestone3: 0
-  milestone3Points: 0
+  milestone3Points: 100
   mobile: 0
   iOSPanel: {fileID: 0}
   p:

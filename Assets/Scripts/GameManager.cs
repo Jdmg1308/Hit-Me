@@ -57,6 +57,7 @@ public class GameManager : TheSceneManager
     public float level_gathered = 0;
 
     [Header("Progress Meter")]
+    public int progressMax = 100;
     public Slider progressBar;      // UI slidere for health bar 
     public int points;              // progress bar points 
     public bool milestone1;
@@ -196,6 +197,8 @@ public class GameManager : TheSceneManager
             }
 
             DrawnCard = PlayScreen.transform.Find("DrawnCard")?.gameObject;
+
+            progressBar = PlayScreen.transform.Find("PointMeter")?.gameObject.GetComponent<Slider>();
 
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
 
@@ -509,22 +512,34 @@ public class GameManager : TheSceneManager
         {
             //reached milestone 1 for the first time 
             //TODO: do the rewards, play audio or something idk
-            Debug.Log("milestone 1 reached");
+            MilestoneAnimation("milestone 1 reached");
             milestone1 = true;
         }
         else if (points >= milestone2Points && !milestone2)
         {
-            Debug.Log("mileestone 2 reached");
+            MilestoneAnimation("milestone 2 reached");
             milestone2 = true;
         }
         else if (points >= milestone3Points && !milestone3)
         {
-            Debug.Log("milestone 3 reached");
+            MilestoneAnimation("milestone 3 reached");
             milestone3 = true;
         }
         //TODO: uncomment once we get the bar 
         Debug.Log("points: " + points);
         //progressBar.value = points;
+        progressBar.value = points;
+    }
+
+    public void MilestoneAnimation(string text)
+    {
+        // animate descriptor
+        Animator animator = cardDescriptor.GetComponent<Animator>();
+        TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
+        description.text = "milestone 1 reached";
+        description.color = Color.red;
+        PlayAnimationOnce(animator, "LookAtMe");
+        description.color = Color.white;
     }
 
     public void Difficulty()
