@@ -72,6 +72,14 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   money: 500
   level_gathered: 0
+  progressBar: {fileID: 0}
+  points: 0
+  milestone1: 0
+  milestone1Points: 0
+  milestone2: 0
+  milestone2Points: 0
+  milestone3: 0
+  milestone3Points: 0
   mobile: 0
   iOSPanel: {fileID: 0}
   p:
@@ -87,6 +95,7 @@ MonoBehaviour:
     vulnerability: 1
     iFramesTime: 0.7
     hitStunTime: 0.5
+    hitStunDamageMultiplier: 0
     anim: {fileID: 0}
     money: 0
     grappleRope: {fileID: 0}
@@ -118,7 +127,8 @@ MonoBehaviour:
     baseFriction: 0
     friction: 0
     kickPoint: {fileID: 0}
-    baseKickForce: 0.5
+    fastKickForce: 0
+    heavyKickForce: 0.5
     maxKickForce: 0
     forceIncrease: 0
     extendedMaxKickForce: 0
@@ -158,6 +168,7 @@ MonoBehaviour:
     dullColor: {fileID: 0}
   playerController: {fileID: 0}
   money_text: {fileID: 0}
+  ChecklistScript: {fileID: 0}
   InHitStop: 0
   Curve:
     serializedVersion: 2
@@ -537,9 +548,10 @@ MonoBehaviour:
   - {fileID: 5376063831448311513}
   - {fileID: 5376063831353332324}
   - {fileID: 5376063832007169897}
-  enemyPrefab: {fileID: 5811921193137224085, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
+  BasicEnemyPrefab: {fileID: 2028937914, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
+  RangedEnemyPrefab: {fileID: 457071703722495764, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
+  HeavyEnemyPrefab: {fileID: 7912227820249121315, guid: fef87f3d705e4e047921b6e227298cd6, type: 3}
   SpawnDelay: 1
-  waveConfigurations: 020000000300000003000000
   currentWave: 0
   isDoubleDamage: 0
   extraEnemySpawns: 0

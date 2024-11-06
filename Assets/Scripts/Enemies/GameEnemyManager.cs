@@ -5,30 +5,45 @@ using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
+// count for each enemy type
+[System.Serializable]
+public class EnemyComposition
+{
+    public int BasicCount;
+    public int RangedCount;
+    public int HeavyCount;
+
+    // Sum will be calculated based on the other counts
+    public int Sum => BasicCount + RangedCount + HeavyCount;
+}
+
 public class GameEnemyManager : MonoBehaviour
 {
     public GameManager GM;
-    public List<GameObject> spawnedEnemies = new List<GameObject>();
+    public List<Enemy> spawnedEnemies = new List<Enemy>();
     public int EnemiesLeftInWave = 0;
 
     [Header("Spawn Settings")]
     public List<Transform> spawnPoints;  // List of possible spawn points
-    public GameObject enemyPrefab;
+    public BasicEnemy BasicEnemyPrefab;
+    public RangedEnemy RangedEnemyPrefab;
+    public HeavyEnemy HeavyEnemyPrefab;
+    
     public float SpawnDelay = 3f; // first wave spawn delay
 
     [Header("Wave Settings")]
-    public List<int> waveConfigurations = new List<int> { 3, 4, 6 }; // List of enemy count per wave
+    public List<EnemyComposition> waveConfigurations = new List<EnemyComposition>(); // List of enemy count per wave
     public int currentWave = 0;         // Current wave number
     private bool _WaveInProgress = false;
 
-    public struct EnemyStats
+    public struct ExtraEnemyStats
     {
         public int MaxHealth;
         public float ChaseSpeed;
         public int PunchDamage;
     }
     [Header("Enemy Effects")]
-    public EnemyStats enemyStats;
+    public ExtraEnemyStats enemyStats;
     public bool isDoubleDamage = false;
     public int extraEnemySpawns = 0;
 
@@ -47,6 +62,7 @@ public class GameEnemyManager : MonoBehaviour
     {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,11 +72,13 @@ public class GameEnemyManager : MonoBehaviour
         _OffScreenSpriteWidth = bounds.size.x / 2f;
         _OffScreenSpriteHeight = bounds.size.y / 2f;
 
-        var enemyScript = enemyPrefab.GetComponent<Enemy>();
-        enemyStats = new EnemyStats();
-        enemyStats.MaxHealth = enemyScript.MaxHealth;
-        enemyStats.ChaseSpeed = enemyScript.ChaseSpeed;
-        enemyStats.PunchDamage = enemyScript.PunchDamage;
+        enemyStats = new ExtraEnemyStats();
+        for (int i = 0; i < waveConfigurations.Count; i++)
+        {
+            EnemyComposition composition = waveConfigurations[i];
+            // composition.Sum = composition.BasicCount + composition.RangedCount + composition.HeavyCount;
+            waveConfigurations[i] = composition;
+        }
     }
 
     void Update()
@@ -70,7 +88,7 @@ public class GameEnemyManager : MonoBehaviour
         {
             int enemiesToSpawn = 0;
             if (currentWave < waveConfigurations.Count)
-                enemiesToSpawn = waveConfigurations[currentWave];
+                enemiesToSpawn = waveConfigurations[currentWave].Sum;
             // If no enemies are left, spawn a new wave
             if (EnemiesLeftInWave == 0 && !hasSpawned)
             {
@@ -94,7 +112,13 @@ public class GameEnemyManager : MonoBehaviour
     // for GM progress bar enemy counter
     public int TotalEnemyCount()
     {
-        return waveConfigurations.Sum();
+        int sum = 0;
+        for (int i = 0; i < waveConfigurations.Count; i++)
+        {
+            sum += waveConfigurations[i].Sum;
+        }
+
+        return sum;
     }
 
     public void ResetWaves()
@@ -122,14 +146,14 @@ public class GameEnemyManager : MonoBehaviour
             enemy.DamageHelper(damage, hitStunTime);
     }
 
-    public void Death(GameObject enemy)
+    public void Death(Enemy enemy)
     {
         if (enemy != null)
         {
             EnemiesLeftInWave -= 1;
             spawnedEnemies.Remove(enemy);
-            GM.updatePoints(enemy.GetComponent<Enemy>().pointAmount);
-            StartCoroutine(WaitForSpawn(enemy));
+            GM.updatePoints(enemy.pointAmount);
+            StartCoroutine(WaitForSpawn(enemy.gameObject));
 
             // Check if all enemies are dead
             if (EnemiesLeftInWave == 0)
@@ -140,7 +164,6 @@ public class GameEnemyManager : MonoBehaviour
     // difficulty = more enemies + enemy hp + dmg + speed
     public void SetDifficulty(int level)
     {
-
         // level 1, 2, 3
         if (level == 2)
         {
@@ -161,11 +184,10 @@ public class GameEnemyManager : MonoBehaviour
     #region Card Effects
     public void BuffEnemies(int ExtraHealth, int ExtraDamage, float ExtraSpeed)
     {
-        foreach (GameObject enemy in spawnedEnemies)
+        foreach (Enemy enemyRef in spawnedEnemies)
         {
-            if (enemy != null)
+            if (enemyRef != null)
             {
-                Enemy enemyRef = enemy.GetComponent<Enemy>();
                 // Code to execute for each item
                 enemyRef.MaxHealth += ExtraHealth;
                 enemyRef.CurrentHealth += ExtraHealth;
@@ -199,7 +221,7 @@ public class GameEnemyManager : MonoBehaviour
         // Loop through the specified number of enemies to destroy
         for (int i = 0; i < enemiesToDestroy; i++)
         {
-            GameObject enemy = spawnedEnemies[0];
+            Enemy enemy = spawnedEnemies[0];
             Death(enemy);
         }
     }
@@ -235,23 +257,39 @@ public class GameEnemyManager : MonoBehaviour
         isDoubleDamage = false;
     }
 
-    // spawns clones of each enemy beside them
+    // Spawns clones of each enemy beside them with modified stats
     public void SpawnHallucinationClones(int health)
     {
-        foreach (GameObject t in spawnedEnemies)
+        foreach (Enemy originalEnemy in spawnedEnemies)
         {
-            GameObject newEnemy = Instantiate(enemyPrefab, t.transform.position, Quaternion.identity);
-            Enemy enemyRef = newEnemy.GetComponent<Enemy>();
-            enemyRef.Player = GM.Player;
-            enemyRef.GameEnemyManager = this;
+            GameObject enemyPrefab = null;
 
-            // modded stats for hallucination clones
-            enemyRef.PunchDamage = 0;
-            enemyRef.MaxHealth = health;
-            enemyRef.CurrentHealth = health;
-            enemyRef.initialSpawnDelay = 0f;
+            // Determine the prefab to instantiate based on the original enemy type
+            if (originalEnemy is BasicEnemy)
+                enemyPrefab = BasicEnemyPrefab.gameObject;
+            else if (originalEnemy is RangedEnemy)
+                enemyPrefab = RangedEnemyPrefab.gameObject;
+            else if (originalEnemy is HeavyEnemy)
+                enemyPrefab = HeavyEnemyPrefab.gameObject;
+
+            if (enemyPrefab != null)
+            {
+                // Instantiate the clone slightly offset from the original position
+                Vector3 offsetPosition = originalEnemy.transform.position + new Vector3(1f, 0, 0);
+                GameObject newEnemy = Instantiate(enemyPrefab, offsetPosition, Quaternion.identity);
+
+                Enemy enemyRef = newEnemy.GetComponent<Enemy>();
+                enemyRef.Player = GM.Player;
+                enemyRef.GameEnemyManager = this;
+
+                enemyRef.PunchDamage = 0;
+                enemyRef.MaxHealth = health;
+                enemyRef.CurrentHealth = health;
+                enemyRef.initialSpawnDelay = 0f;
+            }
         }
     }
+
     #endregion
 
     #region Spawn Helpers
@@ -309,18 +347,61 @@ public class GameEnemyManager : MonoBehaviour
 
     private void SpawnEnemy(Transform spawnPoint)
     {
+        // Ensure currentWave is within bounds
+        if (currentWave < 0 || currentWave >= waveConfigurations.Count)
+        {
+            Debug.LogError("Invalid wave index for enemy composition.");
+            return;
+        }
+
+        // Get the composition for the specified wave
+        var composition = waveConfigurations[currentWave];
+
+        // Ensure there are enemy types left to spawn
+        if (composition.BasicCount <= 0 && composition.RangedCount <= 0 && composition.HeavyCount <= 0)
+            return;
+
+        GameObject enemyPrefab = null;
+
+        // Randomly pick an enemy type with remaining count
+        while (enemyPrefab == null)
+        {
+            int randomChoice = UnityEngine.Random.Range(0, 3); // 0 for Basic, 1 for Ranged, 2 for Heavy
+
+            if (randomChoice == 0 && composition.BasicCount > 0)
+            {
+                enemyPrefab = BasicEnemyPrefab.gameObject;
+                composition.BasicCount--; // Decrease count for Basic enemies
+            }
+            else if (randomChoice == 1 && composition.RangedCount > 0)
+            {
+                enemyPrefab = RangedEnemyPrefab.gameObject;
+                composition.RangedCount--; // Decrease count for Ranged enemies
+            }
+            else if (randomChoice == 2 && composition.HeavyCount > 0)
+            {
+                enemyPrefab = HeavyEnemyPrefab.gameObject;
+                composition.HeavyCount--; // Decrease count for Heavy enemies
+            }
+        }
+
+        // Update the wave configuration with the modified composition
+        waveConfigurations[currentWave] = composition;
+
+        // Instantiate the selected enemy type
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         Enemy enemyRef = newEnemy.GetComponent<Enemy>();
         enemyRef.Player = GM.Player;
         enemyRef.GameEnemyManager = this;
 
-        // adding current stats
-        enemyRef.MaxHealth = enemyStats.MaxHealth;
-        enemyRef.ChaseSpeed = enemyStats.ChaseSpeed;
-        enemyRef.PunchDamage = enemyStats.PunchDamage;
+        // Add current stats
+        enemyRef.MaxHealth += enemyStats.MaxHealth;
+        enemyRef.ChaseSpeed += enemyStats.ChaseSpeed;
+        enemyRef.PunchDamage += enemyStats.PunchDamage;
 
-        spawnedEnemies.Add(newEnemy);
+        spawnedEnemies.Add(enemyRef);
     }
+
     #endregion
 
     #region FX

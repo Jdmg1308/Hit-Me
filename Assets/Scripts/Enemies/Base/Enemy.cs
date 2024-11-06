@@ -452,7 +452,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
             if (!IsDead)
             {
                 IsDead = true;
-                GameEnemyManager.Death(gameObject); // call this one cause list with enemies needs to be updated, this one calls Destroy too
+                GameEnemyManager.Death(this); // call this one cause list with enemies needs to be updated, this one calls Destroy too
             }
         }
     }

@@ -57,9 +57,9 @@ public class StatusEffectManager : MonoBehaviour
 
     public void AddToEachEnemy(Card card)
     {
-        List<GameObject> enemies = GM.GameEnemyManager.spawnedEnemies;
-        foreach (GameObject enemy in enemies) {
-            AboveEffectTemporarily(enemy, card, true);
+        List<Enemy> enemies = GM.GameEnemyManager.spawnedEnemies;
+        foreach (Enemy enemy in enemies) {
+            AboveEffectTemporarily(enemy.gameObject, card, true);
         }
     }
 
