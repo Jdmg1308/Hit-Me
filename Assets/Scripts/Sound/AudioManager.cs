@@ -39,7 +39,9 @@ public class AudioManager : MonoBehaviour
             {"MENU", titleScreenMusic },
             {"CARDS", tutorialMusic },
             {"GRAPPLE", tutorialMusic },
-            {"MOVEMENT_COMBAT", tutorialMusic }
+            {"MOVEMENT_COMBAT", tutorialMusic },
+            {"SEWER_1", sewerMusic },
+            {"SEWER_2", sewerMusic }
         };
     }
 

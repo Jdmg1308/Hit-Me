@@ -1091,20 +1091,36 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: spawnedEnemies.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: waveConfigurations.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: waveConfigurations.Array.data[0].BasicCount
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: waveConfigurations.Array.data[0].HeavyCount
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: waveConfigurations.Array.data[1].BasicCount
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: waveConfigurations.Array.data[1].HeavyCount
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: waveConfigurations.Array.data[0].RangedCount
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: waveConfigurations.Array.data[1].RangedCount
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.size
