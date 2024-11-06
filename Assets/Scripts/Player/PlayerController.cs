@@ -342,6 +342,7 @@ public class PlayerController : MonoBehaviour
     // kick active frames
     public IEnumerator Kick(TypeOfKick type)
     {
+
         shouldBeDamaging = true;
 
         // calculate kick force properties
@@ -371,6 +372,16 @@ public class PlayerController : MonoBehaviour
 
         // stop grappling if attacking
         p.grapplingGun.stopGrappling();
+
+        if (type == TypeOfKick.FastKick)
+            p.GM.ChecklistScript.UpdateChecklistItem("PKC", true);
+        if (type == TypeOfKick.HeavyKick)
+        {
+            if (Math.Abs(weightedXForce) < p.maxKickForce)
+                p.GM.ChecklistScript.UpdateChecklistItem("TK", true);
+            if (Math.Abs(weightedXForce) == p.maxKickForce)
+                p.GM.ChecklistScript.UpdateChecklistItem("FCK", true);
+        }
 
         while (shouldBeDamaging)
         {
@@ -442,6 +453,13 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PunchCombo(TypeOfPunch partOfCombo)
     {
+        if (partOfCombo == TypeOfPunch.Uppercut)
+            p.GM.ChecklistScript.UpdateChecklistItem("PC", true);
+
+        if (partOfCombo == TypeOfPunch.DownSlam)
+            p.GM.ChecklistScript.UpdateChecklistItem("PAC", true);
+
+
         shouldBeDamaging = true;
         int dir = p.facingRight ? 1 : -1;
 
