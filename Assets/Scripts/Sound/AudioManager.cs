@@ -30,11 +30,15 @@ public class AudioManager : MonoBehaviour
         levelMusic = new Dictionary<string, AudioClip>
         {
             // testing right now
-            {"CARDS", alleywayMusic },
-            {"GOON", sewerMusic },
-            {"RANGED", shopMusic },
-            {"MORERANGED", titleScreenMusic },
-            {"GRAPPLE", tutorialMusic }
+            {"Combat_GOON", alleywayMusic },
+            {"Combat_RANGED", alleywayMusic },
+            {"Combat_MORERANGED", alleywayMusic },
+            {"LEVEL_1", alleywayMusic },
+            {"SHOP", shopMusic },
+            {"MENU", titleScreenMusic },
+            {"CARDS", tutorialMusic },
+            {"GRAPPLE", tutorialMusic },
+            {"MOVEMENT_COMBAT", tutorialMusic }
         };
     }
 

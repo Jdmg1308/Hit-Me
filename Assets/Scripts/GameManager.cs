@@ -633,5 +633,6 @@ public class GameManager : TheSceneManager
         LastScene = SceneManager.GetActiveScene().name;
         GameEnemyManager.shouldSpawn = false; // THIS
         SceneManager.LoadScene("SHOP");
+
     }
 }
