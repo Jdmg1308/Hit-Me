@@ -326,7 +326,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         float horizontalVelocity = (deltaX > 0 ? 1 : -1) * Math.Min(MaxXJumpForce, Math.Abs(deltaX) / timeToApex);
 
         // Convert velocity to force by multiplying by mass (F = m * a)
-        float horizontalForce = horizontalVelocity * RB.mass;
+        float horizontalForce = horizontalVelocity;
         float verticalForce = verticalVelocity * RB.mass;
 
         // Return the calculated initial force as a 2D vector (x, y)
@@ -589,8 +589,17 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         ShouldBeDamaging = true;
         while (ShouldBeDamaging && !InHitStun)
         {
+            // Detect the player within the attack radius
             Collider2D player = Physics2D.OverlapCircle(DetectAttack.transform.position, AttackRadius, 1 << Player.layer);
+            bool facingPlayer = false;
+
             if (player != null)
+            {
+                float playerDirection = player.transform.position.x - transform.position.x;
+                facingPlayer = (playerDirection > 0 && FacingRight) || (playerDirection < 0 && !FacingRight);
+            }
+
+            if (player != null && facingPlayer)
             {
                 Vector2 force = new Vector2((FacingRight ? 1 : -1) * Math.Abs(PunchForce.x), PunchForce.y);
                 player.GetComponent<PlayerController>().TakeDamage(PunchDamage, force);

@@ -185,7 +185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4424213513605788877
 Transform:
   m_ObjectHideFlags: 0
@@ -497,7 +497,7 @@ MonoBehaviour:
   collisionForceThreshold: 10
   collisionDamageMultiplier: 0.5
   collisionForceMultiplier: 0.5
-  baseMass: 2
+  baseMass: 3
   postImpactMassScale: 0.9
   <MaxHealth>k__BackingField: 150
   <CurrentHealth>k__BackingField: 100
@@ -510,7 +510,7 @@ MonoBehaviour:
   outOfCombatDuration: 5
   enemyCollisionForce: {x: 0.5, y: 1.5}
   groundCheck: {fileID: 0}
-  <ChaseSpeed>k__BackingField: 1.5
+  <ChaseSpeed>k__BackingField: 3
   <MaxYJumpForce>k__BackingField: 15
   <MaxXJumpForce>k__BackingField: 5
   <PlatformDetectionMask>k__BackingField:
@@ -526,7 +526,7 @@ MonoBehaviour:
   IdleRange: 5
   IdleTimeBetweenMove: 1.5
   canAttack: 1
-  <AttackRadius>k__BackingField: 1.67
+  <AttackRadius>k__BackingField: 1.85
   <PunchDamage>k__BackingField: 10
   <PunchForce>k__BackingField: {x: 50, y: 12}
   <AttackWait>k__BackingField: 0.75
@@ -576,7 +576,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4424213514700239976}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.19, y: 0, z: 0}
+  m_LocalPosition: {x: 0.34, y: 0.17, z: 0}
   m_LocalScale: {x: 0.8957742, y: 0.5304165, z: 0.54543}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -623,7 +623,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -1382352164, guid: 73f872d6b7d2fe240ba0f9f8201a236f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -762,9 +762,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.22, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.83
+  m_Radius: 1
 --- !u!114 &3814711924575503299
 MonoBehaviour:
   m_ObjectHideFlags: 0
