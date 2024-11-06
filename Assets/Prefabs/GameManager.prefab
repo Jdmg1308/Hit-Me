@@ -72,6 +72,7 @@ MonoBehaviour:
   healthBar: {fileID: 0}
   money: 500
   level_gathered: 0
+  progressMax: 100
   progressBar: {fileID: 0}
   points: 0
   milestone1: 0
@@ -552,6 +553,13 @@ MonoBehaviour:
   RangedEnemyPrefab: {fileID: 457071703722495764, guid: 21617c8a4efa6a842bda7055db9e9fad, type: 3}
   HeavyEnemyPrefab: {fileID: 7912227820249121315, guid: fef87f3d705e4e047921b6e227298cd6, type: 3}
   SpawnDelay: 1
+  waveConfigurations:
+  - BasicCount: 2
+    RangedCount: 1
+    HeavyCount: 1
+  - BasicCount: 0
+    RangedCount: 0
+    HeavyCount: 0
   currentWave: 0
   isDoubleDamage: 0
   extraEnemySpawns: 0
