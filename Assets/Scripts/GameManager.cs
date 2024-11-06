@@ -121,7 +121,6 @@ public class GameManager : TheSceneManager
         {
             Destroy(gameObject); // Prevent duplicate instances
         }
-        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
     }
 
     public static GameManager GetInstance()
@@ -163,6 +162,8 @@ public class GameManager : TheSceneManager
         Canvas = GameObject.FindGameObjectWithTag("Canvas");
         Player = GameObject.FindGameObjectWithTag("Player");
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
+
+        audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
 
         if (Player)
         {
