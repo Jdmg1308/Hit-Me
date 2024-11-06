@@ -13,7 +13,7 @@ public class BasicEnemy : Enemy, HasBasicStates
 
     // states
     public EnemyChaseState ChaseState;
-    private void ChaseTransitionDecision()
+    protected virtual void ChaseTransitionDecision()
     {
         // check state
         if (IsGrounded)
@@ -28,7 +28,7 @@ public class BasicEnemy : Enemy, HasBasicStates
     }
 
     public EnemyAttackState AttackState;
-    private void AttackTransitionDecision()
+    protected virtual void AttackTransitionDecision()
     {
         // must finish punch animation before considering next action
         // InImpact = taking collisions, ImpactBool = damage hit stun state
@@ -44,7 +44,7 @@ public class BasicEnemy : Enemy, HasBasicStates
     }
     
     public EnemyIdleState IdleState;
-    private void IdleTransitionDecision()
+    protected virtual void IdleTransitionDecision()
     {
         if (canAttack && InAttackRange)
             StateMachine.changeState(AttackState);

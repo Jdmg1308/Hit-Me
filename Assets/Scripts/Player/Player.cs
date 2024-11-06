@@ -21,9 +21,10 @@ public class Player
     public int attackCharge;
     public int healCharge;
     public int bleedValue;
-    public int vulnerability = 1; //when fragile/vulnerable, take extra damage ex 2x 
+    public int vulnerability = 1; // when fragile/vulnerable, take extra damage ex 2x 
     public float iFramesTime = .7f;
     public float hitStunTime = .5f;
+    [Range(0, 1)] public float hitStunDamageMultiplier; // how much damage contributes to amount of hit stun/iframes
 
     public Animator anim;
 
@@ -52,8 +53,7 @@ public class Player
     public GameObject currentOneWayPlatform;
     [SerializeField] public BoxCollider2D playerCollider;
     public float waitTime = 0f;
-    [Range(0, 1)]
-    public float airControl, grappleAirControl, baseFriction, friction; 
+    [Range(0, 1)] public float airControl, grappleAirControl, baseFriction, friction; 
     // degree of player air control, air grappling control, and friction on surfaces
     
     // attack tuning

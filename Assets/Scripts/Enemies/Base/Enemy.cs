@@ -114,7 +114,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     // hit stun immunity fx
     private SpriteRenderer spriteRenderer;
-    private float flashDuration; // total duration of flashing, will be set to hit stun immunity time
     public float flashInterval = 0.15f; // time between flashes
 
     public float initialSpawnDelay = 1.5f;
@@ -164,9 +163,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         // knockback path tracer
         _lastRecordedPosition = transform.position; // Initialize the last recorded position
 
-        // fx
-        flashDuration = HitStunImmunityTime;
-
         // spawned with initial pause delay
         StartCoroutine(PauseAction(initialSpawnDelay));
     }
@@ -195,14 +191,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         }
 
         // If the current hit stun amount is greater than 0, run the out of combat timer
-        if (CurrentHitStunAmount > 0)
-        {
-            outOfCombatTimer -= Time.deltaTime;
+        // if (CurrentHitStunAmount > 0)
+        // {
+        //     outOfCombatTimer -= Time.deltaTime;
 
-            // If the timer reaches zero, reset the hit stun amount
-            if (outOfCombatTimer <= 0)
-                CurrentHitStunAmount = 0;
-        }
+        //     // If the timer reaches zero, reset the hit stun amount
+        //     if (outOfCombatTimer <= 0)
+        //         CurrentHitStunAmount = 0;
+        // }
     }
 
     protected virtual void FixedUpdate()
@@ -393,7 +389,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     #region Health/Die Functions
     // refers to GM bc to apply card effects
     // if not player attack, shouldn't affect hit stun effects
-    public void Damage(int damage, float hitStunTime)
+    public virtual void Damage(int damage, float hitStunTime)
     {
         GameEnemyManager.Damage(this, damage, hitStunTime);
     }
@@ -441,11 +437,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         hitStunCoroutine = null;
     }
 
-    private IEnumerator HitStunImmunity(float time)
+    public IEnumerator HitStunImmunity(float time)
     {
         yield return new WaitForSeconds(time);
         HitStunImmune = false;
-        CurrentHitStunAmount = 0;
+        // CurrentHitStunAmount = 0;
     }
 
     public void Die()
@@ -619,7 +615,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     #region VFX
     // flashing effect for hit immunity
-    private IEnumerator HitStunImmunityFlash(float flashDuration)
+    public IEnumerator HitStunImmunityFlash(float flashDuration)
     {
         float elapsedTime = 0f;
 

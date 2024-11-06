@@ -440,7 +440,7 @@ MonoBehaviour:
   outOfCombatDuration: 5
   enemyCollisionForce: {x: 0.5, y: 1.5}
   groundCheck: {fileID: 0}
-  <ChaseSpeed>k__BackingField: 4.5
+  <ChaseSpeed>k__BackingField: 5
   <MaxYJumpForce>k__BackingField: 15
   <MaxXJumpForce>k__BackingField: 5
   <PlatformDetectionMask>k__BackingField:
@@ -469,6 +469,7 @@ MonoBehaviour:
   flashInterval: 0.15
   initialSpawnDelay: 1.5
   enemyState: 0
+  pointAmount: 5
   <InAttackRange>k__BackingField: 0
   <InRunAwayRange>k__BackingField: 0
   <InRangedAttackRange>k__BackingField: 0

@@ -14,13 +14,13 @@ public class EnemyAttackState : EnemyState
     {
         switch (triggerType)
         {
-            case AnimationTriggerType.StartPunch:
+            case AnimationTriggerType.StartAttack:
                 e.StartCoroutine(e.Punch());
                 break;
-            case AnimationTriggerType.EndPunch:
+            case AnimationTriggerType.EndAttack:
                 e.EndPunch();
                 break;
-            case AnimationTriggerType.EndPunchDamaging:
+            case AnimationTriggerType.EndAttackDamaging:
                 e.EndShouldBeDamaging();
                 break;
         }
