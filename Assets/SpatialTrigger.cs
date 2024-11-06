@@ -18,7 +18,8 @@ public class SpatialTrigger : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         // Invoke the assigned methods
-        onTriggerEnter.Invoke();
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+            onTriggerEnter.Invoke();
     }
 
     public void NextScene(string SceneName)
@@ -39,7 +40,7 @@ public class SpatialTrigger : MonoBehaviour
             case "MOVEMENT COMBAT":
                 return (true);
             case "Combat_1":
-                return (GM.ChecklistScript.taskNameToBool["PC"] && GM.ChecklistScript.taskNameToBool["PAC"] && GM.ChecklistScript.taskNameToBool["TK"] && GM.ChecklistScript.taskNameToBool["FCK"] && GM.ChecklistScript.taskNameToBool[""]);
+                return (GM.ChecklistScript.taskNameToBool["PC"] && GM.ChecklistScript.taskNameToBool["PAC"] && GM.ChecklistScript.taskNameToBool["TK"] && GM.ChecklistScript.taskNameToBool["FCK"] && GM.ChecklistScript.taskNameToBool["PKC"]);
             case "GRAPPLE":
                 return (true);
             case "Combat_2":
@@ -48,6 +49,8 @@ public class SpatialTrigger : MonoBehaviour
                 return (true);
             case "Combat_3":
                 return (GM.ChecklistScript.taskNameToBool["DC"]);
+            case "SHOP":
+                return (true);
 
             default:
                 return false;

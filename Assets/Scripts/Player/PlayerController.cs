@@ -101,6 +101,9 @@ public class PlayerController : MonoBehaviour
 
         if (p.charging)
         {
+            if (p.grapplingGun.isGrappling)
+                p.GM.ChecklistScript.UpdateChecklistItem("SCK", true);
+
             p.kickCharge += (p.kickChargeRate * Time.deltaTime) + (p.rb.velocity.magnitude * p.movementChargeRateMultiplier); // charging goes up naturally + extra for moving fast
             // if grappling, use extended max, else regular max
             float max = p.grapplingGun.isGrappling ? p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue : 1f;
@@ -378,7 +381,9 @@ public class PlayerController : MonoBehaviour
         if (type == TypeOfKick.HeavyKick)
         {
             if (Math.Abs(weightedXForce) < p.maxKickForce)
+            {
                 p.GM.ChecklistScript.UpdateChecklistItem("TK", true);
+            }
             if (Math.Abs(weightedXForce) == p.maxKickForce)
                 p.GM.ChecklistScript.UpdateChecklistItem("FCK", true);
         }
@@ -453,6 +458,8 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PunchCombo(TypeOfPunch partOfCombo)
     {
+        if (p.grapplingGun.isGrappling)
+            p.GM.ChecklistScript.UpdateChecklistItem("GP", true);
         if (partOfCombo == TypeOfPunch.Uppercut)
             p.GM.ChecklistScript.UpdateChecklistItem("PC", true);
 
