@@ -137,22 +137,33 @@ public class ShopManager : TheSceneManager
 
     public void NextLevelSetup()
     {
-        switch (GM.LastScene)
+        //if (remainingLevels.Count == 0)
+        //{
+        //    // All levels have been played; reset the list to start over
+        //    remainingLevels = new List<System.Action>(availableLevels);
+        //}
+
+        // Choose a random level from the remaining levels
+        int randomIndex = Random.Range(0, 4);
+        //System.Action nextLevel = remainingLevels[randomIndex];
+        //remainingLevels.RemoveAt(randomIndex); // Remove chosen level so it won’t repeat
+
+        //// Assign the chosen level to the button
+        //GM.AssignButton(ShopScreen.transform, "NextLevel", nextLevel);
+
+        switch (randomIndex)
         {
-            case "TUTORIAL":
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl1);
+            case 0:
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayAlleyway1);
                 break;
-
-            case "LEVEL_1":
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl1);
+            case 1:
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayAlleyway2);
                 break;
-
-            case "LEVEL_2":
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl1);
+            case 2:
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl2);
                 break;
-
-            case "LEVEL_3":
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl1);
+            case 3:
+                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl3);
                 break;
 
             default:

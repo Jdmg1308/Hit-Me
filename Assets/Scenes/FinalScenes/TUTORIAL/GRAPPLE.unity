@@ -2464,7 +2464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8506203382445981069, guid: 5903a4760bc18ad4b82bd500eb4239d4, type: 3}
       propertyPath: onTriggerEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: Combat_2
+      value: Combat_RANGED
       objectReference: {fileID: 0}
     - target: {fileID: 8506203382445981071, guid: 5903a4760bc18ad4b82bd500eb4239d4, type: 3}
       propertyPath: m_RootOrder

@@ -37,12 +37,17 @@ public class TheSceneManager : MonoBehaviour
     }
     public void PlayTutorial()
     {
-        SceneManager.LoadScene("TUTORIAL");
+        SceneManager.LoadScene("MOVEMENT_COMBAT");
     }
 
-    public void PlayLvl1()
+    public void PlayAlleyway1()
     {
-        SceneManager.LoadScene("LEVEL_1");
+        SceneManager.LoadScene("ALLEYWAY_1");
+    }
+
+    public void PlayAlleyway2()
+    {
+        SceneManager.LoadScene("ALLEYWAY_2");
     }
 
     public void PlayLvl2()

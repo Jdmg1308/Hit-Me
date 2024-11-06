@@ -107,7 +107,10 @@ public class GameManager : TheSceneManager
 
     public bool hasWon = false;
 
-    AudioManager audioManager;
+    //private List<System.Action> availableLevels;
+    //private List<System.Action> remainingLevels;
+
+AudioManager audioManager;
 
     #region Setup and update data
     void Awake()
@@ -216,6 +219,9 @@ public class GameManager : TheSceneManager
             cardDescriptor = PlayScreen.transform.Find("CardDescriptor")?.gameObject;
 
             money_text.text = " " + money.ToString();
+
+            //availableLevels = new List<System.Action> { PlayLvl1, PlayLvl2, PlayLvl3, PlayLvl4 };
+            //remainingLevels = new List<System.Action>(availableLevels);
         }
 
         if (DeathScreen || WinScreen || PauseScreen)
@@ -538,6 +544,8 @@ public class GameManager : TheSceneManager
         TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
         description.text = "milestone 1 reached";
         description.color = Color.red;
+        audioSource.clip = GoodPullAudio;
+        audioSource.Play();
         PlayAnimationOnce(animator, "LookAtMe");
         description.color = Color.white;
     }
