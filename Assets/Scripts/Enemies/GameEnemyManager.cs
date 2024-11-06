@@ -84,18 +84,12 @@ public class GameEnemyManager : MonoBehaviour
     void Update()
     {
         // Check if there are more waves left
-        if (currentWave <= waveConfigurations.Count && !_WaveInProgress && shouldSpawn)
+        if (currentWave < waveConfigurations.Count && !_WaveInProgress && shouldSpawn)
         {
-            int enemiesToSpawn = 0;
-            if (currentWave < waveConfigurations.Count)
-                enemiesToSpawn = waveConfigurations[currentWave].Sum;
+            int enemiesToSpawn = waveConfigurations[currentWave].Sum;
             // If no enemies are left, spawn a new wave
             if (EnemiesLeftInWave == 0 && !hasSpawned)
-            {
-                if (currentWave < waveConfigurations.Count)
-                    StartCoroutine(StartWaves(enemiesToSpawn));
-                ++currentWave;
-            }
+                StartCoroutine(StartWaves(enemiesToSpawn));
         }
 
         // testing methods
@@ -135,6 +129,7 @@ public class GameEnemyManager : MonoBehaviour
         _WaveInProgress = true;
         yield return new WaitForSeconds(SpawnDelay);
         SpawnWave(enemiesToSpawn);
+        ++currentWave;
     }
 
     // this exists to handle damage mods
