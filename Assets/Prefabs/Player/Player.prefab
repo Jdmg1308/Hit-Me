@@ -1165,8 +1165,8 @@ MonoBehaviour:
     m_springJoint2D: {fileID: 7021618568593065068}
     XMaxSpeed: 10
     YMaxSpeed: 15
-    moveSpeed: 8
-    baseMoveSpeed: 8
+    moveSpeed: 7
+    baseMoveSpeed: 7
     jumpForce: 3000
     moveDirection: 0
     isJumping: 0
@@ -1214,8 +1214,8 @@ MonoBehaviour:
     punchPoint: {fileID: 1402335155}
     punchRadius: 0.84
     uppercutRadius: 0.96
-    punchDamage: 5
-    basePunchDamage: 5
+    punchDamage: 3
+    basePunchDamage: 3
     uppercutDamage: 7
     baseUppercutDamage: 7
     uppercutForce: {x: 0.5, y: 15}

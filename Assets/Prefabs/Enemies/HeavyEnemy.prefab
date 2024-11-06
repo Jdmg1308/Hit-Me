@@ -548,7 +548,7 @@ MonoBehaviour:
   perHitChanceIncrease: 0.02
   ArmoredAttackDamage: 18
   ArmoredAttackForce: {x: 65, y: 14}
-  ArmoredTime: 2
+  ArmoredTime: 1.75
 --- !u!1 &4424213514700239976
 GameObject:
   m_ObjectHideFlags: 0

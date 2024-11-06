@@ -456,7 +456,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         }
     }
 
-    public void TakeKick(int damage, Vector2 force)
+    public virtual void TakeKick(int damage, Vector2 force)
     {
         if (force.x < 0)
             FlipCharacter(true);
@@ -641,7 +641,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     }
 
     // Helper method to set the alpha value of the sprite
-    private void SetSpriteColor(float val)
+    public void SetSpriteColor(float val)
     {
         Color dullColor = new Color(val, val, val, val);
         spriteRenderer.color = dullColor;

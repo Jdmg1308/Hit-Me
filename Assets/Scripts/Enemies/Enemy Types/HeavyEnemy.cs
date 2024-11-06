@@ -7,11 +7,27 @@ using UnityEngine;
 
 public class HeavyEnemy : BasicEnemy
 {
+    // transition bools
+    public bool inGuardBreak;
+
+    EnemyState GuardBreakState;
+    protected void GuardBreakTransitionDecision()
+    {
+        if (inGuardBreak)
+            return; // do nothing
+        else if (canAttack && InAttackRange)
+            DecideChargeAttack();
+        else if (InChaseRange)
+            StateMachine.changeState(ChaseState);
+    }
+
     protected override void AttackTransitionDecision()
     {
         // must finish punch animation before considering next action
         // InImpact = taking collisions, ImpactBool = damage hit stun state
-        if (!Anim.GetBool("isPunching") && !Anim.GetBool("isArmoredAttack"))
+        if (inGuardBreak)
+            StateMachine.changeState(GuardBreakState);
+        else if (!Anim.GetBool("isPunching") && !Anim.GetBool("isArmoredAttack"))
         {
             if (canAttack && InAttackRange) // repeatedly punch if in range
                 DecideChargeAttack();
@@ -25,7 +41,9 @@ public class HeavyEnemy : BasicEnemy
     protected override void ChaseTransitionDecision()
     {
         // check state
-        if (IsGrounded)
+        if (inGuardBreak)
+            StateMachine.changeState(GuardBreakState);
+        else if (IsGrounded)
         { // can only change state if on ground and not paused
             if (canAttack && InAttackRange)
                 DecideChargeAttack();
@@ -38,7 +56,9 @@ public class HeavyEnemy : BasicEnemy
 
     protected override void IdleTransitionDecision()
     {
-        if (canAttack && InAttackRange)
+        if (inGuardBreak)
+            StateMachine.changeState(GuardBreakState);
+        else if (canAttack && InAttackRange)
             DecideChargeAttack();
         else if (InChaseRange)
             StateMachine.changeState(ChaseState);
@@ -54,6 +74,8 @@ public class HeavyEnemy : BasicEnemy
     public int ArmoredAttackDamage = 18;
     public Vector2 ArmoredAttackForce;
     public float ArmoredTime; // sets how long attack 'charges' for
+    public float GuardBreakTime = 5f; // how long guard break stun lasts
+    public float forceThreshold = 16.5f; // min force required to cause guard break
 
     protected override void Awake()
     {
@@ -63,6 +85,7 @@ public class HeavyEnemy : BasicEnemy
         AttackState = new EnemyAttackState(this, AttackTransitionDecision);
         IdleState = new EnemyIdleState(this, IdleTransitionDecision);
         EnemyArmoredAttackState = new EnemyArmoredAttackState(this, AttackTransitionDecision, ArmoredAttackDamage, ArmoredAttackForce);
+        GuardBreakState = new EnemyGuardBreakState(this, GuardBreakTransitionDecision, GuardBreakTime, value => inGuardBreak = value);
     }
 
     protected override void Start()
@@ -80,6 +103,19 @@ public class HeavyEnemy : BasicEnemy
     {
         currentChanceForChargedAttack += perHitChanceIncrease;
         base.Damage(damage, hitStunTime);
+    }
+
+    public override void TakeKick(int damage, Vector2 force)
+    {
+        // if hit with enough force during armored attack
+        if (force.x >= forceThreshold && HitStunImmune)
+        {
+            inGuardBreak = true;
+            Anim.SetBool("isArmoredAttack", false); // cancel armored attack
+            HitStunImmune = false;
+        }
+
+        base.TakeKick(damage, force);
     }
 
     private void DecideChargeAttack()
