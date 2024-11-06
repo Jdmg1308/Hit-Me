@@ -439,6 +439,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     public IEnumerator HitStunImmunity(float time)
     {
+        HitStunImmune = true;
         yield return new WaitForSeconds(time);
         HitStunImmune = false;
         // CurrentHitStunAmount = 0;

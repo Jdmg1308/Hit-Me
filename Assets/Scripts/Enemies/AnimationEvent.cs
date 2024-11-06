@@ -29,6 +29,11 @@ public class AnimationEvent : MonoBehaviour
         _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndAttackDamaging);
     }
 
+    public void ArmorUp()
+    {
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.ArmorUp);
+    }
+
     public void ChargeUp()
     {
         _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.ChargeUp);

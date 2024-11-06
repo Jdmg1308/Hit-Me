@@ -18,7 +18,7 @@ public class EnemyState
 
     public virtual void EnterState() { }
     public virtual void ExitState() { }
-    public void FrameUpdate() { 
+    public virtual void FrameUpdate() { 
         // default anti-decision making variables
         if (!e.IsPaused && !e.InImpact && !e.InHitStun && !e.InKnockup && !e.Anim.GetBool("ImpactBool"))
             transitionDecision?.Invoke();
@@ -30,6 +30,7 @@ public class EnemyState
         StartAttack,
         EndAttack,
         EndAttackDamaging,
+        ArmorUp,
         ChargeUp
     }
     public virtual void AnimationTriggerEvent(AnimationTriggerType triggerType) { }
