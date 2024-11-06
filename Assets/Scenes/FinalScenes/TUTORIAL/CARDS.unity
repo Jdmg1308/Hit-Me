@@ -3267,6 +3267,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7737867388980074530, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
+      propertyPath: shopMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 30531ea356af39345990d6983ddd2089, type: 3}
+    - target: {fileID: 7737867388980074530, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
+      propertyPath: sewerMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: ac12f9944c293f045810551110293cee, type: 3}
+    - target: {fileID: 7737867388980074530, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
+      propertyPath: alleywayMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 58d033148caac0a4d876df054ec55dca, type: 3}
+    - target: {fileID: 7737867388980074530, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
+      propertyPath: tutorialMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: e2e8f65515e780241bbc65d3d0c40964, type: 3}
+    - target: {fileID: 7737867388980074530, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
+      propertyPath: titleScreenMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b47b048c5231134fbd508f2f8bef7aa, type: 3}
     - target: {fileID: 7737867388980074531, guid: e297b87fea7992841879bad5d85ffa94, type: 3}
       propertyPath: m_RootOrder
       value: 8
