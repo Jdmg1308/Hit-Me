@@ -1088,7 +1088,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: JACKPOT!
+  m_text: You Win!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f38a2543c56c74a4d8c560b1329889f6, type: 2}
   m_sharedMaterial: {fileID: 6896191094310902948, guid: f38a2543c56c74a4d8c560b1329889f6, type: 2}
@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 330.5458, y: 84.97762, z: 330.39868, w: 85.107635}
+  m_margin: {x: 314.14258, y: 84.97762, z: 309.67886, w: 85.107635}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1449,6 +1449,7 @@ MonoBehaviour:
     vulnerability: 1
     iFramesTime: 0.7
     hitStunTime: 0.5
+    hitStunDamageMultiplier: 0
     anim: {fileID: 0}
     money: 0
     grappleRope: {fileID: 0}
@@ -2827,6 +2828,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3768005602822016125}
     m_Modifications:
+    - target: {fileID: 1171811503481164314, guid: 691cb6c270076ba4695f7f5ac6c87fd4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043974943369941600, guid: 691cb6c270076ba4695f7f5ac6c87fd4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043974943369941600, guid: 691cb6c270076ba4695f7f5ac6c87fd4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043974943369941600, guid: 691cb6c270076ba4695f7f5ac6c87fd4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043974943369941600, guid: 691cb6c270076ba4695f7f5ac6c87fd4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043974943369941600, guid: 691cb6c270076ba4695f7f5ac6c87fd4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 255.52802
+      objectReference: {fileID: 0}
+    - target: {fileID: 7043974943369941600, guid: 691cb6c270076ba4695f7f5ac6c87fd4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -40
+      objectReference: {fileID: 0}
     - target: {fileID: 7772161573106749619, guid: 691cb6c270076ba4695f7f5ac6c87fd4, type: 3}
       propertyPath: m_Name
       value: Checklist Screen
