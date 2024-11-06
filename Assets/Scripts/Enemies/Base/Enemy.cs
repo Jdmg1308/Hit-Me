@@ -114,7 +114,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     // hit stun immunity fx
     private SpriteRenderer spriteRenderer;
-    private float flashDuration; // total duration of flashing, will be set to hit stun immunity time
     public float flashInterval = 0.15f; // time between flashes
 
     public float initialSpawnDelay = 1.5f;
@@ -164,9 +163,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         // knockback path tracer
         _lastRecordedPosition = transform.position; // Initialize the last recorded position
 
-        // fx
-        flashDuration = HitStunImmunityTime;
-
         // spawned with initial pause delay
         StartCoroutine(PauseAction(initialSpawnDelay));
     }
@@ -195,14 +191,14 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         }
 
         // If the current hit stun amount is greater than 0, run the out of combat timer
-        if (CurrentHitStunAmount > 0)
-        {
-            outOfCombatTimer -= Time.deltaTime;
+        // if (CurrentHitStunAmount > 0)
+        // {
+        //     outOfCombatTimer -= Time.deltaTime;
 
-            // If the timer reaches zero, reset the hit stun amount
-            if (outOfCombatTimer <= 0)
-                CurrentHitStunAmount = 0;
-        }
+        //     // If the timer reaches zero, reset the hit stun amount
+        //     if (outOfCombatTimer <= 0)
+        //         CurrentHitStunAmount = 0;
+        // }
     }
 
     protected virtual void FixedUpdate()
@@ -330,7 +326,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         float horizontalVelocity = (deltaX > 0 ? 1 : -1) * Math.Min(MaxXJumpForce, Math.Abs(deltaX) / timeToApex);
 
         // Convert velocity to force by multiplying by mass (F = m * a)
-        float horizontalForce = horizontalVelocity * RB.mass;
+        float horizontalForce = horizontalVelocity;
         float verticalForce = verticalVelocity * RB.mass;
 
         // Return the calculated initial force as a 2D vector (x, y)
@@ -393,7 +389,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     #region Health/Die Functions
     // refers to GM bc to apply card effects
     // if not player attack, shouldn't affect hit stun effects
-    public void Damage(int damage, float hitStunTime)
+    public virtual void Damage(int damage, float hitStunTime)
     {
         GameEnemyManager.Damage(this, damage, hitStunTime);
     }
@@ -441,11 +437,11 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         hitStunCoroutine = null;
     }
 
-    private IEnumerator HitStunImmunity(float time)
+    public IEnumerator HitStunImmunity(float time)
     {
         yield return new WaitForSeconds(time);
         HitStunImmune = false;
-        CurrentHitStunAmount = 0;
+        // CurrentHitStunAmount = 0;
     }
 
     public void Die()
@@ -460,7 +456,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         }
     }
 
-    public void TakeKick(int damage, Vector2 force)
+    public virtual void TakeKick(int damage, Vector2 force)
     {
         if (force.x < 0)
             FlipCharacter(true);
@@ -593,8 +589,17 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
         ShouldBeDamaging = true;
         while (ShouldBeDamaging && !InHitStun)
         {
+            // Detect the player within the attack radius
             Collider2D player = Physics2D.OverlapCircle(DetectAttack.transform.position, AttackRadius, 1 << Player.layer);
+            bool facingPlayer = false;
+
             if (player != null)
+            {
+                float playerDirection = player.transform.position.x - transform.position.x;
+                facingPlayer = (playerDirection > 0 && FacingRight) || (playerDirection < 0 && !FacingRight);
+            }
+
+            if (player != null && facingPlayer)
             {
                 Vector2 force = new Vector2((FacingRight ? 1 : -1) * Math.Abs(PunchForce.x), PunchForce.y);
                 player.GetComponent<PlayerController>().TakeDamage(PunchDamage, force);
@@ -619,7 +624,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     #region VFX
     // flashing effect for hit immunity
-    private IEnumerator HitStunImmunityFlash(float flashDuration)
+    public IEnumerator HitStunImmunityFlash(float flashDuration)
     {
         float elapsedTime = 0f;
 
@@ -636,7 +641,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     }
 
     // Helper method to set the alpha value of the sprite
-    private void SetSpriteColor(float val)
+    public void SetSpriteColor(float val)
     {
         Color dullColor = new Color(val, val, val, val);
         spriteRenderer.color = dullColor;

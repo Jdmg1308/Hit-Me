@@ -43,6 +43,7 @@ public class GameManager : TheSceneManager
     protected GameObject latestCard = null;
     protected GameObject cardDescriptor;
     protected GameObject DrawnCard;
+    private int NofCardsUsed = 0;
 
     [Header("Health")]
     public int healthCurrent;       // Current health of the player
@@ -86,7 +87,8 @@ public class GameManager : TheSceneManager
     protected GameObject IBuild;
     protected GameObject ChecklistScreen;
 
-    protected ChecklistScreen ChecklistScript;
+    [HideInInspector]
+    public ChecklistScreen ChecklistScript;
 
     protected bool paused = false;
 
@@ -290,6 +292,9 @@ public class GameManager : TheSceneManager
 
     public void useCard()
     {
+        NofCardsUsed++;
+        if (NofCardsUsed >= 3)
+            ChecklistScript.UpdateChecklistItem("DC", true);
         if (cardIsOnCD)
         {
             //don't do anything if the card is on CD

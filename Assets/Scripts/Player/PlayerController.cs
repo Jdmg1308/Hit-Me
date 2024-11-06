@@ -101,7 +101,10 @@ public class PlayerController : MonoBehaviour
 
         if (p.charging)
         {
-            p.kickCharge += (p.kickChargeRate * Time.deltaTime) + (p.rb.velocity.magnitude * p.movementChargeRateMultiplier);
+            if (p.grapplingGun.isGrappling)
+                p.GM.ChecklistScript.UpdateChecklistItem("SCK", true);
+
+            p.kickCharge += (p.kickChargeRate * Time.deltaTime) + (p.rb.velocity.magnitude * p.movementChargeRateMultiplier); // charging goes up naturally + extra for moving fast
             // if grappling, use extended max, else regular max
             float max = p.grapplingGun.isGrappling ? p.playerExtendedChargeMeter.GetComponent<Slider>().maxValue : 1f;
             p.kickCharge = Mathf.Clamp(p.kickCharge, 0, max);
@@ -342,6 +345,7 @@ public class PlayerController : MonoBehaviour
     // kick active frames
     public IEnumerator Kick(TypeOfKick type)
     {
+
         shouldBeDamaging = true;
 
         // calculate kick force properties
@@ -371,6 +375,18 @@ public class PlayerController : MonoBehaviour
 
         // stop grappling if attacking
         p.grapplingGun.stopGrappling();
+
+        if (type == TypeOfKick.FastKick)
+            p.GM.ChecklistScript.UpdateChecklistItem("PKC", true);
+        if (type == TypeOfKick.HeavyKick)
+        {
+            if (Math.Abs(weightedXForce) < p.maxKickForce)
+            {
+                p.GM.ChecklistScript.UpdateChecklistItem("TK", true);
+            }
+            if (Math.Abs(weightedXForce) == p.maxKickForce)
+                p.GM.ChecklistScript.UpdateChecklistItem("FCK", true);
+        }
 
         while (shouldBeDamaging)
         {
@@ -442,6 +458,15 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PunchCombo(TypeOfPunch partOfCombo)
     {
+        if (p.grapplingGun.isGrappling)
+            p.GM.ChecklistScript.UpdateChecklistItem("GP", true);
+        if (partOfCombo == TypeOfPunch.Uppercut)
+            p.GM.ChecklistScript.UpdateChecklistItem("PC", true);
+
+        if (partOfCombo == TypeOfPunch.DownSlam)
+            p.GM.ChecklistScript.UpdateChecklistItem("PAC", true);
+
+
         shouldBeDamaging = true;
         int dir = p.facingRight ? 1 : -1;
 
@@ -598,26 +623,28 @@ public class PlayerController : MonoBehaviour
             p.GM.updateHealth();
 
             //player didn't die, yay! iframes and hitstun sep to allow playermovement after hitstun while invic (get out of crowds)
-            StartCoroutine(WaitForHitStun());
-            StartCoroutine(WaitForIframes());
+            float time = damage * p.hitStunDamageMultiplier;
+            StartCoroutine(WaitForHitStun(time));
+            StartCoroutine(WaitForIframes(time));
         }
     }
 
-    private IEnumerator WaitForIframes()
+    private IEnumerator WaitForIframes(float extraTime)
     {
         Material originalMat = p.spriteRenderer.material;
 
         p.isHit = true;
         p.spriteRenderer.material = p.dullColor;
-        yield return new WaitForSeconds(p.iFramesTime);
+        yield return new WaitForSeconds(p.iFramesTime + extraTime);
         p.isHit = false;
         p.spriteRenderer.material = originalMat;
     }
 
-    private IEnumerator WaitForHitStun()
+    private IEnumerator WaitForHitStun(float extraTime)
     {
         p.anim.SetBool("isHurt", true);
-        yield return new WaitForSeconds(p.hitStunTime);
+        p.anim.SetBool("canMove", false);
+        yield return new WaitForSeconds(p.hitStunTime + extraTime);
         p.anim.SetBool("isHurt", false);
         p.anim.SetBool("canMove", true);
     }

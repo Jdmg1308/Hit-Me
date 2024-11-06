@@ -11,7 +11,9 @@ public class EnemyStateMachine
         Chase,
         Attack,
         RangedAttack,
-        RunAway
+        RunAway,
+        ArmoredAttack,
+        GuardBreak
     }
     public EnemyState currentEnemyState { get; set; }
 

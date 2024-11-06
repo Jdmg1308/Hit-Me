@@ -55,12 +55,15 @@ public class GrapplingGun : MonoBehaviour
     [Header("Grapple Forgiveness")]
     public float GrappleRadius; // set 'thickness' of grapple detection for easier use
 
+    private GameManager GM;
+
     private void Awake()
     {
         Canvas = GameObject.FindGameObjectWithTag("Canvas");
         m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         grappleTargetIndicator = Canvas.transform.Find("GrappleIndicator").gameObject;
         grappleTargetIndicatorImg = grappleTargetIndicator.GetComponent<Image>();
+        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
 
     private void Start()
@@ -79,6 +82,7 @@ public class GrapplingGun : MonoBehaviour
         {
             if (grappledObject != null && grappledObject.layer == LayerMask.NameToLayer("Enemy")) 
             {
+                GM.ChecklistScript.UpdateChecklistItem("GE", true);
                 grapplePoint = grappledObject.transform.position;
                 
             }

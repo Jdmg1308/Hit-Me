@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ShopManager : TheSceneManager
 {
     public List<Card> allPurchasableCards;
-    public Button duplicateButton;
+    public GameObject deleteSign;
     public Button destroyButton;
     public GameObject Options; // Panel containing the player's current deck of cards
     public GameObject deckDisplayPanel; // Panel containing the player's current deck of cards
@@ -91,12 +91,15 @@ public class ShopManager : TheSceneManager
 
     void DisplayDeckForDestruction()
     {
+        deleteSign.SetActive(true);
+        deckDisplayPanel.GetComponent<Image>().color = Color.red;
         ShopDisplayDestroyableDeck(false);
     }
 
     void ShopDisplayDestroyableDeck(bool duplicateCard)
     {
         Options.SetActive(false);
+
 
         // Clear previous buttons
         foreach (Transform child in deckDisplayPanel.transform)
@@ -111,6 +114,8 @@ public class ShopManager : TheSceneManager
             {
                 DestroyCard(card);
                 Options.SetActive(true);
+                deleteSign.SetActive(false);
+                deckDisplayPanel.GetComponent<Image>().color = Color.white;
             });
         }
     }

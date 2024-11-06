@@ -3,48 +3,66 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using TMPro;
+
 
 public class ChecklistScreen : MonoBehaviour
 {
-    public GameObject checklistItemPrefab;
-    public List<string> checklistTexts = new List<string>();
-    private List<GameObject> checklistItems = new List<GameObject>();
+    //public bool PC = false;
+    //public bool PAC = false;
+    //public bool TK = false;
+    //public bool FCK = false;
+    //public bool PKC = false;
+    //public bool GE = false;
+    //public bool GP = false;
+    //public bool SCK = false;
+    //public bool DC = false;
 
-    // Start is called before the first frame update
+    public GameObject checklistItemPrefab;
+    public List<string> checklistNames = new List<string>();
+    public List<string> checklistTexts = new List<string>();
+
+    // Dictionary to map task names to their indices in the checklistItems list
+    public Dictionary<string, bool> taskNameToBool = new Dictionary<string, bool>();
+    private Dictionary<string, GameObject> taskNameToGameObject= new Dictionary<string, GameObject>();
+
     void Start()
     {
-        CreateChecklistItems(checklistTexts.Count);
+        CreateChecklistItems();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CreateChecklistItems()
     {
-
-    }
-
-    public void CreateChecklistItems(int count)
-    {
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < checklistNames.Count; i++)
         {
             GameObject item = Instantiate(checklistItemPrefab, this.transform);
             item.name = "ChecklistItem" + i;
-            if (i < checklistTexts.Count)
-                item.GetComponentInChildren<Text>().text = checklistTexts[i];
-            checklistItems.Add(item);
+
+            // Set the checklist text
+            item.GetComponentInChildren<TextMeshProUGUI>().text = checklistTexts[i];
+
+            // Add the item to the checklistItems list
+            taskNameToGameObject[checklistNames[i]] = item;
+
+            // Map the task name to its index in taskNameToIndex dictionary
+            taskNameToBool[checklistNames[i]] = false;
         }
     }
 
-    public void UpdateChecklistItem(int taskNumber, bool isComplete)
+    public void UpdateChecklistItem(string taskName, bool isComplete)
     {
-        if (taskNumber < 0 || taskNumber >= checklistItems.Count)
+        // Check if the task name exists in the dictionary
+        if (!taskNameToBool.TryGetValue(taskName, out bool status))
         {
-            Debug.LogWarning("Invalid task number.");
+            Debug.LogWarning("Invalid task name.");
             return;
         }
 
-        // Change color based on completion status
-        GameObject item = checklistItems[taskNumber];
+        taskNameToBool[taskName] = isComplete;
+
+        // Update the color based on completion status
+        GameObject item = taskNameToGameObject[taskName];
         Color color = isComplete ? Color.green : Color.red;
-        item.GetComponent<Image>().color = color; // Assumes checklist item has an Image component
+        item.GetComponent<Image>().color = color;
     }
 }

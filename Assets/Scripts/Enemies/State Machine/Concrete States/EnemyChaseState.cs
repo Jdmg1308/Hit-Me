@@ -22,6 +22,48 @@ public class EnemyChaseState : EnemyState
             e.StopCoroutine(movementRoutine);
     }
 
+    // Timers for move and pause intervals
+    private float moveTimer = 0f;
+    private float pauseTimer = 0f;
+
+    // Random range for movement and pause times
+    private float minMoveTime = 1.2f;
+    private float maxMoveTime = 1.5f;
+    private float minPauseTime = 0.2f;
+    private float maxPauseTime = 0.5f;
+
+    // Decorated method to control movement and pause intervals
+    private void WalkToTargetWithIntervals(Vector2 target)
+    {
+        // Enemy is in a pause state
+        if (pauseTimer > 0f)
+        {
+            pauseTimer -= Time.deltaTime;
+            e.RB.velocity = new Vector2(0, e.RB.velocity.y); // Stop horizontal movement
+            e.Anim.SetBool("isWalking", false);             // Set animation to idle
+            return;
+        }
+
+        // Enemy is in a movement state
+        if (moveTimer > 0f)
+        {
+            moveTimer -= Time.deltaTime;
+            e.WalkToTarget(target);
+        }
+        else
+        {
+            // Reset move and pause timers after each interval
+            moveTimer = Random.Range(minMoveTime, maxMoveTime);
+            pauseTimer = Random.Range(minPauseTime, maxPauseTime);
+        }
+    }
+
+    private float chanceToJumpDrop = 0.15f;
+    private bool Randomize()
+    {
+        return Random.value < chanceToJumpDrop;
+    }
+
     private IEnumerator enemyAI()
     {
         try
@@ -31,9 +73,9 @@ public class EnemyChaseState : EnemyState
                 // grounded and in control abilities
                 if (e.IsGrounded)
                 {
-                    e.WalkToTarget(e.Player.transform.position); // chase after player
+                    WalkToTargetWithIntervals(e.Player.transform.position); // chase after player
 
-                    if (e.PlayerAbove && e.IsGrounded) // look for landing target if player above
+                    if (e.PlayerAbove && e.IsGrounded && Randomize()) // look for landing target if player above
                     {
                         e.DetectTargetFromPlatform();
                         e.ShouldJump = e.LandingTarget != Vector2.zero;
@@ -58,9 +100,9 @@ public class EnemyChaseState : EnemyState
                     }
 
                     // looking to drop down to player
-                    if (e.PlayerBelow)
+                    if (e.PlayerBelow && Randomize())
                     {
-                        e.CurrentOneWayPlatform = Physics2D.OverlapBox(e.groundCheck.transform.position, e.CheckGroundSize, 0f, e.GroundLayer).gameObject;
+                        e.CurrentOneWayPlatform = Physics2D.OverlapBox(e.groundCheck.transform.position, e.CheckGroundSize, 0f, e.GroundLayer)?.gameObject;
                         if (e.CurrentOneWayPlatform != null && e.CurrentOneWayPlatform.CompareTag("OneWayPlatform"))
                         {
                             yield return e.PauseAction(e.JumpDelay);
@@ -70,7 +112,7 @@ public class EnemyChaseState : EnemyState
                 }
 
                 if (e.MidJump && e.RB.velocity.y < 0) // if falling from a jump, regain control
-                    e.WalkToTarget(e.Player.transform.position);
+                    WalkToTargetWithIntervals(e.Player.transform.position);
                 
                 yield return new WaitForFixedUpdate();
             }
