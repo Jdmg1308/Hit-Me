@@ -1200,6 +1200,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7912227820249121315, guid: fef87f3d705e4e047921b6e227298cd6, type: 3}
+      propertyPath: ChargeUpTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912227820249121315, guid: fef87f3d705e4e047921b6e227298cd6, type: 3}
       propertyPath: forceThreshold
       value: 16.5
       objectReference: {fileID: 0}
