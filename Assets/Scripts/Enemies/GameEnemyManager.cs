@@ -6,16 +6,16 @@ using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 // count for each enemy type
-[System.Serializable]
-public class EnemyComposition
-{
-    public int BasicCount;
-    public int RangedCount;
-    public int HeavyCount;
+// [System.Serializable]
+// public class EnemyComposition
+// {
+//     public int BasicCount;
+//     public int RangedCount;
+//     public int HeavyCount;
 
-    // Sum will be calculated based on the other counts
-    public int Sum => BasicCount + RangedCount + HeavyCount;
-}
+//     // Sum will be calculated based on the other counts
+//     public int Sum => BasicCount + RangedCount + HeavyCount;
+// }
 
 public class GameEnemyManager : MonoBehaviour
 {
@@ -63,6 +63,8 @@ public class GameEnemyManager : MonoBehaviour
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
 
+    public WaveConfiguration waveConfig; // Attach the appropriate WaveConfiguration in the inspector for each scene
+
     // Start is called before the first frame update
     void Start()
     {
@@ -73,12 +75,6 @@ public class GameEnemyManager : MonoBehaviour
         _OffScreenSpriteHeight = bounds.size.y / 2f;
 
         enemyStats = new ExtraEnemyStats();
-        for (int i = 0; i < waveConfigurations.Count; i++)
-        {
-            EnemyComposition composition = waveConfigurations[i];
-            // composition.Sum = composition.BasicCount + composition.RangedCount + composition.HeavyCount;
-            waveConfigurations[i] = composition;
-        }
     }
 
     void Update()
@@ -117,11 +113,60 @@ public class GameEnemyManager : MonoBehaviour
 
     public void ResetWaves()
     {
+        // Find the GameObject with the specific tag
+        GameObject waveConfigSelector = GameObject.FindGameObjectWithTag("WaveConfig");
+
+        if (waveConfigSelector != null)
+        {
+            // Use the name of the GameObject as the SO name
+            string waveConfigName = waveConfigSelector.name;
+
+            // Load the WaveConfiguration using Resources.Load
+            waveConfig = Resources.Load<WaveConfiguration>(waveConfigName);
+
+            if (waveConfig != null)
+            {
+                LoadWaveConfiguration(waveConfig);
+                Debug.Log($"Loaded WaveConfiguration: {waveConfigName}");
+            }
+            else
+            {
+                Debug.LogWarning($"WaveConfiguration with name {waveConfigName} not found in Resources.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("WaveConfig GameObject with the specified tag not found in the scene.");
+        }
+
         currentWave = 0;
         EnemiesLeftInWave = 0;
         hasSpawned = false;
         _WaveInProgress = false;
         spawnedEnemies.Clear();
+    }
+
+    private void LoadWaveConfiguration(WaveConfiguration config)
+    {
+        // Clear existing configurations
+        waveConfigurations.Clear();
+
+        // Copy each configuration from the ScriptableObject to the local list
+        foreach (var composition in config.waveConfigurations)
+        {
+            waveConfigurations.Add(new EnemyComposition
+            {
+                BasicCount = composition.BasicCount,
+                RangedCount = composition.RangedCount,
+                HeavyCount = composition.HeavyCount
+            });
+        }
+
+        // Optional: Log loaded configurations to verify
+        foreach (var wave in waveConfigurations)
+        {
+            Debug.Log($"Loaded Wave - Basic: {wave.BasicCount}, Ranged: {wave.RangedCount}, Heavy: {wave.HeavyCount}, Sum: {wave.Sum}");
+        }
     }
 
     public IEnumerator StartWaves(int enemiesToSpawn)

@@ -499,7 +499,7 @@ MonoBehaviour:
   collisionForceMultiplier: 0.5
   baseMass: 3
   postImpactMassScale: 0.9
-  <MaxHealth>k__BackingField: 150
+  <MaxHealth>k__BackingField: 100
   <CurrentHealth>k__BackingField: 100
   <IsDead>k__BackingField: 0
   <HitStunTime>k__BackingField: 0.3
