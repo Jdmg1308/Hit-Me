@@ -48,12 +48,22 @@ public class GameManager : TheSceneManager
     public int healthCurrent;       // Current health of the player
     public int healthMax = 100;     // Maximum health of the player (dynamically changed by cards)
     public int baseHealth = 100;    // base maximum HP of player 
-    [HideInInspector]
+   // [HideInInspector]
     public Slider healthBar;       // UI Slider for health bar
 
     [Header("Money")]
     public float money = 500;
     public float level_gathered = 0;
+
+    [Header("Progress Meter")]
+    public Slider progressBar;      // UI slidere for health bar 
+    public int points;              // progress bar points 
+    public bool milestone1;
+    public int milestone1Points;
+    public bool milestone2;
+    public int milestone2Points;
+    public bool milestone3;
+    public int milestone3Points;
 
     [Header("Mobile")]
     public bool mobile;
@@ -170,6 +180,14 @@ public class GameManager : TheSceneManager
             DrawnCard = PlayScreen.transform.Find("DrawnCard")?.gameObject;
 
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
+
+            //resets for progress meter
+            //TODO: assign slider for progress bar
+            milestone1 = false;
+            milestone2 = false;
+            milestone3 = false;
+            points = 0;
+
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
             deckDisplayPanel = PlayScreen.transform.Find("DeckDisplayPanel")?.gameObject;
@@ -269,6 +287,8 @@ public class GameManager : TheSceneManager
 
             Card card = deckController.infinDrawCard(deckController.currentDeck);
             StartCoroutine(DrawCardSequence(DrawnCard.GetComponent<Animator>(), card));
+            //TODO: updatePoints(card point value);
+            updatePoints(10);
             updateHealth();
         }
     }
@@ -458,6 +478,32 @@ public class GameManager : TheSceneManager
     {
         if (money_text != null)
             money_text.text = " " + (money + level_gathered).ToString();
+    }
+
+    public void updatePoints(int numPoints)
+    {
+        //TODO: reset points on new level load 
+        points += numPoints;
+        if (points >= milestone1Points && !milestone1)
+        {
+            //reached milestone 1 for the first time 
+            //TODO: do the rewards, play audio or something idk
+            Debug.Log("milestone 1 reached");
+            milestone1 = true;
+        }
+        else if (points >= milestone2Points && !milestone2)
+        {
+            Debug.Log("mileestone 2 reached");
+            milestone2 = true;
+        }
+        else if (points >= milestone3Points && !milestone3)
+        {
+            Debug.Log("milestone 3 reached");
+            milestone3 = true;
+        }
+        //TODO: uncomment once we get the bar 
+        Debug.Log("points: " + points);
+        //progressBar.value = points;
     }
 
     public void Difficulty()

@@ -21,10 +21,10 @@ public class EnemyRangedAttackState : EnemyState
     {
         switch (triggerType)
         {
-            case AnimationTriggerType.Shoot:
+            case AnimationTriggerType.StartAttack:
                 Shoot();
                 break;
-            case AnimationTriggerType.EndShoot:
+            case AnimationTriggerType.EndAttack:
                 e.Anim.SetBool("isShooting", false);
                 break;
         }

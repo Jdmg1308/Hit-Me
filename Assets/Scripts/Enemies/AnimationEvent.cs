@@ -13,29 +13,24 @@ public class AnimationEvent : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
     }
 
-    public void Punch()
+    public void StartAttack()
     {
-        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.StartPunch);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.StartAttack);
     }
 
-    public void EndPunch()
+    public void EndAttack()
     {
         sprite.color = Color.white;
-        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndPunch);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndAttack);
     }
 
-    public void EndShouldBeDamaging()
+    public void EndAttackDamaging()
     {
-        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndPunchDamaging);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndAttackDamaging);
     }
 
-    public void Shoot()
+    public void ChargeUp()
     {
-        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.Shoot);
-    }
-
-    public void EndShoot()
-    {
-        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.EndShoot);
+        _enemy.AnimationTriggerEvent(EnemyState.AnimationTriggerType.ChargeUp);
     }
 }

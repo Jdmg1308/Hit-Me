@@ -27,11 +27,10 @@ public class EnemyState
 
     public enum AnimationTriggerType
     {
-        StartPunch,
-        EndPunch,
-        EndPunchDamaging,
-        Shoot,
-        EndShoot
+        StartAttack,
+        EndAttack,
+        EndAttackDamaging,
+        ChargeUp
     }
     public virtual void AnimationTriggerEvent(AnimationTriggerType triggerType) { }
 }
