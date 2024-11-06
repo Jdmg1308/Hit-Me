@@ -185,7 +185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4424213513605788877
 Transform:
   m_ObjectHideFlags: 0
@@ -542,13 +542,16 @@ MonoBehaviour:
   pointAmount: 5
   <InChaseRange>k__BackingField: 0
   <InAttackRange>k__BackingField: 0
+  inGuardBreak: 0
   baseChanceForChargedAttack: 0.2
   currentChanceForChargedAttack: 0
   perMissChanceIncrease: 0.15
   perHitChanceIncrease: 0.02
   ArmoredAttackDamage: 18
   ArmoredAttackForce: {x: 65, y: 14}
-  ArmoredTime: 1.75
+  ChargeUpTime: 2
+  GuardBreakTime: 5
+  forceThreshold: 16.5
 --- !u!1 &4424213514700239976
 GameObject:
   m_ObjectHideFlags: 0
