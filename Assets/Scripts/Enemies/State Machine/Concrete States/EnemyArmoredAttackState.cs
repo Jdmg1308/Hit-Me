@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Rendering.PostProcessing;
+//using System.Collections.Generic;
+//using UnityEditor.Rendering.PostProcessing;
 using UnityEngine;
 
 public class EnemyArmoredAttackState : EnemyState
