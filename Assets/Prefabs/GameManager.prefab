@@ -567,6 +567,7 @@ MonoBehaviour:
   EnemyOffScreenDeathPrefab: {fileID: 7508921488299735724, guid: 7f84a877937bfea40ad9fdb8d477e6fd, type: 3}
   hasSpawned: 0
   shouldSpawn: 0
+  waveConfig: {fileID: 0}
 --- !u!1 &5376063832384337724
 GameObject:
   m_ObjectHideFlags: 0
@@ -643,15 +644,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allCards:
-  - {fileID: 11400000, guid: affabd4ccdb85db4385084f851672666, type: 2}
+  - {fileID: 11400000, guid: 31f9a894542870042a78ac643cefdd51, type: 2}
   - {fileID: 11400000, guid: 083bb11e1ad66a74f90b25cc77498650, type: 2}
   - {fileID: 11400000, guid: db28ca9d2804f6f47913d52d043edb37, type: 2}
   - {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
+  - {fileID: 11400000, guid: 1bd8293b951a05b498b9d06aab31c544, type: 2}
   - {fileID: 11400000, guid: ce388740fce6c3443816867af0a1c4b0, type: 2}
   - {fileID: 11400000, guid: 46d490d6c51770841b5aceba1e87ffde, type: 2}
   - {fileID: 11400000, guid: fcd31f575bb878a43ba3a09f5a298e40, type: 2}
+  - {fileID: 11400000, guid: 82cdfad59be0cb148bafd2a36eaf357d, type: 2}
   - {fileID: 11400000, guid: 3f05113ee504720469a02a6a29dcd6fb, type: 2}
+  - {fileID: 11400000, guid: affabd4ccdb85db4385084f851672666, type: 2}
   - {fileID: 11400000, guid: b30e46c36192dd7418db70621740063f, type: 2}
+  - {fileID: 11400000, guid: affabd4ccdb85db4385084f851672666, type: 2}
+  - {fileID: 11400000, guid: 4e6c99c78f73be346ab94f92096867a3, type: 2}
+  - {fileID: 11400000, guid: 3850d39be6c27b84ebcbc52485ec3a0b, type: 2}
   currentDeck:
     deck:
     - {fileID: 11400000, guid: db28ca9d2804f6f47913d52d043edb37, type: 2}

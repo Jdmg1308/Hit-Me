@@ -2240,58 +2240,6 @@ PrefabInstance:
       propertyPath: waveConfigurations.Array.data[1].RangedCount
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 81a36af26ba46e644b3f581e0313d239, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 9b7413b00f6125947adb9ae2da49fab3, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: 06cb70c2e41a5f348bbab43c56eb9a72, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: affabd4ccdb85db4385084f851672666, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 083bb11e1ad66a74f90b25cc77498650, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: db28ca9d2804f6f47913d52d043edb37, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[7]
-      value: 
-      objectReference: {fileID: 11400000, guid: ce388740fce6c3443816867af0a1c4b0, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[8]
-      value: 
-      objectReference: {fileID: 11400000, guid: 46d490d6c51770841b5aceba1e87ffde, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[9]
-      value: 
-      objectReference: {fileID: 11400000, guid: fcd31f575bb878a43ba3a09f5a298e40, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[10]
-      value: 
-      objectReference: {fileID: 11400000, guid: 3f05113ee504720469a02a6a29dcd6fb, type: 2}
-    - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: allCards.Array.data[11]
-      value: 
-      objectReference: {fileID: 11400000, guid: b30e46c36192dd7418db70621740063f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
 --- !u!1 &724239259
@@ -2975,7 +2923,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 900086883}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.79, y: 1.36, z: 0}
+  m_LocalPosition: {x: 9.79, y: 1.36, z: 1}
   m_LocalScale: {x: 1.37, y: 1.65, z: 1.37}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -142,9 +142,13 @@ AudioManager audioManager;
         Debug.Log("Loaded scene: " + levelName);
 
         if (audioManager != null)
+        {
             audioManager.PlayLevelMusic(levelName);
+        }
         else
+        {
             Debug.LogWarning("AudioManager not found!");
+        }
     }
 
     public void AssignButton(Transform screen, string buttonName, UnityEngine.Events.UnityAction action)
@@ -254,7 +258,10 @@ AudioManager audioManager;
         audioSource = GetComponent<AudioSource>();
         GameEnemyManager = GetComponentInChildren<GameEnemyManager>();
         GameEnemyManager.ResetWaves();
+
     }
+
+    
 
     void Update()
     {
