@@ -22,6 +22,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip playerHit;
     public AudioClip jump;
     public AudioClip pointMeterGoesUp;
+    public AudioClip meterUp;
+    public AudioClip cardDestroy;
+    public AudioClip gameOver;
+    public AudioClip levelPayout;
+    public AudioClip buyCard;
 
     private Dictionary<string, AudioClip> levelMusic;
 
