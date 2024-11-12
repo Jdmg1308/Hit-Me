@@ -16,6 +16,8 @@ public class ShopManager : TheSceneManager
     public float dupPrice;
     public float destPrice;
 
+    private bool destroyMode = false;
+
     private GameManager GM;
 
     AudioManager audioManager;
@@ -57,19 +59,11 @@ public class ShopManager : TheSceneManager
         GameObject child0 = GM.showCard(allPurchasableCards[_randCards[0]], displayPanel);
         child0.GetComponentInChildren<Button>().onClick.AddListener(() => PurchaseCard(_randCards[0], child0));
 
-        //Debug.Log("Gets HERE: " + child0.name);
-
         GameObject child1 = GM.showCard(allPurchasableCards[_randCards[1]], displayPanel);
         child1.GetComponentInChildren<Button>().onClick.AddListener(() => PurchaseCard(_randCards[1], child1));
 
         GameObject child2 = GM.showCard(allPurchasableCards[_randCards[2]], displayPanel);
         child2.GetComponentInChildren<Button>().onClick.AddListener(() => PurchaseCard(_randCards[2], child2));
-
-        //card1Button.GetComponent<Image>().sprite = allPurchasableCards[_randCards[1]].cardImage;
-        //card1Button.onClick.AddListener(() => PurchaseCard(_randCards[1], card1Button));
-
-        //card2Button.GetComponent<Image>().sprite = allPurchasableCards[_randCards[2]].cardImage;
-        //card2Button.onClick.AddListener(() => PurchaseCard(_randCards[2], card2Button));
     }
 
     private void PurchaseCard(int _cardIndex, GameObject buttonCard)
@@ -95,12 +89,23 @@ public class ShopManager : TheSceneManager
 
     void DisplayDeckForDestruction()
     {
-        deleteSign.SetActive(true);
-        deckDisplayPanel.GetComponent<Image>().color = Color.red;
-        ShopDisplayDestroyableDeck(false);
+        if (!destroyMode)
+        {
+            destroyMode = true;
+            deleteSign.SetActive(true);
+            deckDisplayPanel.GetComponent<Image>().color = Color.red;
+            ShopDisplayDestroyableDeck();
+        } else
+        {
+            destroyMode = false;
+            Options.SetActive(true);
+            deleteSign.SetActive(false);
+            deckDisplayPanel.GetComponent<Image>().color = Color.white;
+        }
+        
     }
 
-    void ShopDisplayDestroyableDeck(bool duplicateCard)
+    void ShopDisplayDestroyableDeck()
     {
         Options.SetActive(false);
 
@@ -134,7 +139,7 @@ public class ShopManager : TheSceneManager
         else
         {
             audioManager.PlaySFX(audioManager.cardDestroy);
-            GM.Money -= destPrice;
+            GM.Money -= (int) destPrice;
             GM.deckController.DeckRemove(card, GM.deckController.currentDeck); // Correcting to remove the card
             GM.updateDeckPanel();
         }

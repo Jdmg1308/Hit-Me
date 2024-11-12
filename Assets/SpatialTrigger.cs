@@ -47,7 +47,7 @@ public class SpatialTrigger : MonoBehaviour
     public bool ChecklistComplete(string SceneName)
     {
 
-        Debug.Log("THIS SHIT GOT CALLED");
+        // Debug.Log("THIS SHIT GOT CALLED");
         switch (SceneName)
         {
             case "MOVEMENT_COMBAT":

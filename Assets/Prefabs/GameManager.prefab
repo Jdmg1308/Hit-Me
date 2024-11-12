@@ -70,17 +70,19 @@ MonoBehaviour:
   healthMax: 100
   baseHealth: 100
   healthBar: {fileID: 0}
-  money: 500
-  level_gathered: 0
-  progressMax: 100
+  progressMax: 1000
+  points_text: {fileID: 0}
   progressBar: {fileID: 0}
-  points: 0
   milestone1: 0
   milestone1Points: 33
   milestone2: 0
   milestone2Points: 66
   milestone3: 0
   milestone3Points: 100
+  CountFPS: 30
+  Duration: 1
+  _points: 0
+  money_text: {fileID: 0}
   mobile: 0
   iOSPanel: {fileID: 0}
   p:
@@ -168,7 +170,6 @@ MonoBehaviour:
     hitStopForceThreshold: 0
     dullColor: {fileID: 0}
   playerController: {fileID: 0}
-  money_text: {fileID: 0}
   ChecklistScript: {fileID: 0}
   InHitStop: 0
   Curve:

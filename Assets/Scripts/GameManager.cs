@@ -64,7 +64,7 @@ public class GameManager : TheSceneManager
     public int milestone3Points;
     public int CountFPS = 30;
     public float Duration = 1f;
-    public int _points;
+    public int _points = 0;
     public int Points
     {
         get
@@ -73,7 +73,7 @@ public class GameManager : TheSceneManager
         }
         set
         {
-            UpdateText(value, points_text);
+            UpdateText(value, _points, points_text);
             _points = value;
         }
     }
@@ -90,7 +90,7 @@ public class GameManager : TheSceneManager
         }
         set
         {
-            UpdateText(value, money_text);
+            UpdateText(value, _money, money_text);
             _money = value;
         }
     }
@@ -180,7 +180,6 @@ AudioManager audioManager;
         Button button = screen.Find(buttonName)?.GetComponent<Button>();
         if (button)
         {
-            // Debug.Log($"{buttonName} button found and assigned for {screen.name}");
             button.onClick.AddListener(action);
         }
     }
@@ -212,6 +211,14 @@ AudioManager audioManager;
 
         if (PlayScreen)
         {
+            money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
+            if (money_text)
+                money_text.text = " " + Money.ToString();
+
+            points_text = PlayScreen.transform.Find("Points")?.gameObject.GetComponent<TextMeshProUGUI>();
+            if (points_text)
+                points_text.text = " " + Points.ToString();
+
             CardUIDeck = PlayScreen.transform.Find("CardUIDeck")?.gameObject;
             if (CardUIDeck)
             {
@@ -223,9 +230,7 @@ AudioManager audioManager;
             }
 
             DrawnCard = PlayScreen.transform.Find("DrawnCard")?.gameObject;
-
             progressBar = PlayScreen.transform.Find("PointMeter")?.gameObject.GetComponent<Slider>();
-
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
 
             //resets for progress meter
@@ -236,9 +241,7 @@ AudioManager audioManager;
             Points = 0;
 
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
-
             deckDisplayPanel = PlayScreen.transform.Find("DeckDisplayPanel")?.gameObject;
-
             cardDescriptor = PlayScreen.transform.Find("CardDescriptor")?.gameObject;
 
             //availableLevels = new List<System.Action> { PlayLvl1, PlayLvl2, PlayLvl3, PlayLvl4 };
@@ -260,7 +263,6 @@ AudioManager audioManager;
             {
                 //AssignButton(PauseScreen.transform, "Menu", OpenShop);
                 AssignButton(PauseScreen.transform, "Resume", Pause);
-
                 deckDisplayPanel = PauseScreen.transform.Find("DeckDisplayPanel")?.gameObject;
 
                 money_text = PauseScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
@@ -294,8 +296,6 @@ AudioManager audioManager;
 
         if (cardIsOnCD && UICard)
             ApplyCooldown();
-
-        updateWager();
     }
     #endregion
 
@@ -529,12 +529,6 @@ AudioManager audioManager;
             Death();
     }
 
-    public void updateWager()
-    {
-        //if (money_text != null)
-        //    money_text.text = " " + (_money + level_gathered).ToString();
-    }
-
     public void updatePoints(int numPoints)
     {
         //TODO: reset points on new level load 
@@ -562,64 +556,48 @@ AudioManager audioManager;
         progressBar.value = Points;
     }
 
-    private void UpdateText(int newValue, TextMeshProUGUI text)
+    private void UpdateText(int newValue, int prevValue, TextMeshProUGUI text)
     {
         if (CountingCoroutine != null)
         {
             StopCoroutine(CountingCoroutine);
         }
 
-        CountingCoroutine = StartCoroutine(CountText(newValue));
+        Debug.Log(newValue + " text " + text + " prev " + prevValue);
+
+        CountingCoroutine = StartCoroutine(CountText(newValue, prevValue, text));
     }
 
     // The coroutine that counts up to the new money value in increments
-    private IEnumerator CountText(int newValue)
+    private IEnumerator CountText(int newValue, int prevValue, TextMeshProUGUI text)
     {
-        WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
-        int previousValue = _money;
+        Debug.Log(prevValue);
+        WaitForSeconds wait = new WaitForSeconds(1f / CountFPS);
         int stepAmount;
 
-        if (newValue - previousValue < 0)
+        if (newValue - prevValue < 0)
         {
-            stepAmount = Mathf.FloorToInt((newValue - previousValue) / (CountFPS * Duration)); // newValue = -20, previousValue = 0. CountFPS = 30, and Duration = 1; (-20- 0) / (30*1) // -0.66667 (ceiltoint)-> 0
+            stepAmount = Mathf.FloorToInt((newValue - prevValue) / (CountFPS * Duration)); // newValue = -20, previousValue = 0. CountFPS = 30, and Duration = 1; (-20- 0) / (30*1) // -0.66667 (ceiltoint)-> 0
         }
         else
         {
-            stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration)); // newValue = 20, previousValue = 0. CountFPS = 30, and Duration = 1; (20- 0) / (30*1) // 0.66667 (floortoint)-> 0
+            stepAmount = Mathf.CeilToInt((newValue - prevValue) / (CountFPS * Duration)); // newValue = 20, previousValue = 0. CountFPS = 30, and Duration = 1; (20- 0) / (30*1) // 0.66667 (floortoint)-> 0
         }
 
-        if (previousValue < newValue)
+        while (prevValue != newValue)
         {
-            while (previousValue < newValue)
+            prevValue += stepAmount;
+
+            // Clamp value to ensure it doesn't overshoot the target
+            if ((stepAmount > 0 && prevValue > newValue) || (stepAmount < 0 && prevValue < newValue))
             {
-                previousValue += stepAmount;
-                if (previousValue > newValue)
-                {
-                    previousValue = newValue;
-                }
-
-                money_text.SetText(previousValue.ToString());
-
-                yield return Wait;
+                prevValue = newValue;
             }
-        }
-        else
-        {
-            while (previousValue > newValue)
-            {
-                previousValue += stepAmount; // (-20 - 0) / (30 * 1) = -0.66667 -> -1              0 + -1 = -1
-                if (previousValue < newValue)
-                {
-                    previousValue = newValue;
-                }
 
-                money_text.SetText(previousValue.ToString());
-
-                yield return Wait;
-            }
+            text.SetText(prevValue.ToString());
+            yield return wait;
         }
     }
-
 
     public void MilestoneAnimation(string text)
     {
@@ -632,22 +610,6 @@ AudioManager audioManager;
         audioSource.Play();
         PlayAnimationOnce(animator, "LookAtMe");
         description.color = Color.white;
-    }
-
-    public void Difficulty()
-    {
-        freeze(true);
-        PlayScreen.SetActive(false);
-        DifficultyScreen.SetActive(true);
-    }
-
-    public void DifficultyChoice(int value)
-    {
-        freeze(false);
-        // money = value;
-        GameEnemyManager.SetDifficulty(value);
-        PlayScreen.SetActive(true);
-        DifficultyScreen.SetActive(false);
     }
 
     public void Pause()
