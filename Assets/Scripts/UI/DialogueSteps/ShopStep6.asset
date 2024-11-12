@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2518a8c54692d341abe06992b25a3fd, type: 3}
   m_Name: ShopStep6
   m_EditorClassIdentifier: 
-  dialogueText: 
+  dialogueText: ' Remove a card by clicking ''Destroy'' and clicking on what card
+    you want to remove.'
   hints: []

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2518a8c54692d341abe06992b25a3fd, type: 3}
   m_Name: MoneyStep3
   m_EditorClassIdentifier: 
-  dialogueText: 
-  hints: []
+  dialogueText: Earning enough money gives you bonuses during fight
+  hints:
+  - {fileID: 0}

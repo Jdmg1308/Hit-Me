@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2518a8c54692d341abe06992b25a3fd, type: 3}
   m_Name: ShopStep7
   m_EditorClassIdentifier: 
-  dialogueText: 
+  dialogueText: ' Survive as long as possible in the criminal arenas! Good luck!'
   hints: []
