@@ -22,18 +22,12 @@ public class Explosion : Hazards, IDamageable
             Rigidbody2D RB = p.GetComponent<Rigidbody2D>();
             RB.velocity = Vector2.zero;
 
-            // Determine the direction for the force
-            int dir = (collider.transform.position.x - transform.position.x) > 0 ? 1 : -1;
-            float distance = Vector2.Distance(transform.position, collider.transform.position);
-            float distanceFactor = Mathf.Clamp(1 / (distance + 0.5f), 0.1f, 10.5f); // Limit force scaling for very close/very far
+            Vector2 force = KnockbackForce(collider.transform, 300f);
+            int collisionDamage = Mathf.RoundToInt(force.magnitude * 100f); // note: consider log max for extreme cases
 
-            Vector2 force = new Vector2(dir * distanceFactor * 300f, 50f); // Increase multiplier if you want a larger effect
-
-            int collisionDamage = Mathf.RoundToInt(distanceFactor * 100f); // note: consider log max for extreme cases
             p.TakeDamage(collisionDamage, force);
         }
     }
-
 
     #region Not Implemented
     [HideInInspector] public int MaxHealth { get; set; }

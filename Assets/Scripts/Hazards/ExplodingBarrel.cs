@@ -29,7 +29,7 @@ public class ExplodingBarrel : Hazards, IDamageable
 
     public void TakePunch(int damage, float airStunTime)
     {
-        BarrelHit(PlayerHitKnockBackVectorNormalized());
+        BarrelHit(KnockbackForce(GM.Player.transform, 1f));
     }
 
     public void BarrelHit(Vector2 force)

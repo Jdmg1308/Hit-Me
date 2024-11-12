@@ -11,6 +11,6 @@ public class WagerCard : Card
      * using this card increases/decreases the wager val. for the player by effectValue
      */
     public override void use(GameManager GM) {
-        GM.money += effectValue;
+        GM.Money += effectValue;
     }
 }

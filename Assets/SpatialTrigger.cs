@@ -9,25 +9,38 @@ public class SpatialTrigger : MonoBehaviour
 {
     public UnityEvent onTriggerEnter;  // Event for when a collider enters this trigger
     private GameManager GM;
+    private string NextSceneName;
 
     public void Awake()
     {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
 
+    private void Update()
+    {
+        onTriggerEnter.Invoke();
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         // Invoke the assigned methods
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-            onTriggerEnter.Invoke();
+            SceneManager.LoadScene(NextSceneName);
     }
 
     public void NextScene(string SceneName)
     {
+        if (NextSceneName == null)
+            NextSceneName = SceneName;
+
         if (GM)
         {
             if (ChecklistComplete(SceneName))
-                SceneManager.LoadScene(SceneName);
+            {
+                // THIS IS WHERE ETHAN MAKES A WALL BREAK (THIS CODE IS CHECKED EVERY FRACTION OF SECOND)
+
+            }
+
         }
     }
 

@@ -52,10 +52,6 @@ public class GameManager : TheSceneManager
    // [HideInInspector]
     public Slider healthBar;       // UI Slider for health bar
 
-    [Header("Money")]
-    public float money = 500;
-    public float level_gathered = 0;
-
     [Header("Progress Meter")]
     public int progressMax = 100;
     public Slider progressBar;      // UI slidere for health bar 
@@ -66,6 +62,25 @@ public class GameManager : TheSceneManager
     public int milestone2Points;
     public bool milestone3;
     public int milestone3Points;
+    public int CountFPS = 30;
+    public float Duration = 1f;
+
+    [Header("Money")]
+    private int _money = 500;
+    public int Money
+    {
+        get
+        {
+            return _money;
+        }
+        set
+        {
+            UpdateText(value);
+            _money = value;
+        }
+    }
+
+    private Coroutine CountingCoroutine;
 
     [Header("Mobile")]
     public bool mobile;
@@ -188,7 +203,6 @@ AudioManager audioManager;
 
         if (PlayScreen)
         {
-            money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
             CardUIDeck = PlayScreen.transform.Find("CardUIDeck")?.gameObject;
             if (CardUIDeck)
             {
@@ -218,8 +232,6 @@ AudioManager audioManager;
 
             cardDescriptor = PlayScreen.transform.Find("CardDescriptor")?.gameObject;
 
-            money_text.text = " " + money.ToString();
-
             //availableLevels = new List<System.Action> { PlayLvl1, PlayLvl2, PlayLvl3, PlayLvl4 };
             //remainingLevels = new List<System.Action>(availableLevels);
         }
@@ -241,6 +253,9 @@ AudioManager audioManager;
                 AssignButton(PauseScreen.transform, "Resume", Pause);
 
                 deckDisplayPanel = PauseScreen.transform.Find("DeckDisplayPanel")?.gameObject;
+
+                money_text = PauseScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
+                money_text.text = " " + Money.ToString();
             }
         }
 
@@ -507,8 +522,8 @@ AudioManager audioManager;
 
     public void updateWager()
     {
-        if (money_text != null)
-            money_text.text = " " + (money + level_gathered).ToString();
+        //if (money_text != null)
+        //    money_text.text = " " + (_money + level_gathered).ToString();
     }
 
     public void updatePoints(int numPoints)
@@ -537,6 +552,65 @@ AudioManager audioManager;
         //progressBar.value = points;
         progressBar.value = points;
     }
+
+    private void UpdateText(int newValue)
+    {
+        if (CountingCoroutine != null)
+        {
+            StopCoroutine(CountingCoroutine);
+        }
+
+        CountingCoroutine = StartCoroutine(CountText(newValue));
+    }
+
+    // The coroutine that counts up to the new money value in increments
+    private IEnumerator CountText(int newValue)
+    {
+        WaitForSeconds Wait = new WaitForSeconds(1f / CountFPS);
+        int previousValue = _money;
+        int stepAmount;
+
+        if (newValue - previousValue < 0)
+        {
+            stepAmount = Mathf.FloorToInt((newValue - previousValue) / (CountFPS * Duration)); // newValue = -20, previousValue = 0. CountFPS = 30, and Duration = 1; (-20- 0) / (30*1) // -0.66667 (ceiltoint)-> 0
+        }
+        else
+        {
+            stepAmount = Mathf.CeilToInt((newValue - previousValue) / (CountFPS * Duration)); // newValue = 20, previousValue = 0. CountFPS = 30, and Duration = 1; (20- 0) / (30*1) // 0.66667 (floortoint)-> 0
+        }
+
+        if (previousValue < newValue)
+        {
+            while (previousValue < newValue)
+            {
+                previousValue += stepAmount;
+                if (previousValue > newValue)
+                {
+                    previousValue = newValue;
+                }
+
+                money_text.SetText(previousValue.ToString());
+
+                yield return Wait;
+            }
+        }
+        else
+        {
+            while (previousValue > newValue)
+            {
+                previousValue += stepAmount; // (-20 - 0) / (30 * 1) = -0.66667 -> -1              0 + -1 = -1
+                if (previousValue < newValue)
+                {
+                    previousValue = newValue;
+                }
+
+                money_text.SetText(previousValue.ToString());
+
+                yield return Wait;
+            }
+        }
+    }
+
 
     public void MilestoneAnimation(string text)
     {
@@ -593,7 +667,7 @@ AudioManager audioManager;
         hasWon = true;
         DeathScreen.SetActive(true);
         TextMeshProUGUI ScoreText = DeathScreen.GetComponentInChildren<TextMeshProUGUI>();
-        ScoreText.text = "Final Payout: " + money.ToString();
+        ScoreText.text = "Final Payout: " + Money.ToString();
     }
 
     public void Win()

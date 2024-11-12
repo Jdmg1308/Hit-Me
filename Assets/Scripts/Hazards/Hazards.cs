@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Hazards : MonoBehaviour
 {
-    private GameManager GM;
+    protected GameManager GM;
 
     void Awake()
     {
@@ -22,17 +22,52 @@ public class Hazards : MonoBehaviour
         
     }
 
-    public Vector2 PlayerHitKnockBackVectorNormalized()
+    public Vector2 KnockbackForce(Transform collider, float multiplier)
     {
-        return (GM.Player.transform.position - this.transform.position).normalized;
+        // Determine the direction for the force
+        int dir = (collider.transform.position.x - transform.position.x) > 0 ? 1 : -1;
+        float distance = Vector2.Distance(transform.position, collider.transform.position);
+        float distanceFactor = Mathf.Clamp(1 / (distance + 0.5f), 0.1f, 10.5f); // Limit force scaling for very close/very far
+
+        Vector2 force = new Vector2(dir * distanceFactor * multiplier, multiplier / 6); // Increase multiplier if you want a larger effect
+
+        return force;
     }
+
+    //public IEnumerator TemporaryPrefab(GameObject prefab, Vector2 position, float time)
+    //{
+    //    GameObject temp = Instantiate(prefab, position, Quaternion.identity);
+    //    Debug.Log("bruh" + time);
+    //    yield return new WaitForSeconds(time);
+    //    Debug.Log("zamn");
+    //    Destroy(temp);
+    //}
 
     public IEnumerator TemporaryPrefab(GameObject prefab, Vector2 position, float time)
     {
         GameObject temp = Instantiate(prefab, position, Quaternion.identity);
-        Debug.Log("bruh" + time);
-        yield return new WaitForSeconds(time);
-        Debug.Log("zamn");
+        SpriteRenderer spriteRenderer = temp.GetComponent<SpriteRenderer>();
+
+        if (spriteRenderer != null)
+        {
+            float fadeDuration = 1.0f; // Adjust the fade duration as needed
+            float startAlpha = spriteRenderer.color.a;
+            float elapsed = 0f;
+
+            // Gradually reduce alpha over `fadeDuration` seconds
+            while (elapsed < fadeDuration)
+            {
+                elapsed += Time.deltaTime;
+                float newAlpha = Mathf.Lerp(startAlpha, 0, elapsed / fadeDuration);
+                spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, newAlpha);
+                yield return null;
+            }
+        }
+
+        // Wait for the remaining time (if fade duration is less than `time`)
+        yield return new WaitForSeconds(Mathf.Max(0, time));
+
+        // Destroy the prefab after the fade-out effect
         Destroy(temp);
     }
 }
