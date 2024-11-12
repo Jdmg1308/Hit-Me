@@ -12,5 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2518a8c54692d341abe06992b25a3fd, type: 3}
   m_Name: MoneyStep4
   m_EditorClassIdentifier: 
-  dialogueText: 
+  dialogueText: 'Milestone 1: Extra Money
+
+    Milestone 2: Heal
+
+    Milestone 3:
+    Stat Upgrade'
   hints: []

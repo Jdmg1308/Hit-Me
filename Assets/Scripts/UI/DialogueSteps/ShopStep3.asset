@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2518a8c54692d341abe06992b25a3fd, type: 3}
   m_Name: ShopStep3
   m_EditorClassIdentifier: 
-  dialogueText: 
+  dialogueText: ' Hover over card to inspect. Click on it to buy.'
   hints: []

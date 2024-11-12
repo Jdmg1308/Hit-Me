@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2518a8c54692d341abe06992b25a3fd, type: 3}
   m_Name: ShopStep4
   m_EditorClassIdentifier: 
-  dialogueText: 
+  dialogueText: 'Card colors indicate their effects:
+
+    Red cards debuff you but
+    give a lot of money when drawn
+
+    Blue cards give buff but only give a little
+    money when drawn'
   hints: []
