@@ -54,8 +54,8 @@ public class GameManager : TheSceneManager
 
     [Header("Progress Meter")]
     public int progressMax = 100;
+    public TextMeshProUGUI points_text;
     public Slider progressBar;      // UI slidere for health bar 
-    public int points;              // progress bar points 
     public bool milestone1;
     public int milestone1Points;
     public bool milestone2;
@@ -64,8 +64,23 @@ public class GameManager : TheSceneManager
     public int milestone3Points;
     public int CountFPS = 30;
     public float Duration = 1f;
+    public int _points;
+    public int Points
+    {
+        get
+        {
+            return _points;
+        }
+        set
+        {
+            UpdateText(value, points_text);
+            _points = value;
+        }
+    }
 
     [Header("Money")]
+
+    public TextMeshProUGUI money_text;
     private int _money = 500;
     public int Money
     {
@@ -75,7 +90,7 @@ public class GameManager : TheSceneManager
         }
         set
         {
-            UpdateText(value);
+            UpdateText(value, money_text);
             _money = value;
         }
     }
@@ -91,9 +106,6 @@ public class GameManager : TheSceneManager
     public Player p;
     [HideInInspector]
     public PlayerController playerController;
-
-    public TextMeshProUGUI money_text;
-    protected TextMeshProUGUI quota_text;
 
     protected GameObject PlayScreen;
     protected GameObject DifficultyScreen;
@@ -121,9 +133,6 @@ public class GameManager : TheSceneManager
     private static GameManager instance;
 
     public bool hasWon = false;
-
-    //private List<System.Action> availableLevels;
-    //private List<System.Action> remainingLevels;
 
 AudioManager audioManager;
 
@@ -224,7 +233,7 @@ AudioManager audioManager;
             milestone1 = false;
             milestone2 = false;
             milestone3 = false;
-            points = 0;
+            Points = 0;
 
             hurtFlashImage = PlayScreen.transform.Find("HurtFlash")?.gameObject.GetComponent<Image>();
 
@@ -529,31 +538,31 @@ AudioManager audioManager;
     public void updatePoints(int numPoints)
     {
         //TODO: reset points on new level load 
-        points += numPoints;
-        if (points >= milestone1Points && !milestone1)
+        Points += numPoints;
+        if (Points >= milestone1Points && !milestone1)
         {
             //reached milestone 1 for the first time 
             //TODO: do the rewards, play audio or something idk
             MilestoneAnimation("milestone 1 reached");
             milestone1 = true;
         }
-        else if (points >= milestone2Points && !milestone2)
+        else if (Points >= milestone2Points && !milestone2)
         {
             MilestoneAnimation("milestone 2 reached");
             milestone2 = true;
         }
-        else if (points >= milestone3Points && !milestone3)
+        else if (Points >= milestone3Points && !milestone3)
         {
             MilestoneAnimation("milestone 3 reached");
             milestone3 = true;
         }
         //TODO: uncomment once we get the bar 
-        Debug.Log("points: " + points);
+        Debug.Log("points: " + Points);
         //progressBar.value = points;
-        progressBar.value = points;
+        progressBar.value = Points;
     }
 
-    private void UpdateText(int newValue)
+    private void UpdateText(int newValue, TextMeshProUGUI text)
     {
         if (CountingCoroutine != null)
         {
