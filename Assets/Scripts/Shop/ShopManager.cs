@@ -18,11 +18,14 @@ public class ShopManager : TheSceneManager
 
     private GameManager GM;
 
+    AudioManager audioManager;
+
     private void Awake()
     {
         // Buttons should be assigned in the Inspector, no need to assign them here unless necessary
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
         Canvas = GameObject.FindGameObjectWithTag("Canvas");
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
         if (Canvas)
             ShopScreen = Canvas.transform.Find("Shop Screen")?.gameObject;
@@ -82,6 +85,7 @@ public class ShopManager : TheSceneManager
         else
         {
             // Player buys the card
+            audioManager.PlaySFX(audioManager.buyCard);
             GM.money -= selectedCard.price;
             GM.deckController.DeckAdd(selectedCard, GM.deckController.currentDeck);
             Destroy(buttonCard);
@@ -129,6 +133,7 @@ public class ShopManager : TheSceneManager
         }
         else
         {
+            audioManager.PlaySFX(audioManager.cardDestroy);
             GM.money -= destPrice;
             GM.deckController.DeckRemove(card, GM.deckController.currentDeck); // Correcting to remove the card
             GM.updateDeckPanel();

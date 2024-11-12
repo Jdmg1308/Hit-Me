@@ -16,11 +16,13 @@ public class Spikes : Hazards, IDamageable
 {
 
     public float spikeKnockbackMultiplier = 20;
+    public Vector2 teleportPosition; // define the position player will teleport in
 
     // Start is called before the first frame update
     void Start()
     {
-
+        // Initialize teleport position if needed, or set it in Inspector
+        teleportPosition = new Vector2(0, 0);
     }
 
     // Update is called once per frame
@@ -34,7 +36,11 @@ public class Spikes : Hazards, IDamageable
             Rigidbody2D RB = other.gameObject.GetComponent<Rigidbody2D>();
             RB.velocity = Vector2.zero;
 
-            player.TakeDamage(10, PlayerHitKnockBackVectorNormalized() * spikeKnockbackMultiplier);
+            // player.TakeDamage(10, PlayerHitKnockBackVectorNormalized() * spikeKnockbackMultiplier);
+            player.TakeDamage(0, PlayerHitKnockBackVectorNormalized() * spikeKnockbackMultiplier);
+
+            // teleport player to specific position
+            player.transform.position = teleportPosition;
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
