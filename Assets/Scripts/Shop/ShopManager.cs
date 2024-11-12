@@ -74,19 +74,19 @@ public class ShopManager : TheSceneManager
 
     private void PurchaseCard(int _cardIndex, GameObject buttonCard)
     {
-        Debug.Log("Gets HERE: " + GM.money);
+        Debug.Log("Gets HERE: " + GM.Money);
         Card selectedCard = allPurchasableCards[_cardIndex];
-        if (GM.money < selectedCard.price)
+        if (GM.Money < selectedCard.price)
         {
             // Feedback for insufficient funds (e.g., play a sound or display a message)
-            Debug.Log("Player doesn't have enough money to buy this card!, MONEY: " + GM.money);
+            Debug.Log("Player doesn't have enough money to buy this card!, MONEY: " + GM.Money);
             return;
         }
         else
         {
             // Player buys the card
             audioManager.PlaySFX(audioManager.buyCard);
-            GM.money -= selectedCard.price;
+            GM.Money -= (int) selectedCard.price;
             GM.deckController.DeckAdd(selectedCard, GM.deckController.currentDeck);
             Destroy(buttonCard);
             GM.updateDeckPanel();
@@ -126,7 +126,7 @@ public class ShopManager : TheSceneManager
 
     void DestroyCard(Card card)
     {
-        if (GM.money < destPrice)
+        if (GM.Money < destPrice)
         {
             Debug.Log("Not enough money to destroy this card!");
             return;
@@ -134,7 +134,7 @@ public class ShopManager : TheSceneManager
         else
         {
             audioManager.PlaySFX(audioManager.cardDestroy);
-            GM.money -= destPrice;
+            GM.Money -= destPrice;
             GM.deckController.DeckRemove(card, GM.deckController.currentDeck); // Correcting to remove the card
             GM.updateDeckPanel();
         }
@@ -151,7 +151,7 @@ public class ShopManager : TheSceneManager
         // Choose a random level from the remaining levels
         int randomIndex = Random.Range(0, 4);
         //System.Action nextLevel = remainingLevels[randomIndex];
-        //remainingLevels.RemoveAt(randomIndex); // Remove chosen level so it won’t repeat
+        //remainingLevels.RemoveAt(randomIndex); // Remove chosen level so it wonï¿½t repeat
 
         //// Assign the chosen level to the button
         //GM.AssignButton(ShopScreen.transform, "NextLevel", nextLevel);

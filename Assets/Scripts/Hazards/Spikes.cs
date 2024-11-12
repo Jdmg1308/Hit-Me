@@ -31,8 +31,7 @@ public class Spikes : Hazards, IDamageable
         // Code to handle spike behavior (e.g., damage to player or enemy)
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            PlayerController player = other.gameObject.GetComponent<PlayerController>();
-
+            PlayerController p = other.gameObject.GetComponent<PlayerController>();
             Rigidbody2D RB = other.gameObject.GetComponent<Rigidbody2D>();
             RB.velocity = Vector2.zero;
 
@@ -41,6 +40,11 @@ public class Spikes : Hazards, IDamageable
 
             // teleport player to specific position
             player.transform.position = teleportPosition;
+
+            //Vector2 force = KnockbackForce(other.transform, spikeKnockbackMultiplier);
+            // int collisionDamage = Mathf.RoundToInt(force.magnitude * 100f); // note: consider log max for extreme cases
+
+            // p.TakeDamage(collisionDamage, force);
         }
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
