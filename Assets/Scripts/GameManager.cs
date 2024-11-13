@@ -82,9 +82,9 @@ public class GameManager : TheSceneManager
     }
 
     [Header("Money")]
-
+    public float pointsToMoneyConversionRate = 0.5f;
     public TextMeshProUGUI money_text;
-    private int _money = 500;
+    public int _money = 500;
     public int Money
     {
         get
@@ -209,6 +209,7 @@ AudioManager audioManager;
 
         if (PlayScreen)
         {
+            // in the shop
             money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
             if (money_text)
                 money_text.text = " " + Money.ToString();
@@ -256,6 +257,7 @@ AudioManager audioManager;
 
             if (WinScreen) 
             {
+
                 if (SpatialTrigger)
                 {
                     SpatialTrigger sp = SpatialTrigger.GetComponent<SpatialTrigger>();
@@ -679,9 +681,25 @@ AudioManager audioManager;
 
     public void Win()
     {
-        playerController.SetControls(false);
+        //Money += 1000;
+        // playerController.SetControls(false);
+
+        //money_text = WinScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
+        //if (money_text)
+        //    money_text.text = " " + Money.ToString();
+
         // animate win here (gangnam style)
-        WinScreen.SetActive(true);
+        //WinScreen.SetActive(true);
+
+        // Add points To Money
+        Debug.Log("IF YOU FUCKING DARE SAY NULL " + money_text);
+        Money += Points; // pointsToMoneyConversionRate (int) (Points)
+
+        // Make Points zero
+        Points = 0;
+        StartCoroutine(updatePointsSlider());
+
+
         CheatWin = false;
         //TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
         //ScoreText.text = "Final Payout: " + money.ToString();
