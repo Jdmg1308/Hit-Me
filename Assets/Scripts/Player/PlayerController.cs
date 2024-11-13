@@ -251,11 +251,11 @@ public class PlayerController : MonoBehaviour
         }
 
         // kick, can buffer (i think?)
-        if (Input.GetKey(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit)
+        if (Input.GetKeyDown(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.isHit)
             p.anim.SetBool("isKicking", true);
 
         // while not holding down button to charge, set back to normal
-        if (Input.GetKey(KeyCode.Q) && p.anim.GetBool("isKicking") && !p.anim.GetBool("isPunching") && !p.isHit && p.charging)
+        if (Input.GetKey(KeyCode.Q) && p.anim.GetBool("isKicking") && !p.isHit && p.charging)
         {
             p.playerChargeMeter.SetActive(true);
             p.anim.speed = 0; // pause anim
@@ -444,6 +444,8 @@ public class PlayerController : MonoBehaviour
     public void EndKick()
     {
         p.anim.SetBool("isKicking", false);
+        p.anim.SetBool("isPunching", false);
+        p.anim.ResetTrigger("punch");
     }
     #endregion
 
@@ -554,6 +556,7 @@ public class PlayerController : MonoBehaviour
     // set end of animation
     public void EndPunch()
     {
+        p.anim.SetBool("isKicking", false);
         p.anim.SetBool("isPunching", false);
     }
     #endregion
