@@ -13,6 +13,8 @@ public class GameManager : TheSceneManager
     public GameObject Canvas;
     public GameObject Camera;
 
+    public GameObject SpatialTrigger;
+
     public bool CheatWin = false;
     public string LastScene = "TUTORIAL";
 
@@ -183,6 +185,8 @@ AudioManager audioManager;
         Player = GameObject.FindGameObjectWithTag("Player");
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
 
+        SpatialTrigger = GameObject.FindGameObjectWithTag("SpatialTrigger");
+
         audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
 
         if (Player)
@@ -249,8 +253,23 @@ AudioManager audioManager;
                 AssignButton(DeathScreen.transform, "Restart", Restart);
             }
 
-            if (WinScreen)
-                AssignButton(WinScreen.transform, "Shop", OpenShop);
+            if (WinScreen) 
+            {
+                if (SpatialTrigger)
+                {
+                    SpatialTrigger sp = SpatialTrigger.GetComponent<SpatialTrigger>();
+                    if (sp.NextSceneName != null)
+                    {
+                        Button button = WinScreen.transform.Find("Next")?.GetComponent<Button>();
+                        if (button)
+                            button.onClick.AddListener(() => nextScene(sp.NextSceneName));
+                    }
+                }
+                else 
+                {
+                    AssignButton(WinScreen.transform, "Next", OpenShop);
+                }
+            } 
 
             if (PauseScreen)
             {
@@ -692,5 +711,10 @@ AudioManager audioManager;
         GameEnemyManager.shouldSpawn = false; // THIS
         SceneManager.LoadScene("SHOP");
 
+    }
+
+    public void nextScene(string name)
+    {
+        SceneManager.LoadScene(name);
     }
 }
