@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Explosion : Hazards, IDamageable
 {
+    public float damageMultiplier = 0.21f;
+    public float knockBackMultiplier = 300f;
 
     // Start is called before the first frame update
     void Start()
@@ -22,8 +24,8 @@ public class Explosion : Hazards, IDamageable
             Rigidbody2D RB = p.GetComponent<Rigidbody2D>();
             RB.velocity = Vector2.zero;
 
-            Vector2 force = KnockbackForce(collider.transform, 300f);
-            int collisionDamage = Mathf.RoundToInt(force.magnitude * 100f); // note: consider log max for extreme cases
+            Vector2 force = KnockbackForce(collider.transform, knockBackMultiplier);
+            int collisionDamage = Mathf.RoundToInt(force.magnitude * damageMultiplier); // note: consider log max for extreme cases
 
             p.TakeDamage(collisionDamage, force);
         }

@@ -4734,6 +4734,14 @@ PrefabInstance:
       value: SpatialTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 8506203382445981069, guid: 5903a4760bc18ad4b82bd500eb4239d4, type: 3}
+      propertyPath: NextSceneName
+      value: CARDS
+      objectReference: {fileID: 0}
+    - target: {fileID: 8506203382445981069, guid: 5903a4760bc18ad4b82bd500eb4239d4, type: 3}
+      propertyPath: onTriggerEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8506203382445981069, guid: 5903a4760bc18ad4b82bd500eb4239d4, type: 3}
       propertyPath: onTriggerEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: CARDS
       objectReference: {fileID: 0}

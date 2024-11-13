@@ -51,6 +51,7 @@ MonoBehaviour:
   Player: {fileID: 0}
   Canvas: {fileID: 0}
   Camera: {fileID: 0}
+  SpatialTrigger: {fileID: 0}
   CheatWin: 0
   LastScene: TUTORIAL
   audioSource: {fileID: 5376063830636673449}
@@ -70,15 +71,16 @@ MonoBehaviour:
   healthMax: 100
   baseHealth: 100
   healthBar: {fileID: 0}
+  pointsPerKill: 0
   progressMax: 1000
   points_text: {fileID: 0}
   progressBar: {fileID: 0}
   milestone1: 0
-  milestone1Points: 33
+  milestone1Points: 333
   milestone2: 0
-  milestone2Points: 66
+  milestone2Points: 666
   milestone3: 0
-  milestone3Points: 100
+  milestone3Points: 999
   CountFPS: 30
   Duration: 1
   _points: 0

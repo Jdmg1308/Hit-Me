@@ -9,7 +9,7 @@ public class SpatialTrigger : MonoBehaviour
 {
     public UnityEvent onTriggerEnter;  // Event for when a collider enters this trigger
     private GameManager GM;
-    private string NextSceneName;
+    public string NextSceneName;
     public GameObject tutorialWall;
 
     public void Awake()
@@ -29,14 +29,14 @@ public class SpatialTrigger : MonoBehaviour
             SceneManager.LoadScene(NextSceneName);
     }
 
-    public void NextScene(string SceneName)
+    public void NextScene()
     {
-        if (NextSceneName == null)
-            NextSceneName = SceneName;
+        //if (NextSceneName == null)
+        //    NextSceneName = SceneName;
 
-        if (GM)
+        if (GM && tutorialWall)
         {
-            if (ChecklistComplete(SceneName))
+            if (ChecklistComplete(NextSceneName))
             {
                 // THIS IS WHERE ETHAN MAKES A WALL BREAK (THIS CODE IS CHECKED EVERY FRACTION OF SECOND)
                 // Disable the wall GameObject to make it disappear
@@ -54,19 +54,19 @@ public class SpatialTrigger : MonoBehaviour
         switch (SceneName)
         {
             case "MOVEMENT_COMBAT":
-                return (true);
+                return (false);
             case "Combat_GOON":
                 return (GM.ChecklistScript.taskNameToBool["PC"] && GM.ChecklistScript.taskNameToBool["PAC"] && GM.ChecklistScript.taskNameToBool["TK"] && GM.ChecklistScript.taskNameToBool["FCK"] && GM.ChecklistScript.taskNameToBool["PKC"]);
             case "GRAPPLE":
-                return (true);
+                return (false);
             case "Combat_RANGED":
                 return (GM.ChecklistScript.taskNameToBool["GE"] && GM.ChecklistScript.taskNameToBool["GP"] && GM.ChecklistScript.taskNameToBool["SCK"]);
             case "CARDS":
-                return (true);
+                return (false);
             case "Combat_MORERANGED":
                 return (GM.ChecklistScript.taskNameToBool["DC"]);
             case "SHOP":
-                return (true);
+                return (false);
             default:
                 return false;
         }

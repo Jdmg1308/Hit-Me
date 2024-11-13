@@ -13,6 +13,8 @@ public class GameManager : TheSceneManager
     public GameObject Canvas;
     public GameObject Camera;
 
+    public GameObject SpatialTrigger;
+
     public bool CheatWin = false;
     public string LastScene = "TUTORIAL";
 
@@ -53,6 +55,7 @@ public class GameManager : TheSceneManager
     public Slider healthBar;       // UI Slider for health bar
 
     [Header("Progress Meter")]
+    public int pointsPerKill;
     public int progressMax = 100;
     public TextMeshProUGUI points_text;
     public Slider progressBar;      // UI slidere for health bar 
@@ -79,9 +82,9 @@ public class GameManager : TheSceneManager
     }
 
     [Header("Money")]
-
+    public float pointsToMoneyConversionRate = 0.5f;
     public TextMeshProUGUI money_text;
-    private int _money = 500;
+    public int _money = 500;
     public int Money
     {
         get
@@ -183,6 +186,8 @@ AudioManager audioManager;
         Player = GameObject.FindGameObjectWithTag("Player");
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
 
+        SpatialTrigger = GameObject.FindGameObjectWithTag("SpatialTrigger");
+
         audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
 
         if (Player)
@@ -204,6 +209,7 @@ AudioManager audioManager;
 
         if (PlayScreen)
         {
+            // in the shop
             money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
             if (money_text)
                 money_text.text = " " + Money.ToString();
@@ -249,8 +255,24 @@ AudioManager audioManager;
                 AssignButton(DeathScreen.transform, "Restart", Restart);
             }
 
-            if (WinScreen)
-                AssignButton(WinScreen.transform, "Shop", OpenShop);
+            if (WinScreen) 
+            {
+
+                if (SpatialTrigger)
+                {
+                    SpatialTrigger sp = SpatialTrigger.GetComponent<SpatialTrigger>();
+                    if (sp.NextSceneName != null)
+                    {
+                        Button button = WinScreen.transform.Find("Next")?.GetComponent<Button>();
+                        if (button)
+                            button.onClick.AddListener(() => nextScene(sp.NextSceneName));
+                    }
+                }
+                else 
+                {
+                    AssignButton(WinScreen.transform, "Next", OpenShop);
+                }
+            } 
 
             if (PauseScreen)
             {
@@ -295,6 +317,7 @@ AudioManager audioManager;
         cardButton.transform.Find("Name").gameObject.GetComponent<TextMeshProUGUI>().text = card.cardName;
         cardButton.transform.Find("Description").gameObject.GetComponent<TextMeshProUGUI>().text = card.cardDescription;
         cardButton.transform.Find("Image").gameObject.GetComponent<Image>().sprite = card.effectImage;
+        cardButton.transform.Find("Points").gameObject.GetComponent<TextMeshProUGUI>().text = card.points.ToString();
 
         return cardButton;
     }
@@ -331,7 +354,6 @@ AudioManager audioManager;
             Card card = deckController.infinDrawCard(deckController.currentDeck);
             StartCoroutine(DrawCardSequence(DrawnCard.GetComponent<Animator>(), card));
             //TODO: updatePoints(card point value);
-            updatePoints(10);
             updateHealth();
         }
     }
@@ -388,6 +410,10 @@ AudioManager audioManager;
             // Show Card Descriptor
             ShowCardDescriptor(card);
 
+            yield return new WaitForSeconds(cardDescriptor.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+
+            updatePoints(card.points);
+
             // Return to idle state
             if (cardAnimator != null)
                 cardAnimator.Play("NoCardDrawn");
@@ -400,6 +426,7 @@ AudioManager audioManager;
         Animator animator = cardDescriptor.GetComponent<Animator>();
         TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
         description.text = card.cardName;
+        description.color = Color.white;
         PlayAnimationOnce(animator, "LookAtMe");
     }
 
@@ -541,7 +568,7 @@ AudioManager audioManager;
         //TODO: uncomment once we get the bar 
         Debug.Log("points: " + Points);
         //progressBar.value = points;
-        progressBar.value = Points;
+        StartCoroutine(updatePointsSlider());
     }
 
     private void UpdateText(int newValue, int prevValue, TextMeshProUGUI text)
@@ -554,6 +581,30 @@ AudioManager audioManager;
         Debug.Log(newValue + " text " + text + " prev " + prevValue);
 
         CountingCoroutine = StartCoroutine(CountText(newValue, prevValue, text));
+    }
+
+    private IEnumerator updatePointsSlider()
+    {
+        int newValue = Points;
+        int prevValue = (int) progressBar.value;
+        WaitForSeconds wait = new WaitForSeconds(1f / CountFPS);
+        int stepAmount;
+
+        stepAmount = Mathf.CeilToInt((newValue - prevValue) / (CountFPS * Duration)); // newValue = -20, previousValue = 0. CountFPS = 30, and Duration = 1; (-20- 0) / (30*1) // -0.66667 (ceiltoint)-> 0
+
+        while (prevValue != newValue)
+        {
+            prevValue += stepAmount;
+
+            // Clamp value to ensure it doesn't overshoot the target
+            if ((stepAmount > 0 && prevValue > newValue) || (stepAmount < 0 && prevValue < newValue))
+            {
+                prevValue = newValue;
+            }
+
+            progressBar.value = prevValue;
+            yield return wait;
+        }
     }
 
     // The coroutine that counts up to the new money value in increments
@@ -592,12 +643,11 @@ AudioManager audioManager;
         // animate descriptor
         Animator animator = cardDescriptor.GetComponent<Animator>();
         TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
-        description.text = "milestone 1 reached";
-        description.color = Color.red;
+        description.text = text;
+        description.color = Color.yellow;
         audioSource.clip = GoodPullAudio;
         audioSource.Play();
         PlayAnimationOnce(animator, "LookAtMe");
-        description.color = Color.white;
     }
 
     public void Pause()
@@ -631,9 +681,25 @@ AudioManager audioManager;
 
     public void Win()
     {
-        playerController.SetControls(false);
+        //Money += 1000;
+        // playerController.SetControls(false);
+
+        //money_text = WinScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
+        //if (money_text)
+        //    money_text.text = " " + Money.ToString();
+
         // animate win here (gangnam style)
-        WinScreen.SetActive(true);
+        //WinScreen.SetActive(true);
+
+        // Add points To Money
+        Debug.Log("IF YOU FUCKING DARE SAY NULL " + money_text);
+        Money += Points; // pointsToMoneyConversionRate (int) (Points)
+
+        // Make Points zero
+        Points = 0;
+        StartCoroutine(updatePointsSlider());
+
+
         CheatWin = false;
         //TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
         //ScoreText.text = "Final Payout: " + money.ToString();
@@ -692,5 +758,10 @@ AudioManager audioManager;
         GameEnemyManager.shouldSpawn = false; // THIS
         SceneManager.LoadScene("SHOP");
 
+    }
+
+    public void nextScene(string name)
+    {
+        SceneManager.LoadScene(name);
     }
 }

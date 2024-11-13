@@ -469,7 +469,7 @@ MonoBehaviour:
   flashInterval: 0.15
   initialSpawnDelay: 1.5
   enemyState: 0
-  pointAmount: 5
+  pointAmount: 20
   <InAttackRange>k__BackingField: 0
   <InRunAwayRange>k__BackingField: 0
   <InRangedAttackRange>k__BackingField: 0
