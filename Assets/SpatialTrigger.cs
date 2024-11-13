@@ -26,7 +26,12 @@ public class SpatialTrigger : MonoBehaviour
     {
         // Invoke the assigned methods
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-            SceneManager.LoadScene(NextSceneName);
+        {
+            if (ChecklistComplete(NextSceneName))
+            {
+                SceneManager.LoadScene(NextSceneName);
+            }
+        }
     }
 
     public void NextScene()
