@@ -80,6 +80,7 @@ public class GameManager : TheSceneManager
             _points = value;
         }
     }
+    Coroutine updatePointsRoutine;
 
     [Header("Money")]
     public float pointsToMoneyConversionRate = 0.5f;
@@ -568,15 +569,13 @@ AudioManager audioManager;
         //TODO: uncomment once we get the bar 
         Debug.Log("points: " + Points);
         //progressBar.value = points;
-        StartCoroutine(updatePointsSlider());
+        updatePointsRoutine = StartCoroutine(updatePointsSlider());
     }
 
     private void UpdateText(int newValue, int prevValue, TextMeshProUGUI text)
     {
         if (CountingCoroutine != null)
-        {
             StopCoroutine(CountingCoroutine);
-        }
 
         Debug.Log(newValue + " text " + text + " prev " + prevValue);
 
@@ -598,9 +597,7 @@ AudioManager audioManager;
 
             // Clamp value to ensure it doesn't overshoot the target
             if ((stepAmount > 0 && prevValue > newValue) || (stepAmount < 0 && prevValue < newValue))
-            {
                 prevValue = newValue;
-            }
 
             progressBar.value = prevValue;
             yield return wait;
@@ -615,13 +612,9 @@ AudioManager audioManager;
         int stepAmount;
 
         if (newValue - prevValue < 0)
-        {
             stepAmount = Mathf.FloorToInt((newValue - prevValue) / (CountFPS * Duration)); // newValue = -20, previousValue = 0. CountFPS = 30, and Duration = 1; (-20- 0) / (30*1) // -0.66667 (ceiltoint)-> 0
-        }
         else
-        {
             stepAmount = Mathf.CeilToInt((newValue - prevValue) / (CountFPS * Duration)); // newValue = 20, previousValue = 0. CountFPS = 30, and Duration = 1; (20- 0) / (30*1) // 0.66667 (floortoint)-> 0
-        }
 
         while (prevValue != newValue)
         {
@@ -629,9 +622,7 @@ AudioManager audioManager;
 
             // Clamp value to ensure it doesn't overshoot the target
             if ((stepAmount > 0 && prevValue > newValue) || (stepAmount < 0 && prevValue < newValue))
-            {
                 prevValue = newValue;
-            }
 
             text.SetText(prevValue.ToString());
             yield return wait;
@@ -754,14 +745,15 @@ AudioManager audioManager;
 
     public new void OpenShop()
     {
+        StopCoroutine(updatePointsRoutine);
         LastScene = SceneManager.GetActiveScene().name;
         GameEnemyManager.shouldSpawn = false; // THIS
         SceneManager.LoadScene("SHOP");
-
     }
 
     public void nextScene(string name)
     {
+        StopCoroutine(updatePointsRoutine);
         SceneManager.LoadScene(name);
     }
 }
