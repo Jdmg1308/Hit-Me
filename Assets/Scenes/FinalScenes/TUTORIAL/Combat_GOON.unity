@@ -1052,6 +1052,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0.003479004
       objectReference: {fileID: 0}
+    - target: {fileID: 5004611925411716805, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.00021362305
+      objectReference: {fileID: 0}
     - target: {fileID: 5070184229111278055, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1295,6 +1299,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: waveConfigurations.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: waveConfigurations.Array.data[0]
       value: 1
       objectReference: {fileID: 0}
@@ -1305,6 +1313,14 @@ PrefabInstance:
     - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: waveConfigurations.Array.data[2]
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: waveConfigurations.Array.data[0].HeavyCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: waveConfigurations.Array.data[0].RangedCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}

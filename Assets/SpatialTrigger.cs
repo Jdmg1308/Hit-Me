@@ -10,6 +10,7 @@ public class SpatialTrigger : MonoBehaviour
     public UnityEvent onTriggerEnter;  // Event for when a collider enters this trigger
     private GameManager GM;
     private string NextSceneName;
+    public GameObject tutorialWall;
 
     public void Awake()
     {
@@ -38,6 +39,8 @@ public class SpatialTrigger : MonoBehaviour
             if (ChecklistComplete(SceneName))
             {
                 // THIS IS WHERE ETHAN MAKES A WALL BREAK (THIS CODE IS CHECKED EVERY FRACTION OF SECOND)
+                // Disable the wall GameObject to make it disappear
+                tutorialWall.SetActive(false);
 
             }
 
