@@ -745,7 +745,8 @@ AudioManager audioManager;
 
     public new void OpenShop()
     {
-        StopCoroutine(updatePointsRoutine);
+        if (updatePointsRoutine != null)
+            StopCoroutine(updatePointsRoutine);
         LastScene = SceneManager.GetActiveScene().name;
         GameEnemyManager.shouldSpawn = false; // THIS
         SceneManager.LoadScene("SHOP");
@@ -753,7 +754,8 @@ AudioManager audioManager;
 
     public void nextScene(string name)
     {
-        StopCoroutine(updatePointsRoutine);
+        if (updatePointsRoutine != null)
+            StopCoroutine(updatePointsRoutine);
         SceneManager.LoadScene(name);
     }
 }
