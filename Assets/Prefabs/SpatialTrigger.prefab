@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8506203382445981069}
   m_Layer: 0
   m_Name: SpatialTrigger
-  m_TagString: Untagged
+  m_TagString: SpatialTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -86,3 +86,5 @@ MonoBehaviour:
           m_StringArgument: Combat_3
           m_BoolArgument: 0
         m_CallState: 2
+  NextSceneName: 
+  tutorialWall: {fileID: 0}
