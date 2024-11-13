@@ -1179,6 +1179,10 @@ PrefabInstance:
       value: HeavyEnemy
       objectReference: {fileID: 0}
     - target: {fileID: 7912227820249121315, guid: fef87f3d705e4e047921b6e227298cd6, type: 3}
+      propertyPath: baseChanceForChargedAttack
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7912227820249121315, guid: fef87f3d705e4e047921b6e227298cd6, type: 3}
       propertyPath: <ChaseSpeed>k__BackingField
       value: 0
       objectReference: {fileID: 0}
@@ -1809,7 +1813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5811921193137224075, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19.16
+      value: 37.69
       objectReference: {fileID: 0}
     - target: {fileID: 5811921193137224075, guid: 7ae274f75d9c00c4eb67223abbab35d1, type: 3}
       propertyPath: m_LocalPosition.y

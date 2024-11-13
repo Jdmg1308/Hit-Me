@@ -13,9 +13,6 @@ MonoBehaviour:
   m_Name: WaveConfig Alleyway_1
   m_EditorClassIdentifier: 
   waveConfigurations:
-  - BasicCount: 3
+  - BasicCount: 1
     RangedCount: 0
-    HeavyCount: 0
-  - BasicCount: 3
-    RangedCount: 2
     HeavyCount: 0

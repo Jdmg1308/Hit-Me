@@ -166,22 +166,15 @@ AudioManager audioManager;
         Debug.Log("Loaded scene: " + levelName);
 
         if (audioManager != null)
-        {
             audioManager.PlayLevelMusic(levelName);
-        }
         else
-        {
             Debug.LogWarning("AudioManager not found!");
-        }
     }
 
     public void AssignButton(Transform screen, string buttonName, UnityEngine.Events.UnityAction action)
     {
         Button button = screen.Find(buttonName)?.GetComponent<Button>();
-        if (button)
-        {
-            button.onClick.AddListener(action);
-        }
+        if (button) button.onClick.AddListener(action);
     }
 
     void AssignReferences()
@@ -271,9 +264,7 @@ AudioManager audioManager;
         }
 
         if (ChecklistScreen)
-        {
             ChecklistScript = ChecklistScreen.GetComponent<ChecklistScreen>();
-        }
 
         if (IBuild)
             iOSPanel = IBuild.transform.Find("iOS Panel")?.gameObject;
@@ -284,14 +275,11 @@ AudioManager audioManager;
         audioSource = GetComponent<AudioSource>();
         GameEnemyManager = GetComponentInChildren<GameEnemyManager>();
         GameEnemyManager.ResetWaves();
-
     }
-
-    
 
     void Update()
     {
-        if ((GameEnemyManager.currentWave > GameEnemyManager.waveConfigurations.Count && !hasWon) || CheatWin)
+        if (!hasWon && CheatWin)
             Win();
 
         if (cardIsOnCD && UICard)

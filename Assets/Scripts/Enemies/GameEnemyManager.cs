@@ -196,8 +196,12 @@ public class GameEnemyManager : MonoBehaviour
             StartCoroutine(WaitForSpawn(enemy.gameObject));
 
             // Check if all enemies are dead
-            if (EnemiesLeftInWave == 0)
+            if (EnemiesLeftInWave == 0) 
+            {
                 _WaveInProgress = false; // Allow the next wave to start
+                if (currentWave == waveConfigurations.Count)
+                    GM.Win();
+            }
         }
     }
 
