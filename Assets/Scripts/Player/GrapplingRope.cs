@@ -72,6 +72,7 @@ public class GrapplingRope : MonoBehaviour
             if (!grapplingGun.isGrappling)
             {
                 grapplingGun.isGrappling = true;
+                grapplingGun.playerController.p.anim.SetBool("midJump", true);
             }
             if (waveSize > 0)
             {

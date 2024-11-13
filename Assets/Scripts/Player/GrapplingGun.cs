@@ -84,7 +84,6 @@ public class GrapplingGun : MonoBehaviour
             {
                 GM.ChecklistScript.UpdateChecklistItem("GE", true);
                 grapplePoint = grappledObject.transform.position;
-                
             }
             if (grappledObject == null)
             {
@@ -133,6 +132,7 @@ public class GrapplingGun : MonoBehaviour
         //m_rigidbody.gravityScale = 1;
         m_rigidbody.velocity = releaseVelocity; //momentum
         isGrappling = false;
+        playerController.p.anim.SetBool("midJump", false);
     }
 
     public void SetSpring(bool isGrounded)

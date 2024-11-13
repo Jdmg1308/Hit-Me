@@ -79,9 +79,11 @@ public class PlayerController : MonoBehaviour
             else
             {
                 ProcessInput();
-                p.anim.SetBool("midJump", p.midJump);
-                if (p.grapplingGun.isGrappling)
-                    p.anim.SetBool("midJump", true);
+                // if not grappling then follow this rule, otherwise follow grappling rule
+                if (!p.grapplingGun.isGrappling)
+                    p.anim.SetBool("midJump", p.midJump);
+                // if (p.grapplingGun.isGrappling)
+                //     p.anim.SetBool("midJump", true);
                 DirectionPlayerFaces();
             }
         }
@@ -157,6 +159,7 @@ public class PlayerController : MonoBehaviour
         p.anim.SetBool("isWalking", Mathf.Abs(p.rb.velocity.x) > 0.1f);
         if (p.isJumping)
         {
+            EndShouldBeDamaging();
             p.rb.velocity = new Vector2(p.rb.velocity.x, 0f);
             p.rb.AddForce(new Vector2(0f, p.jumpForce));
             p.midJump = true;
@@ -209,14 +212,16 @@ public class PlayerController : MonoBehaviour
     {
         // Normal Movement Input
         // scale of -1 -> 1
+        if (Input.GetKeyDown(KeyCode.Space) && p.isGrounded)
+        {
+            audioManager.PlaySFX(audioManager.jump);
+            p.isJumping = true;
+        }
+
         if (p.anim.GetBool("canMove"))
         {
             p.moveDirection = Input.GetAxis("Horizontal");
-            if (Input.GetKeyDown(KeyCode.Space) && p.isGrounded)
-            {
-                audioManager.PlaySFX(audioManager.jump);
-                p.isJumping = true;
-            }
+            
             if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && p.currentOneWayPlatform != null)
                 StartCoroutine(DisableCollision());
         }
@@ -246,6 +251,7 @@ public class PlayerController : MonoBehaviour
             if (p.grapplingGun.isGrappling)
             {
                 // do super upper cut instead
+                p.anim.SetBool("midJump", false);
                 p.anim.SetTrigger("SuperUppercut");
             }
         }
