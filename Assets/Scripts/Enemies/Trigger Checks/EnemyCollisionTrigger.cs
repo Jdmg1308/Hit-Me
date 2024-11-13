@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyCollisionTrigger : MonoBehaviour
 {
     private Enemy parent;
-    public float ExplosionMultiplier = 1f;
+    public float ExplosionMultiplier = 50f;
     //[Header("Layers Settings:")]
     //[SerializeField] private LayerMask EnemyCollisonLayers;
 
@@ -46,7 +46,7 @@ public class EnemyCollisionTrigger : MonoBehaviour
                 // Create an initial force vector with horizontal direction
                 Vector2 force = new Vector2(dir * distanceFactor * 30f, 10f); // Increase multiplier if you want a larger effect
 
-                int collisionDamage = Mathf.RoundToInt(distanceFactor * 10f); // note: consider log max for extreme cases
+                int collisionDamage = Mathf.RoundToInt(distanceFactor * ExplosionMultiplier); // note: consider log max for extreme cases
 
                 // Apply the force to launch the enemy
                 parent.InImpact = true;
