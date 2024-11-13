@@ -36,16 +36,14 @@ public class ExplodingBarrel : Hazards, IDamageable
     {
         RB.velocity = Vector2.zero; // so previous velocity doesn't interfere
         RB.AddForce(force, ForceMode2D.Impulse);
-        Debug.Log("RAHHHH ");
         currentKicks++;
 
         // Flash red briefly to show the barrel has been hit
         StartCoroutine(FlashRed());
 
         // Check if the barrel has received enough kicks to explode
-        if (currentKicks >= maxKicks)
+        if (currentKicks == maxKicks)
             StartCoroutine(ExplodeSequence());
-
 
         // SpawnDamageVFX(force.x);
     }

@@ -48,6 +48,10 @@ public class Hazards : MonoBehaviour
         GameObject temp = Instantiate(prefab, position, Quaternion.identity);
         SpriteRenderer spriteRenderer = temp.GetComponent<SpriteRenderer>();
 
+
+
+        Debug.Log("numbah 1");
+
         if (spriteRenderer != null)
         {
             float fadeDuration = 1.0f; // Adjust the fade duration as needed
@@ -63,11 +67,16 @@ public class Hazards : MonoBehaviour
                 yield return null;
             }
         }
+        Debug.Log("numbah 2");
 
         // Wait for the remaining time (if fade duration is less than `time`)
         yield return new WaitForSeconds(Mathf.Max(0, time));
 
+        Debug.Log("numbah 3");
+
         // Destroy the prefab after the fade-out effect
         Destroy(temp);
+
+        Debug.Log("numbah 4 is crazy");
     }
 }
