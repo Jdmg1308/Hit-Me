@@ -17,8 +17,8 @@ MonoBehaviour:
     RangedCount: 1
     HeavyCount: 0
   - BasicCount: 2
-    RangedCount: 2
+    RangedCount: 0
     HeavyCount: 1
-  - BasicCount: 3
-    RangedCount: 2
+  - BasicCount: 0
+    RangedCount: 1
     HeavyCount: 2
