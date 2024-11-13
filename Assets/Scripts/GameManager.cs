@@ -682,14 +682,14 @@ AudioManager audioManager;
     public void Win()
     {
         //Money += 1000;
-        // playerController.SetControls(false);
+        playerController.SetControls(false);
 
-        //money_text = WinScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
-        //if (money_text)
-        //    money_text.text = " " + Money.ToString();
+        money_text = WinScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
+        if (money_text)
+           money_text.text = " " + Money.ToString();
 
         // animate win here (gangnam style)
-        //WinScreen.SetActive(true);
+        WinScreen.SetActive(true);
 
         // Add points To Money
         Debug.Log("IF YOU FUCKING DARE SAY NULL " + money_text);
@@ -701,8 +701,8 @@ AudioManager audioManager;
 
 
         CheatWin = false;
-        //TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
-        //ScoreText.text = "Final Payout: " + money.ToString();
+        // TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
+        // ScoreText.text = "Final Payout: " + money.ToString();
         hasWon = true;
     }
     #endregion

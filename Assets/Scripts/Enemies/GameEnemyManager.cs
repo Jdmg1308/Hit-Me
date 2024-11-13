@@ -200,17 +200,7 @@ public class GameEnemyManager : MonoBehaviour
             {
                 _WaveInProgress = false; // Allow the next wave to start
                 if (currentWave == waveConfigurations.Count)
-                    if (GM.Points > 300)
-                    {
-                        if (GM.Points >= 1000)
-                        {
-                            GM.Win();
-                        }
-
-                    } else
-                    {
-                        GM.Win();
-                    }
+                    GM.Win();
             }
         }
     }
