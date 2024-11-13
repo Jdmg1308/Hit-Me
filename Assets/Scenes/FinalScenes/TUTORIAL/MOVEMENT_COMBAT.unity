@@ -5517,6 +5517,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 211859237338566933, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_CellSize.x
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 211859237338566933, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_CellSize.y
+      value: 90
+      objectReference: {fileID: 0}
     - target: {fileID: 211859237338566939, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: checklistNames.Array.size
       value: 5
@@ -5551,7 +5559,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 211859237338566939, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: checklistTexts.Array.data[1]
-      value: ' Punch Air Combo (Left Click twice, then Left Click in Air)'
+      value: ' Punch Air Combo (Mid Air) (Left Click Three times)'
       objectReference: {fileID: 0}
     - target: {fileID: 211859237338566939, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: checklistTexts.Array.data[2]
