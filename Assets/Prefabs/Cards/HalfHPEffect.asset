@@ -20,4 +20,5 @@ MonoBehaviour:
   id: 0
   cardUserAnim: 
   price: 100
+  points: 200
   oldHPRatio: 0

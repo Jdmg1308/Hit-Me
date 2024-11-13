@@ -6,18 +6,24 @@ using UnityEngine;
 public enum CardType {Multiplier, Additor, EnemyBuff, PlayerBuff, Heal, 
                             StatusEffect, EnemyDebuff, PlayerDebuff};
 
+//public enum CardClass
+//{
+//    Green, Blue, Red
+//};
+
 public abstract class Card : ScriptableObject 
 {
-   
     public string cardName;
     public string cardDescription;
     public Sprite cardImage;
     public Sprite effectImage;
     public abstract CardType cardType{get;}
+    //public abstract CardClass cardClass { get; }
     public int effectValue;
     public int id;
     public string cardUserAnim;
     public float price;
+    public int points;
 
     public abstract void use(GameManager GM);
 
