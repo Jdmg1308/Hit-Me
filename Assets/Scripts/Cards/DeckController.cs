@@ -10,6 +10,8 @@ public class DeckController : MonoBehaviour
     //public List<Card> clanCards;
     public Deck currentDeck;
     public int deckLimit;
+    public GameObject ShopManager;
+    private ShopManager shopScript;
 
     private void Awake()
     {
@@ -114,7 +116,9 @@ public class DeckController : MonoBehaviour
         }
         else
         {
+            //shopScript = ShopManager.GetComponent<ShopManager>();
             Debug.Log("DECK LIMIT REACHED, # of cards:" + deck.deck.Count);
+
         }
     }
 
