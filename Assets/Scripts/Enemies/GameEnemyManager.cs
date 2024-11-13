@@ -367,26 +367,30 @@ public class GameEnemyManager : MonoBehaviour
     // spawn x number of enemies using a list of spawn points
     private void SpawnEnemies(int totalEnemies, List<Transform> spawnPoints)
     {
-        int enemiesPerPoint = totalEnemies / spawnPoints.Count;   // Divide enemies equally
-        int remainingEnemies = totalEnemies % spawnPoints.Count;  // Handle any leftover enemies
-
-        foreach (Transform spawnPoint in spawnPoints)
+        if (spawnPoints.Count != 0)
         {
-            for (int i = 0; i < enemiesPerPoint; i++)
+            int enemiesPerPoint = totalEnemies / spawnPoints.Count;   // Divide enemies equally
+            int remainingEnemies = totalEnemies % spawnPoints.Count;  // Handle any leftover enemies
+
+            foreach (Transform spawnPoint in spawnPoints)
             {
-                SpawnEnemy(spawnPoint);
+                for (int i = 0; i < enemiesPerPoint; i++)
+                {
+                    SpawnEnemy(spawnPoint);
+                }
+
+                // Spawn one extra enemy if there are remaining enemies
+                if (remainingEnemies > 0)
+                {
+                    SpawnEnemy(spawnPoint);
+                    remainingEnemies--;
+                }
             }
 
-            // Spawn one extra enemy if there are remaining enemies
-            if (remainingEnemies > 0)
-            {
-                SpawnEnemy(spawnPoint);
-                remainingEnemies--;
-            }
+            // Update total number of enemies after spawning
+            EnemiesLeftInWave += totalEnemies;
         }
-
-        // Update total number of enemies after spawning
-        EnemiesLeftInWave += totalEnemies;
+        
     }
 
     private void SpawnEnemy(Transform spawnPoint)
