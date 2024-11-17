@@ -126,4 +126,17 @@ public class RangedEnemy : Enemy, HasBasicStates, HasRangedStates
 
         base.Start();
     }
+
+    public float reverseRunAwayTime = 2f;
+
+    public override void OnCollisionEnter2D(Collision2D collision) 
+    {
+        base.OnCollisionEnter2D(collision);
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("InvisibleWalls"))
+        {
+            if (StateMachine.currentEnemyState is EnemyRunAwayState runAway)
+                runAway.reverseRunAway(reverseRunAwayTime, collision.transform.position);
+        }
+    }
 }

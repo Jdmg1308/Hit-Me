@@ -97,7 +97,7 @@ public class HeavyEnemy : BasicEnemy
     public override void TakeKick(int damage, Vector2 force)
     {
         // if hit with enough force during armored attack
-        if (force.x >= forceThreshold && HitStunImmune)
+        if (Math.Abs(force.x) >= forceThreshold && HitStunImmune)
         {
             inGuardBreak = true;
             Anim.SetBool("isArmoredAttack", false); // cancel armored attack

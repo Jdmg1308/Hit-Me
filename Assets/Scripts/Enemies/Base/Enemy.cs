@@ -250,7 +250,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     }
 
     // receiving impact reaction
-    void OnCollisionEnter2D(Collision2D collision)
+    public virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (InImpact)
         {
@@ -488,7 +488,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
             StopCoroutine(airStunCoroutine);
         if (airStunTime > 0)
             airStunCoroutine = StartCoroutine(AirStun(airStunTime));
-        
     }
 
     // for air combos, stops them mid air

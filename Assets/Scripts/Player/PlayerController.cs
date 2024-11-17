@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
         Vector2 aimDirection = (mousePos - (Vector2)p.grapplingGun.firePoint.position).normalized;
 
         // when kicking, face player towards cursor to make attack easier
-        if (p.anim.GetBool("isKicking"))
+        if (p.anim.GetBool("isKicking") || p.anim.GetBool("isPunching"))
             FlipCharacter(aimDirection.x > 0);
         // Handle character flipping only based on movement when moving
         else if (p.moveDirection != 0)
@@ -530,7 +530,7 @@ public class PlayerController : MonoBehaviour
                     else
                     { // regular punch otherwise (apply slow down)
                         audioManager.PlaySFX(audioManager.punch);
-                        iDamageable.TakePunch(p.punchDamage, p.isGrounded ? 0f : p.airStunTime);
+                        iDamageable.TakePunch(p.punchDamage, p.airStunTime);
                     }
 
                     iDamageable.StopAttack(); // cancel enemy attack
@@ -549,7 +549,6 @@ public class PlayerController : MonoBehaviour
         } 
         else if (iDamageableSet.Count != 0 && !p.isGrounded)
         {
-            Debug.Log("here?");
             p.anim.SetBool("inAirCombo", true);
         }
         

@@ -100,7 +100,7 @@ public class EnemyChaseState : EnemyState
                     }
 
                     // looking to drop down to player
-                    if (e.PlayerBelow && Randomize())
+                    if (e.PlayerBelow && Randomize() && !e.InImpact && !e.InHitStun && !e.InKnockup && !e.Anim.GetBool("ImpactBool"))
                     {
                         e.CurrentOneWayPlatform = Physics2D.OverlapBox(e.groundCheck.transform.position, e.CheckGroundSize, 0f, e.GroundLayer)?.gameObject;
                         if (e.CurrentOneWayPlatform != null && e.CurrentOneWayPlatform.CompareTag("OneWayPlatform"))
@@ -111,7 +111,7 @@ public class EnemyChaseState : EnemyState
                     }
                 }
 
-                if (e.MidJump && e.RB.velocity.y < 0) // if falling from a jump, regain control
+                if (e.MidJump && e.RB.velocity.y < 0 && !e.InKnockup) // if falling from a jump, regain control
                     WalkToTargetWithIntervals(e.Player.transform.position);
                 
                 yield return new WaitForFixedUpdate();

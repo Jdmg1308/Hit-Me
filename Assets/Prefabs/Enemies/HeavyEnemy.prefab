@@ -551,7 +551,7 @@ MonoBehaviour:
   ArmoredAttackForce: {x: 65, y: 14}
   ChargeUpTime: 2
   GuardBreakTime: 5
-  forceThreshold: 16.5
+  forceThreshold: 16
 --- !u!1 &4424213514700239976
 GameObject:
   m_ObjectHideFlags: 0

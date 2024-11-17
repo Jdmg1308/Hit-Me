@@ -432,7 +432,7 @@ MonoBehaviour:
   <MaxHealth>k__BackingField: 50
   <CurrentHealth>k__BackingField: 50
   <IsDead>k__BackingField: 0
-  <HitStunTime>k__BackingField: 0.3
+  <HitStunTime>k__BackingField: 0.6
   HitStunLimit: 100
   CurrentHitStunAmount: 0
   HitStunImmunityTime: 3
@@ -448,7 +448,7 @@ MonoBehaviour:
     m_Bits: 64
   <FallthroughTime>k__BackingField: 1
   <LandingOffset>k__BackingField: 1.5
-  <JumpDelay>k__BackingField: 0.25
+  <JumpDelay>k__BackingField: 0.4
   <GroundLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 64
@@ -477,6 +477,7 @@ MonoBehaviour:
   TimeBetweenRangedAttack: 4
   BulletPrefab: {fileID: 8274352306245459534, guid: cc6a30528ff970f46be7240ed8be98cb, type: 3}
   AllowShyAttack: 0
+  reverseRunAwayTime: 5
 --- !u!1 &2916380235385307057
 GameObject:
   m_ObjectHideFlags: 0
@@ -777,7 +778,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 3.8
 --- !u!114 &20029214
 MonoBehaviour:
   m_ObjectHideFlags: 0
