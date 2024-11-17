@@ -1129,9 +1129,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: '
 
-    Grappling hook: RightClick
+    Grappling hook: Hold Right Click
 
     Draw Card: F
+
+    Pause: Escape
 
 '
   m_isRightToLeft: 0
@@ -2607,14 +2609,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Jump: SpaceBar
+  m_text: 'Jump: Space Bar
 
-    Move down: S or ArrowDown
+    Drop Down: S
 
-    Walk: A or D or Horizontal
-    Arrows
+    Walk: A or D
 
-    Kick: Left Mouse Click or K
+    Punch: Left Click
+
+    Kick:
+    Q
 
 '
   m_isRightToLeft: 0

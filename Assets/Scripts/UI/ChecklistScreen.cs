@@ -18,8 +18,8 @@ public class ChecklistScreen : MonoBehaviour
     //public bool DC = false;
 
     public GameObject checklistItemPrefab;
-    public List<string> checklistNames = new List<string>();
-    public List<string> checklistTexts = new List<string>();
+    public List<string> checklistNames = new List<string>(); // internal names
+    public List<string> checklistTexts = new List<string>(); // external text
 
     // Dictionary to map task names to their indices in the checklistItems list
     public Dictionary<string, bool> taskNameToBool = new Dictionary<string, bool>();

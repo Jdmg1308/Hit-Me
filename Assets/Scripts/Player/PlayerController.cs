@@ -663,6 +663,7 @@ public class PlayerController : MonoBehaviour
     {
         p.anim.SetBool("isHurt", true);
         p.anim.SetBool("canMove", false);
+        p.anim.SetBool("inAirCombo", false);
         yield return new WaitForSeconds(p.hitStunTime + extraTime);
         p.anim.SetBool("isHurt", false);
         p.anim.SetBool("canMove", true);

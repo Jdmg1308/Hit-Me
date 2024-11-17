@@ -28,34 +28,21 @@ public class SpatialTrigger : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             if (ChecklistComplete(NextSceneName))
-            {
                 SceneManager.LoadScene(NextSceneName);
-            }
         }
     }
 
     public void NextScene()
     {
-        //if (NextSceneName == null)
-        //    NextSceneName = SceneName;
-
         if (GM && tutorialWall)
         {
             if (ChecklistComplete(NextSceneName))
-            {
-                // THIS IS WHERE ETHAN MAKES A WALL BREAK (THIS CODE IS CHECKED EVERY FRACTION OF SECOND)
-                // Disable the wall GameObject to make it disappear
                 tutorialWall.SetActive(false);
-
-            }
-
         }
     }
 
     public bool ChecklistComplete(string SceneName)
     {
-
-        // Debug.Log("THIS SHIT GOT CALLED");
         switch (SceneName)
         {
             case "MOVEMENT_COMBAT":
