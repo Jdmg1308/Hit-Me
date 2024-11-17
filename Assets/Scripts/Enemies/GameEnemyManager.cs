@@ -5,22 +5,11 @@ using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
-// count for each enemy type
-// [System.Serializable]
-// public class EnemyComposition
-// {
-//     public int BasicCount;
-//     public int RangedCount;
-//     public int HeavyCount;
-
-//     // Sum will be calculated based on the other counts
-//     public int Sum => BasicCount + RangedCount + HeavyCount;
-// }
-
 public class GameEnemyManager : MonoBehaviour
 {
     public GameManager GM;
     public List<Enemy> spawnedEnemies = new List<Enemy>();
+    public WaveConfiguration waveConfig; // Attach the appropriate WaveConfiguration in the inspector for each scene
     public int EnemiesLeftInWave = 0;
 
     [Header("Spawn Settings")]
@@ -28,6 +17,9 @@ public class GameEnemyManager : MonoBehaviour
     public BasicEnemy BasicEnemyPrefab;
     public RangedEnemy RangedEnemyPrefab;
     public HeavyEnemy HeavyEnemyPrefab;
+
+    public bool hasSpawned = false; // for waves, so only spawn one wave the frame it is called
+    public bool shouldSpawn = false; // for GM, to turn on or off wave function in general
     
     public float SpawnDelay = 3f; // first wave spawn delay
 
@@ -55,15 +47,10 @@ public class GameEnemyManager : MonoBehaviour
     private float _OffScreenSpriteWidth;
     private float _OffScreenSpriteHeight;
 
-    public bool hasSpawned = false; // for waves, so only spawn one wave the frame it is called
-    public bool shouldSpawn = false; // for GM, to turn on or off wave function in general
-
     void Awake()
     {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
     }
-
-    public WaveConfiguration waveConfig; // Attach the appropriate WaveConfiguration in the inspector for each scene
 
     // Start is called before the first frame update
     void Start()

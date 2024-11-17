@@ -78,9 +78,7 @@ public class ExplodingBarrel : Hazards, IDamageable
             // Reduce the interval to create a faster flashing effect
             flashInterval *= flashReductionRate;
             if (flashInterval < minimumInterval)
-            {
                 flashInterval = minimumInterval;  // Clamp to minimum interval
-            }
         }
 
         // Play explosion animation

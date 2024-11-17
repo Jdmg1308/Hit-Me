@@ -799,7 +799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4745988560934552251, guid: 883b4096eb464b24abb3487e7a0d069d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 22.46
+      value: 20.34
       objectReference: {fileID: 0}
     - target: {fileID: 4745988560934552251, guid: 883b4096eb464b24abb3487e7a0d069d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1319,6 +1319,10 @@ PrefabInstance:
     - target: {fileID: 5376063830636673451, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: milestone3Points
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: shouldSpawn
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5376063832437897329, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: allCards.Array.size

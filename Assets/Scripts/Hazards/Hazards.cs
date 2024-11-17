@@ -48,8 +48,6 @@ public class Hazards : MonoBehaviour
         GameObject temp = Instantiate(prefab, position, Quaternion.identity);
         SpriteRenderer spriteRenderer = temp.GetComponent<SpriteRenderer>();
 
-
-
         Debug.Log("numbah 1");
 
         if (spriteRenderer != null)

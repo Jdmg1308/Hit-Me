@@ -515,7 +515,7 @@ AudioManager audioManager;
     public void resetPlayer()
     {
         hasWon = false;
-        GameEnemyManager.shouldSpawn = true;
+        // GameEnemyManager.shouldSpawn = true;
         playerController.resetPlayerDamage();
         healthMax = baseHealth;
         healthCurrent = healthMax;

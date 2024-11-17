@@ -216,9 +216,10 @@ public class PlayerController : MonoBehaviour
         {
             audioManager.PlaySFX(audioManager.jump);
             p.isJumping = true;
+            p.anim.SetTrigger("PressJump");
         }
 
-        if (p.anim.GetBool("canMove"))
+        if (p.anim.GetBool("canMove") || !p.isGrounded)
         {
             p.moveDirection = Input.GetAxis("Horizontal");
             
@@ -247,6 +248,7 @@ public class PlayerController : MonoBehaviour
             p.anim.SetTrigger("punch");
             p.anim.SetBool("isPunching", true);
             p.anim.SetBool("isKicking", false);
+            p.anim.ResetTrigger("PressJump");
 
             if (p.grapplingGun.isGrappling)
             {
@@ -256,9 +258,12 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // kick, can buffer (i think?)
+        // kick
         if (Input.GetKeyDown(KeyCode.Q) && !p.anim.GetBool("isKicking") && !p.isHit)
+        {
             p.anim.SetBool("isKicking", true);
+            p.anim.ResetTrigger("PressJump");
+        }
 
         // while not holding down button to charge, set back to normal
         if (Input.GetKey(KeyCode.Q) && p.anim.GetBool("isKicking") && !p.isHit && p.charging)
@@ -470,7 +475,6 @@ public class PlayerController : MonoBehaviour
             p.GM.ChecklistScript.UpdateChecklistItem("GP", true);
         if (partOfCombo == TypeOfPunch.Uppercut)
             p.GM.ChecklistScript.UpdateChecklistItem("PC", true);
-
         if (partOfCombo == TypeOfPunch.DownSlam)
             p.GM.ChecklistScript.UpdateChecklistItem("PAC", true);
 
@@ -542,7 +546,14 @@ public class PlayerController : MonoBehaviour
             p.GM.audioSource.clip = p.GM.MissAudio;
             p.GM.audioSource.Play();
             p.anim.SetBool("inAirCombo", false);
+        } 
+        else if (iDamageableSet.Count != 0 && !p.isGrounded)
+        {
+            Debug.Log("here?");
+            p.anim.SetBool("inAirCombo", true);
         }
+        
+        
         //     p.GM.audioSource.clip = p.GM.KickAudio;
         //     p.GM.audioSource.Play();
 
