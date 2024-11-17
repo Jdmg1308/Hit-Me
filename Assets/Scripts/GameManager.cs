@@ -53,6 +53,7 @@ public class GameManager : TheSceneManager
     public int baseHealth = 100;    // base maximum HP of player 
    // [HideInInspector]
     public Slider healthBar;       // UI Slider for health bar
+    public Color healthBarDefaultColor;
 
     [Header("Progress Meter")]
     public int pointsPerKill;
@@ -232,6 +233,7 @@ AudioManager audioManager;
             DrawnCard = PlayScreen.transform.Find("DrawnCard")?.gameObject;
             progressBar = PlayScreen.transform.Find("PointMeter")?.gameObject.GetComponent<Slider>();
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
+            healthBarDefaultColor = healthBar.fillRect.GetComponent<Image>().color;
 
             //resets for progress meter
             //TODO: assign slider for progress bar
@@ -541,6 +543,16 @@ AudioManager audioManager;
     {
         if (healthCurrent > healthMax) healthCurrent = healthMax;
         healthBar.value = healthCurrent;
+
+        // Update health bar color based on health percentage
+        Color healthColor = healthBarDefaultColor; // Default: Healthy
+        if (healthBar.value <= 33f)
+            healthColor = Color.red; // Low health
+        else if (healthBar.value <= 66f)
+            healthColor = Color.yellow; // Medium health
+
+        healthBar.fillRect.GetComponent<Image>().color = healthColor;
+
         if (healthCurrent <= 0)
             Death();
     }
