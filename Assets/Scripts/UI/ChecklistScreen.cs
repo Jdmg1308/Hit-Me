@@ -34,18 +34,6 @@ public class ChecklistScreen : MonoBehaviour
         CreateChecklistItems();
     }
 
-    public void SetAndShowChecklistItems(List<string> names, List<string> texts)
-    {
-        this.enabled = true;
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
-        checklistNames = names;
-        checklistTexts = texts;
-        CreateChecklistItems();
-    }
-
     public void CreateChecklistItems()
     {
         for (int i = 0; i < checklistNames.Count; i++)

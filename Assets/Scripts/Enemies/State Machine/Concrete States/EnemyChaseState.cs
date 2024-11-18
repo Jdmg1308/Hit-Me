@@ -71,7 +71,7 @@ public class EnemyChaseState : EnemyState
             while (true)
             {
                 // grounded and in control abilities
-                if (e.IsGrounded)
+                if (e.IsGrounded && !e.IsPaused && !e.InImpact && !e.InHitStun && !e.InKnockup && !e.Anim.GetBool("ImpactBool"))
                 {
                     WalkToTargetWithIntervals(e.Player.transform.position); // chase after player
 

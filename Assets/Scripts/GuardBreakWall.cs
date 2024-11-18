@@ -2,18 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GuardBreakWall : MonoBehaviour, IDamageable
+public class GuardBreakWall : MonoBehaviour
 {
     public float minForce; // min force to break wall
     public GameObject strongPowPrefab;
 
-    public void TakeKick(int damage, Vector2 force)
+    void OnCollisionEnter2D(Collision2D other) 
     {
-        Debug.Log(force);
-        SpawnDamageVFX(force.x);
+        Vector2 impulse = other.relativeVelocity * other.rigidbody.mass;
+        float collisionForce = impulse.magnitude;
+        Debug.Log(collisionForce);
+        if (collisionForce > minForce)
+        {
+            SpawnDamageVFX(collisionForce);
+            // spawn a shattering wall thing
+            Destroy(this);
+        }
     }
 
-    // spawning damage vfx
     private void SpawnDamageVFX(float xForce)
     {
         Vector2 randomPoint = UnityEngine.Random.insideUnitCircle * 1.5f;

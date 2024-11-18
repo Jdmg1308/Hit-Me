@@ -59,7 +59,7 @@ public class EnemyRunAwayState : EnemyState
                 oppositePosition.y = oppositePosition.y > 0 ? -1000 : 1000;
 
                 // grounded and in control abilities
-                if (e.IsGrounded)
+                if (e.IsGrounded && e.IsGrounded && !e.IsPaused && !e.InImpact && !e.InHitStun && !e.InKnockup && !e.Anim.GetBool("ImpactBool"))
                 {
                     e.WalkToTarget(oppositePosition); // run from player
 
