@@ -12,6 +12,7 @@ TagManager:
   - Explosion
   - WaveConfig
   - SpatialTrigger
+  - nextLevelLoad
   layers:
   - Default
   - TransparentFX

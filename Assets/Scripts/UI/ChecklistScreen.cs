@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 
 public class ChecklistScreen : MonoBehaviour
@@ -25,8 +27,22 @@ public class ChecklistScreen : MonoBehaviour
     public Dictionary<string, bool> taskNameToBool = new Dictionary<string, bool>();
     private Dictionary<string, GameObject> taskNameToGameObject= new Dictionary<string, GameObject>();
 
+    public UnityEvent onChecklistComplete;
+
     void Start()
     {
+        CreateChecklistItems();
+    }
+
+    public void SetAndShowChecklistItems(List<string> names, List<string> texts)
+    {
+        this.enabled = true;
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        checklistNames = names;
+        checklistTexts = texts;
         CreateChecklistItems();
     }
 
@@ -63,5 +79,18 @@ public class ChecklistScreen : MonoBehaviour
         GameObject item = taskNameToGameObject[taskName];
         Color color = isComplete ? Color.green : Color.red;
         item.GetComponent<Image>().color = color;
+
+        CheckComplete();
+    }
+
+    void CheckComplete()
+    {
+        foreach (var task in taskNameToBool)
+        {
+            if (!task.Value)
+                return;
+        }
+
+        onChecklistComplete.Invoke();
     }
 }

@@ -13,7 +13,7 @@ public class GameManager : TheSceneManager
     public GameObject Canvas;
     public GameObject Camera;
 
-    public GameObject SpatialTrigger;
+    public GameObject nextLevelLoad;
 
     public bool CheatWin = false;
     public string LastScene = "TUTORIAL";
@@ -188,7 +188,7 @@ AudioManager audioManager;
         Player = GameObject.FindGameObjectWithTag("Player");
         Camera = GameObject.FindGameObjectWithTag("MainCamera");
 
-        SpatialTrigger = GameObject.FindGameObjectWithTag("SpatialTrigger");
+        nextLevelLoad = GameObject.FindGameObjectWithTag("nextLevelLoad");
 
         audioManager = GameObject.FindGameObjectWithTag("Audio")?.GetComponent<AudioManager>();
 
@@ -260,16 +260,11 @@ AudioManager audioManager;
 
             if (WinScreen) 
             {
-
-                if (SpatialTrigger)
+                if (nextLevelLoad)
                 {
-                    SpatialTrigger sp = SpatialTrigger.GetComponent<SpatialTrigger>();
-                    if (sp.NextSceneName != null)
-                    {
-                        Button button = WinScreen.transform.Find("Next")?.GetComponent<Button>();
-                        if (button)
-                            button.onClick.AddListener(() => nextScene(sp.NextSceneName));
-                    }
+                    Button button = WinScreen.transform.Find("Next")?.GetComponent<Button>();
+                    if (button)
+                        button.onClick.AddListener(() => nextScene(nextLevelLoad.name));
                 }
                 else 
                 {
