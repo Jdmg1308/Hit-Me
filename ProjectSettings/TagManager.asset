@@ -13,6 +13,7 @@ TagManager:
   - WaveConfig
   - SpatialTrigger
   - nextLevelLoad
+  - SpawnPoints
   layers:
   - Default
   - TransparentFX

@@ -679,8 +679,7 @@ AudioManager audioManager;
 
     public void Win()
     {
-        //Money += 1000;
-        playerController.SetControls(false);
+        // playerController.SetControls(false);
 
         money_text = WinScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
         if (money_text)
@@ -699,8 +698,6 @@ AudioManager audioManager;
 
 
         CheatWin = false;
-        // TextMeshProUGUI ScoreText = WinScreen.GetComponentInChildren<TextMeshProUGUI>();
-        // ScoreText.text = "Final Payout: " + money.ToString();
         hasWon = true;
     }
     #endregion

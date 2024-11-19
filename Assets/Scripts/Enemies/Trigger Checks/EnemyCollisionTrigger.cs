@@ -17,7 +17,10 @@ public class EnemyCollisionTrigger : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         // if you are not in impact and an enemy that is in impact collides with you, take damage
-        if (!parent.InImpact && collider.gameObject.CompareTag("enemy") && collider.gameObject.GetComponent<Enemy>().InImpact)
+        if (!parent.InImpact 
+            && collider.gameObject.CompareTag("enemy") 
+            && collider.gameObject.GetComponent<Enemy>() != null 
+            && collider.gameObject.GetComponent<Enemy>().InImpact)
         {
             Vector2 impactVelocity = collider.GetComponent<Rigidbody2D>().velocity;
             int collisionDamage = Mathf.RoundToInt(impactVelocity.magnitude * parent.collisionDamageMultiplier); // note: consider log max for extreme cases

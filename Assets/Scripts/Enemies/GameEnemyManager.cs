@@ -13,7 +13,7 @@ public class GameEnemyManager : MonoBehaviour
     public int EnemiesLeftInWave = 0;
 
     [Header("Spawn Settings")]
-    public List<Transform> spawnPoints;  // List of possible spawn points
+    public List<Transform> spawnPoints = new List<Transform>();  // List of possible spawn points
     public BasicEnemy BasicEnemyPrefab;
     public RangedEnemy RangedEnemyPrefab;
     public HeavyEnemy HeavyEnemyPrefab;
@@ -50,6 +50,14 @@ public class GameEnemyManager : MonoBehaviour
     void Awake()
     {
         GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        GameObject spawnPoints = GameObject.FindGameObjectWithTag("SpawnPoints");
+        if (spawnPoints)
+        {
+            foreach (Transform child in spawnPoints.transform)
+            {
+                this.spawnPoints.Add(child);
+            }
+        }
     }
 
     // Start is called before the first frame update
@@ -125,6 +133,10 @@ public class GameEnemyManager : MonoBehaviour
         {
             Debug.LogWarning("WaveConfig GameObject with the specified tag not found in the scene.");
         }
+
+        enemyStats.ChaseSpeed = 0;
+        enemyStats.MaxHealth = 0;
+        enemyStats.PunchDamage = 0;
 
         currentWave = 0;
         EnemiesLeftInWave = 0;

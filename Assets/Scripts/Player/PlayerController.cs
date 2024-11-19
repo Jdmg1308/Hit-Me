@@ -471,7 +471,7 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PunchCombo(TypeOfPunch partOfCombo)
     {
-        if (p.grapplingGun.isGrappling)
+        if (partOfCombo == TypeOfPunch.SuperUppercut)
             p.GM.ChecklistScript.UpdateChecklistItem("GP", true);
         if (partOfCombo == TypeOfPunch.Uppercut)
             p.GM.ChecklistScript.UpdateChecklistItem("PC", true);
