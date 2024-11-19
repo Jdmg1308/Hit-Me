@@ -191,6 +191,7 @@ public class GameEnemyManager : MonoBehaviour
         {
             EnemiesLeftInWave -= 1;
             spawnedEnemies.Remove(enemy);
+            GM.EnemiesKilled++;
             GM.updatePoints(enemy.pointAmount);
             StartCoroutine(WaitForSpawn(enemy.gameObject));
 

@@ -19,6 +19,7 @@ MonoBehaviour:
   effectValue: 50
   id: 0
   cardUserAnim: 
+  color: 1
   price: 100
   points: 100
   oldHPRatio: 0

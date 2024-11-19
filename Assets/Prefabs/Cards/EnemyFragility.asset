@@ -19,5 +19,6 @@ MonoBehaviour:
   effectValue: 15
   id: 0
   cardUserAnim: 
+  color: {r: 0, g: 0, b: 1, a: 0}
   price: 100
   points: 50

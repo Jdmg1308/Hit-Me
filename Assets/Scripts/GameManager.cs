@@ -46,6 +46,9 @@ public class GameManager : TheSceneManager
     protected GameObject cardDescriptor;
     protected GameObject DrawnCard;
     private int NofCardsUsed = 0;
+    private int BlueCardsDrawn = 0;
+    private int RedCardsDrawn = 0;
+    private int GreenCardsDrawn = 0;
 
     [Header("Health")]
     public int healthCurrent;       // Current health of the player
@@ -56,6 +59,8 @@ public class GameManager : TheSceneManager
     public Color healthBarDefaultColor;
 
     [Header("Progress Meter")]
+    private TextMeshProUGUI statsText;
+    public int EnemiesKilled = 0;
     public int pointsPerKill;
     public int progressMax = 100;
     public TextMeshProUGUI points_text;
@@ -270,6 +275,7 @@ AudioManager audioManager;
                 {
                     AssignButton(WinScreen.transform, "Next", OpenShop);
                 }
+                statsText = WinScreen.transform.Find("Stats")?.GetComponentInChildren<TextMeshProUGUI>();
             } 
 
             if (PauseScreen)
@@ -295,7 +301,9 @@ AudioManager audioManager;
         audioSource = GetComponent<AudioSource>();
         GameEnemyManager = GetComponentInChildren<GameEnemyManager>();
         GameEnemyManager.ResetWaves();
-    }
+
+        BlueCardsDrawn = 0 ; RedCardsDrawn = 0; GreenCardsDrawn = 0;
+}
 
     void Update()
     {
@@ -351,6 +359,7 @@ AudioManager audioManager;
 
             Card card = deckController.infinDrawCard(deckController.currentDeck);
             StartCoroutine(DrawCardSequence(DrawnCard.GetComponent<Animator>(), card));
+
             //TODO: updatePoints(card point value);
             updateHealth();
         }
@@ -408,8 +417,10 @@ AudioManager audioManager;
             // Show Card Descriptor
             ShowCardDescriptor(card);
 
-            yield return new WaitForSeconds(cardDescriptor.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            // debug this
 
+            yield return new WaitForSeconds(cardDescriptor.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            cardDescriptor.GetComponent<Image>().color = Color.yellow;
             updatePoints(card.points);
 
             // Return to idle state
@@ -425,6 +436,25 @@ AudioManager audioManager;
         TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
         description.text = card.cardName;
         description.color = Color.white;
+        Image bg = cardDescriptor.GetComponent<Image>();
+
+        switch (card.color)
+        {
+            case ColorType.Blue:
+                BlueCardsDrawn++;
+                bg.color = Color.blue;
+                break;
+            case ColorType.Red:
+                RedCardsDrawn++;
+                bg.color = Color.red;
+                break;
+            case ColorType.Green:
+                GreenCardsDrawn++;
+                bg.color = Color.green;
+                break;
+            default:
+                break;
+        }
         PlayAnimationOnce(animator, "LookAtMe");
     }
 
@@ -680,6 +710,8 @@ AudioManager audioManager;
     public void Win()
     {
         // playerController.SetControls(false);
+
+        statsText.text = "CARDS DRAWN: \nBlue: " + BlueCardsDrawn + " Red: " + RedCardsDrawn + " Green: "  + GreenCardsDrawn + " \nENEMIES KILLED: " + EnemiesKilled;
 
         money_text = WinScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
         if (money_text)
