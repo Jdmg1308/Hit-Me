@@ -221,9 +221,6 @@ AudioManager audioManager;
             if (money_text)
                 money_text.text = " " + Money.ToString();
 
-            points_text = PlayScreen.transform.Find("Points")?.gameObject.GetComponent<TextMeshProUGUI>();
-            if (points_text)
-                points_text.text = " " + Points.ToString();
 
             CardUIDeck = PlayScreen.transform.Find("CardUIDeck")?.gameObject;
             if (CardUIDeck)
@@ -237,6 +234,11 @@ AudioManager audioManager;
 
             DrawnCard = PlayScreen.transform.Find("DrawnCard")?.gameObject;
             progressBar = PlayScreen.transform.Find("PointMeter")?.gameObject.GetComponent<Slider>();
+
+            points_text = PlayScreen.transform.Find("PointMeter")?.Find("Points")?.gameObject.GetComponent<TextMeshProUGUI>();
+            if (points_text)
+                points_text.text = " " + Points.ToString();
+
             healthBar = PlayScreen.GetComponentInChildren<Slider>();
             healthBarDefaultColor = healthBar.fillRect.GetComponent<Image>().color;
 
