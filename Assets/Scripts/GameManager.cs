@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 
-public class GameManager : TheSceneManager
+public class GameManager : MonoBehaviour
 {
     [Header("General")]
     public GameEnemyManager GameEnemyManager;
@@ -261,21 +261,22 @@ AudioManager audioManager;
         {
             if (DeathScreen)
             {
-                AssignButton(PauseScreen.transform, "Menu", OpenMenu);
-                AssignButton(DeathScreen.transform, "Restart", Restart);
+                DeathScreen.transform.Find("Menu")?.GetComponent<Button>().onClick.AddListener(() => LoadNextScene("MENU")); 
+                DeathScreen.transform.Find("Restart")?.GetComponent<Button>().onClick.AddListener(() => LoadNextScene(SceneManager.GetActiveScene().name));
             }
 
             if (WinScreen) 
             {
+
+                Button button = WinScreen.transform.Find("Next")?.GetComponent<Button>();
                 if (nextLevelLoad)
                 {
-                    Button button = WinScreen.transform.Find("Next")?.GetComponent<Button>();
                     if (button)
-                        button.onClick.AddListener(() => nextScene(nextLevelLoad.name));
+                        button.onClick.AddListener(() => LoadNextScene(nextLevelLoad.name));
                 }
                 else 
                 {
-                    AssignButton(WinScreen.transform, "Next", OpenShop);
+                    button.onClick.AddListener(() => LoadNextScene("SHOP"));
                 }
                 statsText = WinScreen.transform.Find("Stats")?.GetComponentInChildren<TextMeshProUGUI>();
             } 
@@ -781,19 +782,17 @@ AudioManager audioManager;
     }
     #endregion
 
-    public new void OpenShop()
+    public void LoadNextScene(string name)
     {
         if (updatePointsRoutine != null)
             StopCoroutine(updatePointsRoutine);
-        LastScene = SceneManager.GetActiveScene().name;
-        GameEnemyManager.shouldSpawn = false; // THIS
-        SceneManager.LoadScene("SHOP");
-    }
+        if (name == "SHOP")
+            GameEnemyManager.shouldSpawn = false;
 
-    public void nextScene(string name)
-    {
-        if (updatePointsRoutine != null)
-            StopCoroutine(updatePointsRoutine);
+        LastScene = SceneManager.GetActiveScene().name;
+
+        // pause -> animation -> wait -> continue
+
         SceneManager.LoadScene(name);
     }
 }

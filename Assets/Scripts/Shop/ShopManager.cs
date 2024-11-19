@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ShopManager : TheSceneManager
 {
@@ -12,7 +13,7 @@ public class ShopManager : TheSceneManager
     public GameObject deckDisplayPanel; // Panel containing the player's current deck of cards
     private GameObject Canvas;
     private GameObject ShopScreen;
-    public Button NextLevelButton; // Prefab to create buttons for each card in the deck
+    private Button NextLevelButton; // Prefab to create buttons for each card in the deck
     public float dupPrice;
     public float destPrice;
 
@@ -22,6 +23,9 @@ public class ShopManager : TheSceneManager
 
     AudioManager audioManager;
 
+    [SerializeField]
+    private List<string> levelSceneNames;
+
     private void Awake()
     {
         // Buttons should be assigned in the Inspector, no need to assign them here unless necessary
@@ -30,7 +34,11 @@ public class ShopManager : TheSceneManager
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
         if (Canvas)
+        {
             ShopScreen = Canvas.transform.Find("Shop Screen")?.gameObject;
+            NextLevelButton = ShopScreen.transform.Find("NextLevel")?.GetComponent<Button>();
+            if (NextLevelButton) NextLevelButton.onClick.AddListener(ContinueToRandomLevel);
+        }
     }
 
     // Start is called before the first frame update
@@ -38,7 +46,6 @@ public class ShopManager : TheSceneManager
     {
         SetUpShop();
         destroyButton.onClick.AddListener(DisplayDeckForDestruction);
-        NextLevelSetup();
 
     }
 
@@ -145,40 +152,18 @@ public class ShopManager : TheSceneManager
         }
     }
 
-    public void NextLevelSetup()
+    public void ContinueToRandomLevel()
     {
-        //if (remainingLevels.Count == 0)
-        //{
-        //    // All levels have been played; reset the list to start over
-        //    remainingLevels = new List<System.Action>(availableLevels);
-        //}
-
-        // Choose a random level from the remaining levels
-        int randomIndex = Random.Range(0, 4);
-        //System.Action nextLevel = remainingLevels[randomIndex];
-        //remainingLevels.RemoveAt(randomIndex); // Remove chosen level so it won�t repeat
-
-        //// Assign the chosen level to the button
-        //GM.AssignButton(ShopScreen.transform, "NextLevel", nextLevel);
-
-        switch (randomIndex)
+        if (levelSceneNames == null || levelSceneNames.Count == 0)
         {
-            case 0:
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayAlleyway1);
-                break;
-            case 1:
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayAlleyway2);
-                break;
-            case 2:
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl2);
-                break;
-            case 3:
-                GM.AssignButton(ShopScreen.transform, "NextLevel", PlayLvl3);
-                break;
-
-            default:
-                Debug.LogWarning("HELL NAWWWW" + GM.LastScene);
-                break;
+            Debug.LogError("No levels specified in the levelSceneNames list!");
+            return;
         }
+
+        // Pick a random scene name from the list
+        string randomScene = levelSceneNames[Random.Range(0, levelSceneNames.Count)];
+
+        // Load the randomly chosen scene
+        SceneManager.LoadScene(randomScene);
     }
 }
