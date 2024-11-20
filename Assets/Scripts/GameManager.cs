@@ -837,7 +837,7 @@ public class GameManager : MonoBehaviour
         {
             DarkOverlayImage.gameObject.SetActive(true);
             // Fade to black
-            yield return StartCoroutine(FadeScreen(0f, 1f, 1f));
+            yield return StartCoroutine(FadeScreen(0f, 1f, 0.5f));
         }
 
         // Actually load the next scene
