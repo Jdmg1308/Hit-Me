@@ -651,13 +651,13 @@ MonoBehaviour:
   <MaxXJumpForce>k__BackingField: 5
   <PlatformDetectionMask>k__BackingField:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   <FallthroughTime>k__BackingField: 1
   <LandingOffset>k__BackingField: 1.5
   <JumpDelay>k__BackingField: 0.15
   <GroundLayer>k__BackingField:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   CheckGroundSize: {x: 0, y: 0}
   IdleRange: 5
   IdleTimeBetweenMove: 1.5

@@ -170,6 +170,17 @@ public class GameEnemyManager : MonoBehaviour
     public IEnumerator StartWaves(int enemiesToSpawn)
     {
         _WaveInProgress = true;
+
+        // wave starting indicator delay
+        yield return new WaitForSeconds(2f);
+        string text;
+        if (currentWave + 1 < waveConfigurations.Count)
+            text = "Wave " + (currentWave + 1) + " Starting!";
+        else
+            text = "Final Wave Starting!";
+        GM.WaveStartingAnimation(text);
+
+        // spawn wave
         yield return new WaitForSeconds(SpawnDelay);
         SpawnWave(enemiesToSpawn);
         ++currentWave;
@@ -191,8 +202,11 @@ public class GameEnemyManager : MonoBehaviour
         {
             EnemiesLeftInWave -= 1;
             spawnedEnemies.Remove(enemy);
-            GM.EnemiesKilled++;
-            GM.updatePoints(enemy.pointAmount);
+            if (!enemy.IsHallucination)
+            {
+                GM.EnemiesKilled++;
+                GM.updatePoints(enemy.pointAmount);
+            }
             StartCoroutine(WaitForSpawn(enemy.gameObject));
 
             // Check if all enemies are dead
@@ -330,6 +344,7 @@ public class GameEnemyManager : MonoBehaviour
                 enemyRef.MaxHealth = health;
                 enemyRef.CurrentHealth = health;
                 enemyRef.initialSpawnDelay = 0f;
+                enemyRef.IsHallucination = true;
             }
         }
     }
@@ -498,6 +513,7 @@ public class GameEnemyManager : MonoBehaviour
         else
         {
             Instantiate(EnemyOnScreenDeathPrefab, enemy.transform.position, Quaternion.identity);
+            GM.PointIndication(enemy.GetComponent<Enemy>().pointAmount, enemy.transform.position);
         }
     }
     #endregion
