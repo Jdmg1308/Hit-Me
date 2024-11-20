@@ -72,16 +72,17 @@ MonoBehaviour:
   baseHealth: 100
   healthBar: {fileID: 0}
   healthBarDefaultColor: {r: 0, g: 0, b: 0, a: 0}
+  EnemiesKilled: 0
   pointsPerKill: 0
   progressMax: 1000
   points_text: {fileID: 0}
   progressBar: {fileID: 0}
   milestone1: 0
-  milestone1Points: 333
+  milestone1Points: 350
   milestone2: 0
-  milestone2Points: 666
+  milestone2Points: 680
   milestone3: 0
-  milestone3Points: 1000
+  milestone3Points: 980
   CountFPS: 30
   Duration: 1
   _points: 0

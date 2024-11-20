@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         }
         set
         {
-            PlayAnimationOnce(pointmeterAnimator, "PointMeterGoesUp");
+            StartCoroutine(PlayAnimationOnce(pointmeterAnimator, "PointMeterGoesUp"));
             UpdateText(value, _points, points_text);
             _points = value;
         }
@@ -133,6 +133,7 @@ public class GameManager : MonoBehaviour
     protected bool paused = false;
 
     [Header("FX")]
+    private Image DarkOverlayImage;
     // hit fx
     public bool InHitStop = false;
     public AnimationCurve Curve;
@@ -146,8 +147,7 @@ public class GameManager : MonoBehaviour
 
     public bool hasWon = false;
 
-AudioManager audioManager;
-
+    AudioManager audioManager;
     #region Setup and update data
     void Awake()
     {
@@ -214,6 +214,8 @@ AudioManager audioManager;
             WinScreen = Canvas.transform.Find("Win Screen")?.gameObject;
             IBuild = Canvas.transform.Find("InclusivityBuildPanel")?.gameObject;
             ChecklistScreen = Canvas.transform.Find("Checklist Screen")?.gameObject;
+
+            DarkOverlayImage = Canvas.transform.Find("DarkOverlayImage")?.gameObject.GetComponent<Image>();
         }
 
         if (PlayScreen)
@@ -421,13 +423,8 @@ AudioManager audioManager;
             StatusEffectManager.AddStatusEffect(card);
 
             // Show Card Descriptor
-            ShowCardDescriptor(card);
 
-            // debug this
-
-            yield return new WaitForSeconds(cardDescriptor.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
-            cardDescriptor.GetComponent<Image>().color = Color.yellow;
-            updatePoints(card.points);
+            yield return StartCoroutine(ShowCardDescriptor(card));
 
             // Return to idle state
             if (cardAnimator != null)
@@ -435,7 +432,7 @@ AudioManager audioManager;
         }
     }
 
-    public void ShowCardDescriptor(Card card)
+    public IEnumerator ShowCardDescriptor(Card card)
     {
         // animate descriptor
         Animator animator = cardDescriptor.GetComponent<Animator>();
@@ -461,7 +458,9 @@ AudioManager audioManager;
             default:
                 break;
         }
-        PlayAnimationOnce(animator, "LookAtMe");
+
+        updatePoints(card.points);
+        yield return StartCoroutine(PlayAnimationOnce(animator, "LookAtMe"));
     }
 
     public void ApplyCooldown()
@@ -535,13 +534,23 @@ AudioManager audioManager;
         audioSource.Play();
     }
 
-    private void PlayAnimationOnce(Animator animator, string animationStateName)
+    private IEnumerator PlayAnimationOnce(Animator animator, string animationStateName)
     {
-        Debug.Log("play Animation once for: " + animator);
-        animator.enabled = true;
-        animator.Update(0f);
-        // Play the specified animation state
-        animator.Play(animationStateName, -1, 0f);
+        if (animator)
+        {
+            Debug.Log("play Animation once for: " + animator);
+            animator.enabled = true;
+
+            // Play the animation
+            animator.Play(animationStateName, -1, 0f);
+
+            // Wait a frame for the animator to update
+            yield return null;
+
+            // Get the length of the current animation
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            yield return new WaitForSeconds(stateInfo.length);
+        }
     }
     #endregion
 
@@ -560,12 +569,12 @@ AudioManager audioManager;
     {
         if (status)
         {
-            playerController.SetControls(false);
+            playerController?.SetControls(false);
             Time.timeScale = 0f;
         }
         else
         {
-            playerController.SetControls(true);
+            playerController?.SetControls(true);
             Time.timeScale = 1f;
         }
     }
@@ -594,6 +603,9 @@ AudioManager audioManager;
     {
         //TODO: reset points on new level load 
         Points += numPoints;
+
+        updatePointsRoutine = StartCoroutine(updatePointsSlider());
+
         if (Points >= milestone1Points && !milestone1)
         {
             //reached milestone 1 for the first time 
@@ -611,10 +623,7 @@ AudioManager audioManager;
             MilestoneAnimation("milestone 3 reached \n extra damage");
             milestone3 = true;
         }
-        //TODO: uncomment once we get the bar 
-        Debug.Log("points: " + Points);
-        //progressBar.value = points;
-        updatePointsRoutine = StartCoroutine(updatePointsSlider());
+
     }
 
     private void UpdateText(int newValue, int prevValue, TextMeshProUGUI text)
@@ -677,13 +686,14 @@ AudioManager audioManager;
     public void MilestoneAnimation(string text)
     {
         // animate descriptor
+        cardDescriptor.GetComponent<Image>().color = Color.yellow;
         Animator animator = cardDescriptor.GetComponent<Animator>();
         TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
         description.text = text;
         description.color = Color.yellow;
         audioSource.clip = GoodPullAudio;
         audioSource.Play();
-        PlayAnimationOnce(animator, "LookAtMe");
+        StartCoroutine(PlayAnimationOnce(animator, "LookAtMe"));
     }
 
     public void Pause()
@@ -791,13 +801,49 @@ AudioManager audioManager;
     {
         if (updatePointsRoutine != null)
             StopCoroutine(updatePointsRoutine);
+        StopAllCoroutines();
         if (name == "SHOP")
             GameEnemyManager.shouldSpawn = false;
 
         LastScene = SceneManager.GetActiveScene().name;
 
-        // pause -> animation -> wait -> continue
+        // Pause game and start fade
+        StartCoroutine(FadeAndLoadScene(name));
+    }
 
-        SceneManager.LoadScene(name);
+    private IEnumerator FadeAndLoadScene(string sceneName)
+    {
+        freeze(true);
+        // Ensure the fade overlay is visible
+        Debug.Log("BRUHHHHHHHHHHHHH" + DarkOverlayImage);
+        if (DarkOverlayImage != null)
+        {
+            DarkOverlayImage.gameObject.SetActive(true);
+            // Fade to black
+            yield return StartCoroutine(FadeScreen(0f, 1f, 1f));
+        }
+
+        // Actually load the next scene
+        SceneManager.LoadScene(sceneName);
+        freeze(false);
+    }
+
+    private IEnumerator FadeScreen(float startAlpha, float endAlpha, float duration)
+    {
+        float elapsedTime = 0f;
+        Color overlayColor = DarkOverlayImage.color;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.unscaledDeltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, endAlpha, elapsedTime / duration);
+            overlayColor.a = newAlpha;
+            DarkOverlayImage.color = overlayColor; // Apply interpolated alpha
+            yield return null;
+        }
+
+        // Ensure the final alpha value is set
+        overlayColor.a = endAlpha;
+        DarkOverlayImage.color = overlayColor;
     }
 }

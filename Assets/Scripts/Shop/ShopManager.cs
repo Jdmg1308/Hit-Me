@@ -164,6 +164,6 @@ public class ShopManager : TheSceneManager
         string randomScene = levelSceneNames[Random.Range(0, levelSceneNames.Count)];
 
         // Load the randomly chosen scene
-        SceneManager.LoadScene(randomScene);
+        GM.LoadNextScene(randomScene);
     }
 }

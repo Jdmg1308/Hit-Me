@@ -849,22 +849,6 @@ PrefabInstance:
       propertyPath: Player
       value: 
       objectReference: {fileID: 227768275}
-    - target: {fileID: 5376063830636673451, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: mobile
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063830636673451, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: milestone1Points
-      value: 350
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063830636673451, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: milestone2Points
-      value: 680
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063830636673451, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: milestone3Points
-      value: 980
-      objectReference: {fileID: 0}
     - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: shouldSpawn
       value: 1
@@ -1188,6 +1172,30 @@ PrefabInstance:
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2091784422866765435, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2091784422866765435, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2091784422866765435, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2091784422866765435, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2091784422866765435, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2091784422866765435, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3768005602822016113, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -1282,6 +1290,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3768005602839562070, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4164574846880736600, guid: 7a86c7be7ef6f5d4b91f1ffc39b4f80c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
