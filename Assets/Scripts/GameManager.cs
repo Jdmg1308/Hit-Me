@@ -370,7 +370,6 @@ public class GameManager : MonoBehaviour
         {
             cardIsOnCD = true;
             cardCDTimer = cardCDTime;
-
             Card card = deckController.infinDrawCard(deckController.currentDeck);
             StartCoroutine(DrawCardSequence(DrawnCard.GetComponent<Animator>(), card));
 
@@ -827,6 +826,11 @@ public class GameManager : MonoBehaviour
         {
             StopCoroutine(updatePointsRoutine);
             updatePointsRoutine = null;
+        }
+        if (CountingCoroutine != null)
+        {
+            StopCoroutine(CountingCoroutine);
+            CountingCoroutine = null;
         }
         StopAllCoroutines();
         if (name == "SHOP")

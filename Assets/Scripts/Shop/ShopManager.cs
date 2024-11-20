@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class ShopManager : TheSceneManager
 {
-    public List<Card> allPurchasableCards;
+    private List<Card> allPurchasableCards;
     public GameObject deleteSign;
     public Button destroyButton;
     public GameObject Options; // Panel containing the player's current deck of cards
@@ -32,6 +32,11 @@ public class ShopManager : TheSceneManager
         GM = GameManager.instance;
         Canvas = GameObject.FindGameObjectWithTag("Canvas");
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
+        if (GM)
+        {
+            allPurchasableCards = GM.deckController.allCards;
+        }
 
         if (Canvas)
         {

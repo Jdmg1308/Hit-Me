@@ -137,7 +137,8 @@ public class DeckController : MonoBehaviour
     }
 
     public Card infinDrawCard(Deck deck) {
-        return deck.hand[Random.Range(0, deck.hand.Count)];
+        return deck.deck[Random.Range(0, deck.deck.Count)];
+        //return deck.hand[Random.Range(0, deck.hand.Count)];
     }
 
     //good to call after a turn, will draw until hand has 5 cards in it
