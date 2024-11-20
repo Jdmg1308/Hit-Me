@@ -593,17 +593,17 @@ AudioManager audioManager;
         {
             //reached milestone 1 for the first time 
             //TODO: do the rewards, play audio or something idk
-            MilestoneAnimation("milestone 1 reached");
+            MilestoneAnimation("milestone 1 reached \n bonus cash");
             milestone1 = true;
         }
         else if (Points >= milestone2Points && !milestone2)
         {
-            MilestoneAnimation("milestone 2 reached");
+            MilestoneAnimation("milestone 2 reached \n healing");
             milestone2 = true;
         }
         else if (Points >= milestone3Points && !milestone3)
         {
-            MilestoneAnimation("milestone 3 reached");
+            MilestoneAnimation("milestone 3 reached \n extra damage");
             milestone3 = true;
         }
         //TODO: uncomment once we get the bar 

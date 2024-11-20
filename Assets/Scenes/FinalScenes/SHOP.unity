@@ -1994,9 +1994,13 @@ MonoBehaviour:
   destroyButton: {fileID: 2004945781}
   Options: {fileID: 674788286}
   deckDisplayPanel: {fileID: 7844422403224942832}
-  NextLevelButton: {fileID: 0}
   dupPrice: 100
   destPrice: 100
+  levelSceneNames:
+  - ALLEYWAY_1
+  - ALLEYWAY_2
+  - SEWER_1
+  - SEWER_2
 --- !u!4 &1972235113
 Transform:
   m_ObjectHideFlags: 0
