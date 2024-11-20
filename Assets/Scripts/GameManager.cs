@@ -360,23 +360,26 @@ public class GameManager : MonoBehaviour
 
     public void useCard()
     {
-        NofCardsUsed++;
-        if (NofCardsUsed >= 3)
-            ChecklistScript.UpdateChecklistItem("DC", true);
-        if (cardIsOnCD)
+        if (CardUIDeck && CardUIDeck.activeSelf)
         {
-            //don't do anything if the card is on CD
-            return;
-        }
-        else
-        {
-            cardIsOnCD = true;
-            cardCDTimer = cardCDTime;
-            Card card = deckController.infinDrawCard(deckController.currentDeck);
-            StartCoroutine(DrawCardSequence(DrawnCard.GetComponent<Animator>(), card));
+            NofCardsUsed++;
+            if (NofCardsUsed >= 3)
+                ChecklistScript.UpdateChecklistItem("DC", true);
+            if (cardIsOnCD)
+            {
+                //don't do anything if the card is on CD
+                return;
+            }
+            else
+            {
+                cardIsOnCD = true;
+                cardCDTimer = cardCDTime;
+                Card card = deckController.infinDrawCard(deckController.currentDeck);
+                StartCoroutine(DrawCardSequence(DrawnCard.GetComponent<Animator>(), card));
 
-            //TODO: updatePoints(card point value);
-            updateHealth();
+                //TODO: updatePoints(card point value);
+                updateHealth();
+            }
         }
     }
 
