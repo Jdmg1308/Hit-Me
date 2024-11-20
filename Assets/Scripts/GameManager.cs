@@ -141,6 +141,8 @@ public class GameManager : MonoBehaviour
     public float totalHurtFlashTime;
     public AnimationCurve hurtFlashCurve;
     private Image hurtFlashImage;
+    // point fx
+    public GameObject pointIndicationPrefab;
 
     public static GameManager instance;
 
@@ -465,6 +467,7 @@ public class GameManager : MonoBehaviour
         }
 
         updatePoints(card.points);
+        PointIndication(card.points, Player.transform.position);
         yield return StartCoroutine(PlayAnimationOnce(animator, "LookAtMe"));
     }
 
@@ -706,6 +709,17 @@ public class GameManager : MonoBehaviour
         StartCoroutine(PlayAnimationOnce(animator, "LookAtMe"));
     }
 
+    public void WaveStartingAnimation(string text)
+    {
+        // animate descriptor
+        cardDescriptor.GetComponent<Image>().color = Color.gray;
+        Animator animator = cardDescriptor.GetComponent<Animator>();
+        TextMeshProUGUI description = cardDescriptor.GetComponentInChildren<TextMeshProUGUI>();
+        description.text = text;
+        description.color = Color.white;
+        StartCoroutine(PlayAnimationOnce(animator, "LookAtMe"));
+    }
+
     public void Pause()
     {
         updateDeckPanel();
@@ -806,6 +820,35 @@ public class GameManager : MonoBehaviour
             hurtFlashImage.color = c;
             yield return null;
         }
+    }
+
+    public void PointIndication(int points, Vector3 position)
+    {
+        Vector3 offset = position + new Vector3(0, 3, 0);
+        GameObject indicator = Instantiate(pointIndicationPrefab, offset, Quaternion.identity);
+        TextMeshPro textDisplay = indicator.GetComponent<TextMeshPro>();
+        float xyScale = .15f;
+        if (textDisplay != null)
+        {
+            textDisplay.text = "+" + points.ToString();
+            if (points <= 50)
+            {
+                textDisplay.color = Color.white;
+                xyScale = .15f;
+            }
+            else if (points <= 100)
+            {
+                textDisplay.color = Color.white;
+                xyScale = .2f;
+            }
+            else
+            {
+                textDisplay.color = Color.yellow;
+                xyScale = .25f;
+            }
+        }
+        indicator.transform.localScale = new Vector3(xyScale, xyScale, 1);
+        
     }
     #endregion
 

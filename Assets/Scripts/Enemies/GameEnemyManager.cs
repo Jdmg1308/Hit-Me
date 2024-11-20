@@ -170,6 +170,17 @@ public class GameEnemyManager : MonoBehaviour
     public IEnumerator StartWaves(int enemiesToSpawn)
     {
         _WaveInProgress = true;
+
+        // wave starting indicator delay
+        yield return new WaitForSeconds(2f);
+        string text;
+        if (currentWave + 1 < waveConfigurations.Count)
+            text = "Wave " + (currentWave + 1) + " Starting!";
+        else
+            text = "Final Wave Starting!";
+        GM.WaveStartingAnimation(text);
+
+        // spawn wave
         yield return new WaitForSeconds(SpawnDelay);
         SpawnWave(enemiesToSpawn);
         ++currentWave;
@@ -498,6 +509,7 @@ public class GameEnemyManager : MonoBehaviour
         else
         {
             Instantiate(EnemyOnScreenDeathPrefab, enemy.transform.position, Quaternion.identity);
+            GM.PointIndication(enemy.GetComponent<Enemy>().pointAmount, enemy.transform.position);
         }
     }
     #endregion

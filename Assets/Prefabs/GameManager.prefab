@@ -245,6 +245,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  pointIndicationPrefab: {fileID: 7508921488299735724, guid: c929969b3ad9a5a42b596f8471d6db00, type: 3}
   hasWon: 0
 --- !u!82 &5376063830636673449
 AudioSource:
@@ -396,7 +397,7 @@ MonoBehaviour:
   HeavyEnemyPrefab: {fileID: 7912227820249121315, guid: fef87f3d705e4e047921b6e227298cd6, type: 3}
   hasSpawned: 0
   shouldSpawn: 1
-  SpawnDelay: 1
+  SpawnDelay: 2
   waveConfigurations: []
   currentWave: 0
   isDoubleDamage: 0
