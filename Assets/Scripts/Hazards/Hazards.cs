@@ -8,7 +8,7 @@ public class Hazards : MonoBehaviour
 
     void Awake()
     {
-        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        GM = GameManager.instance;
     }
     // Start is called before the first frame update
     void Start()

@@ -7,6 +7,8 @@ using UnityEngine.Events;
 
 public class SpatialTrigger : MonoBehaviour
 {
+    public string nameLevelLoad = null; // dynamically use shared GM's function
+    private UnityEvent<string> onTriggerEnterLevelLoad;  // Event for when a collider enters this trigger
     public UnityEvent onTriggerEnter;  // Event for when a collider enters this trigger
     // private GameManager GM;
     // public string NextSceneName; // for GM next button to know what scene to load
@@ -22,10 +24,26 @@ public class SpatialTrigger : MonoBehaviour
     //     onTriggerEnter.Invoke();
     // }
 
+     private void Awake()
+    {
+        // Ensure the UnityEvent is not null
+        if (onTriggerEnterLevelLoad == null)
+            onTriggerEnterLevelLoad = new UnityEvent<string>();
+    }
+
+    void Start()
+    {
+        onTriggerEnterLevelLoad?.AddListener(GameManager.instance.LoadNextScene);
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
-            onTriggerEnter.Invoke();
+        {
+            onTriggerEnter?.Invoke();
+            if (!string.IsNullOrEmpty(nameLevelLoad))
+                onTriggerEnterLevelLoad?.Invoke(nameLevelLoad);
+        }
     }
 
     // public void NextScene()

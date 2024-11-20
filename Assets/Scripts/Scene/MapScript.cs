@@ -17,7 +17,7 @@ public class MapScript : TheSceneManager
 
     private void AssignReferences()
     {
-        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        GM = GameManager.instance;
 
         MapScreen = this.gameObject;
 

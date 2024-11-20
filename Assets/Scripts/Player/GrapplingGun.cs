@@ -63,7 +63,7 @@ public class GrapplingGun : MonoBehaviour
         m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         grappleTargetIndicator = Canvas.transform.Find("GrappleIndicator").gameObject;
         grappleTargetIndicatorImg = grappleTargetIndicator.GetComponent<Image>();
-        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        GM = GameManager.instance;
     }
 
     private void Start()

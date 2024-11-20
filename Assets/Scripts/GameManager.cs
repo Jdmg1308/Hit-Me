@@ -139,8 +139,7 @@ public class GameManager : MonoBehaviour
     public AnimationCurve hurtFlashCurve;
     private Image hurtFlashImage;
 
-
-    private static GameManager instance;
+    public static GameManager instance;
 
     public bool hasWon = false;
 
@@ -170,6 +169,12 @@ AudioManager audioManager;
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        if (updatePointsRoutine != null)
+        {
+            StopCoroutine(updatePointsRoutine);
+            updatePointsRoutine = null;
+        }
+        
         AssignReferences(); // Reassign UI references
         string levelName = scene.name;
 
@@ -609,6 +614,8 @@ AudioManager audioManager;
         //TODO: uncomment once we get the bar 
         Debug.Log("points: " + Points);
         //progressBar.value = points;
+        if (updatePointsRoutine != null)
+            StopCoroutine(updatePointsRoutine);
         updatePointsRoutine = StartCoroutine(updatePointsSlider());
     }
 
@@ -729,7 +736,9 @@ AudioManager audioManager;
 
         // Make Points zero
         Points = 0;
-        StartCoroutine(updatePointsSlider());
+        if (updatePointsRoutine != null)
+            StopCoroutine(updatePointsRoutine);
+        updatePointsRoutine = StartCoroutine(updatePointsSlider());
 
 
         CheatWin = false;
@@ -785,9 +794,14 @@ AudioManager audioManager;
     public void LoadNextScene(string name)
     {
         if (updatePointsRoutine != null)
+        {
             StopCoroutine(updatePointsRoutine);
+            updatePointsRoutine = null;
+        }
         if (name == "SHOP")
             GameEnemyManager.shouldSpawn = false;
+        else
+            GameEnemyManager.shouldSpawn = true;
 
         LastScene = SceneManager.GetActiveScene().name;
 

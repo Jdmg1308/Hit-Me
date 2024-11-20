@@ -47,19 +47,6 @@ public class GameEnemyManager : MonoBehaviour
     private float _OffScreenSpriteWidth;
     private float _OffScreenSpriteHeight;
 
-    void Awake()
-    {
-        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
-        GameObject spawnPoints = GameObject.FindGameObjectWithTag("SpawnPoints");
-        if (spawnPoints)
-        {
-            foreach (Transform child in spawnPoints.transform)
-            {
-                this.spawnPoints.Add(child);
-            }
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -72,6 +59,7 @@ public class GameEnemyManager : MonoBehaviour
         enemyStats = new ExtraEnemyStats();
     }
 
+    Coroutine wavesRoutine = null;
     void Update()
     {
         // Check if there are more waves left
@@ -80,7 +68,10 @@ public class GameEnemyManager : MonoBehaviour
             int enemiesToSpawn = waveConfigurations[currentWave].Sum;
             // If no enemies are left, spawn a new wave
             if (EnemiesLeftInWave == 0 && !hasSpawned)
-                StartCoroutine(StartWaves(enemiesToSpawn));
+            {
+                if (wavesRoutine == null)
+                    wavesRoutine = StartCoroutine(StartWaves(enemiesToSpawn));
+            }
         }
 
         // testing methods
@@ -108,6 +99,17 @@ public class GameEnemyManager : MonoBehaviour
 
     public void ResetWaves()
     {
+        // find spawn points
+        GameObject spawnPoints = GameObject.FindGameObjectWithTag("SpawnPoints");
+        this.spawnPoints.Clear();
+        if (spawnPoints)
+        {
+            foreach (Transform child in spawnPoints.transform)
+            {
+                this.spawnPoints.Add(child);
+            }
+        }
+
         // Find the GameObject with the specific tag
         GameObject waveConfigSelector = GameObject.FindGameObjectWithTag("WaveConfig");
 
@@ -143,6 +145,9 @@ public class GameEnemyManager : MonoBehaviour
         hasSpawned = false;
         _WaveInProgress = false;
         spawnedEnemies.Clear();
+        if (wavesRoutine != null)
+            StopCoroutine(wavesRoutine);
+        wavesRoutine = null;
     }
 
     private void LoadWaveConfiguration(WaveConfiguration config)
@@ -160,12 +165,6 @@ public class GameEnemyManager : MonoBehaviour
                 HeavyCount = composition.HeavyCount
             });
         }
-
-        // Optional: Log loaded configurations to verify
-        foreach (var wave in waveConfigurations)
-        {
-            Debug.Log($"Loaded Wave - Basic: {wave.BasicCount}, Ranged: {wave.RangedCount}, Heavy: {wave.HeavyCount}, Sum: {wave.Sum}");
-        }
     }
 
     public IEnumerator StartWaves(int enemiesToSpawn)
@@ -174,6 +173,7 @@ public class GameEnemyManager : MonoBehaviour
         yield return new WaitForSeconds(SpawnDelay);
         SpawnWave(enemiesToSpawn);
         ++currentWave;
+        wavesRoutine = null;
     }
 
     // this exists to handle damage mods
@@ -440,6 +440,7 @@ public class GameEnemyManager : MonoBehaviour
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         Enemy enemyRef = newEnemy.GetComponent<Enemy>();
         enemyRef.Player = GM.Player;
+        
         enemyRef.GameEnemyManager = this;
 
         // Add current stats

@@ -29,7 +29,7 @@ public class ShopManager : TheSceneManager
     private void Awake()
     {
         // Buttons should be assigned in the Inspector, no need to assign them here unless necessary
-        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        GM = GameManager.instance;
         Canvas = GameObject.FindGameObjectWithTag("Canvas");
         audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
 
@@ -164,6 +164,6 @@ public class ShopManager : TheSceneManager
         string randomScene = levelSceneNames[Random.Range(0, levelSceneNames.Count)];
 
         // Load the randomly chosen scene
-        SceneManager.LoadScene(randomScene);
+        GM.LoadNextScene(randomScene);
     }
 }
