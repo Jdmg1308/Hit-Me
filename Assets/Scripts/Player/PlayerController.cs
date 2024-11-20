@@ -56,7 +56,6 @@ public class PlayerController : MonoBehaviour
         p.rb = GetComponent<Rigidbody2D>();
         p.anim = GetComponent<Animator>();
 
-        p.GM.deckController.currentDeck = p.GM.deckController.GetNewDeck();
 
         if (p.GM.iOSPanel && p.GM.iOSPanel.activeSelf)
         {

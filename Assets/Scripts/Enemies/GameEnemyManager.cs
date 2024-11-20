@@ -202,8 +202,11 @@ public class GameEnemyManager : MonoBehaviour
         {
             EnemiesLeftInWave -= 1;
             spawnedEnemies.Remove(enemy);
-            GM.EnemiesKilled++;
-            GM.updatePoints(enemy.pointAmount);
+            if (!enemy.IsHallucination)
+            {
+                GM.EnemiesKilled++;
+                GM.updatePoints(enemy.pointAmount);
+            }
             StartCoroutine(WaitForSpawn(enemy.gameObject));
 
             // Check if all enemies are dead
@@ -341,6 +344,7 @@ public class GameEnemyManager : MonoBehaviour
                 enemyRef.MaxHealth = health;
                 enemyRef.CurrentHealth = health;
                 enemyRef.initialSpawnDelay = 0f;
+                enemyRef.IsHallucination = true;
             }
         }
     }

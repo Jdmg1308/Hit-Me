@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     [Tooltip("Determines how much impact force is factored into bounce"), Range(0, 1)] public float collisionForceMultiplier = 0.5f;
     public float baseMass = 1;
     [Tooltip("Affects enemy floatiness during Impact State (for easier juggles)"), Range(0, 1)] public float postImpactMassScale = 0.9f;
-    
+
     // IDamageable Variables
     [field: SerializeField, Header("Health/Death")] public int MaxHealth { get; set; } = 50;
     [field: SerializeField] public int CurrentHealth { get; set; } = 50;
@@ -89,7 +89,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
     public float IdleTimeBetweenMove = 1.5f;
 
     // Punching Variables
-    [Header("Attacking")] 
+    [Header("Attacking")]
     public bool canAttack = true;
     public GameObject DetectAttack { get; set; }
     [field: SerializeField] public float AttackRadius { get; set; } = 0.8f;
@@ -124,6 +124,9 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, IPuncher
 
     [Header("Props for GM")]
     public int pointAmount = 5;
+
+    [HideInInspector]
+    public bool IsHallucination = false;
 
     #region Universal Functions
     // called before start when script is loaded
