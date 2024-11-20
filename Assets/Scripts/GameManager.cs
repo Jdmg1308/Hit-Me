@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     public Color healthBarDefaultColor;
 
     [Header("Progress Meter")]
+    private Animator pointmeterAnimator;
     private TextMeshProUGUI statsText;
     public int EnemiesKilled = 0;
     public int pointsPerKill;
@@ -82,6 +83,7 @@ public class GameManager : MonoBehaviour
         }
         set
         {
+            PlayAnimationOnce(pointmeterAnimator, "PointMeterGoesUp");
             UpdateText(value, _points, points_text);
             _points = value;
         }
@@ -236,6 +238,7 @@ AudioManager audioManager;
             progressBar = PlayScreen.transform.Find("PointMeter")?.gameObject.GetComponent<Slider>();
 
             points_text = PlayScreen.transform.Find("PointMeter")?.Find("Points")?.gameObject.GetComponent<TextMeshProUGUI>();
+            pointmeterAnimator = PlayScreen.transform.Find("PointMeter")?.gameObject.GetComponent<Animator>();
             if (points_text)
                 points_text.text = " " + Points.ToString();
 
@@ -534,7 +537,9 @@ AudioManager audioManager;
 
     private void PlayAnimationOnce(Animator animator, string animationStateName)
     {
+        Debug.Log("play Animation once for: " + animator);
         animator.enabled = true;
+        animator.Update(0f);
         // Play the specified animation state
         animator.Play(animationStateName, -1, 0f);
     }
