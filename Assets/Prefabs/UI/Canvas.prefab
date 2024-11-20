@@ -2102,6 +2102,7 @@ GameObject:
   - component: {fileID: 4103220167838085483}
   - component: {fileID: 6831152859447979889}
   - component: {fileID: 2091784422866765435}
+  - component: {fileID: 5892082978079668195}
   m_Layer: 5
   m_Name: DarkOverlayImage
   m_TagString: Untagged
@@ -2167,6 +2168,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!223 &5892082978079668195
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4164574846880736600}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 2
+  m_TargetDisplay: 0
 --- !u!1 &4328644966347831656
 GameObject:
   m_ObjectHideFlags: 0
@@ -3073,6 +3096,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4665780804601768031, guid: 06df5b1a4d18ddc499b1df9f57b78cb0, type: 3}
       propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160271106462349287, guid: 06df5b1a4d18ddc499b1df9f57b78cb0, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793940645475203459, guid: 06df5b1a4d18ddc499b1df9f57b78cb0, type: 3}

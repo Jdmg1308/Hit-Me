@@ -316,6 +316,7 @@ public class GameManager : MonoBehaviour
         GameEnemyManager.ResetWaves();
 
         BlueCardsDrawn = 0 ; RedCardsDrawn = 0; GreenCardsDrawn = 0;
+        EnemiesKilled = 0;
 }
 
     void Update()
@@ -398,10 +399,21 @@ public class GameManager : MonoBehaviour
                                                                        // Check if the animator still exists to avoid null reference errors
             if (cardAnimator != null)
             {
-                if (card.cardImage.texture.name == "goodCard")
-                    cardAnimator.Play("FlipCardBlue");
-                else
-                    cardAnimator.Play("FlipCardRed");
+                switch (card.color)
+                {
+                    case ColorType.Blue:
+                        cardAnimator.Play("FlipCardBlue");
+                        break;
+                    case ColorType.Red:
+                        cardAnimator.Play("FlipCardRed");
+                        break;
+                    case ColorType.Green:
+                        cardAnimator.Play("FlipCardGreen");
+                        break;
+                    default:
+                        break;
+                }
+
                 yield return new WaitForSeconds(cardAnimator.GetCurrentAnimatorStateInfo(0).length);
             }
 
