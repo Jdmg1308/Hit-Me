@@ -3889,7 +3889,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678141183}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.38118, y: -5.814706, z: -1.1764704}
+  m_LocalPosition: {x: -5.38118, y: -3.34, z: -1.1764704}
   m_LocalScale: {x: 0.713647, y: 0.713647, z: 0.713647}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4944,22 +4944,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[0]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[2]
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
 --- !u!1001 &2027964246
@@ -5325,7 +5309,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3290832914162406412, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
       propertyPath: xMax
-      value: 320
+      value: 93.98
       objectReference: {fileID: 0}
     - target: {fileID: 3290832914162406412, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
       propertyPath: xMin
@@ -5337,7 +5321,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3290832914162406412, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
       propertyPath: yMin
-      value: -0.21
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 3290832914162406413, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
       propertyPath: m_RootOrder

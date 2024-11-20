@@ -760,8 +760,7 @@ public class GameManager : MonoBehaviour
         DeathScreen.SetActive(true);
         TextMeshProUGUI ScoreText = DeathScreen.GetComponentInChildren<TextMeshProUGUI>();
         ScoreText.text = "Final Payout: " + Money.ToString();
-        Money = 500;
-           
+        Money = 500;   
     }
 
     public void Win()

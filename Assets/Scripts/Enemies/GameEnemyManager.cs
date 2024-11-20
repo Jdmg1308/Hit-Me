@@ -112,6 +112,9 @@ public class GameEnemyManager : MonoBehaviour
 
         // Find the GameObject with the specific tag
         GameObject waveConfigSelector = GameObject.FindGameObjectWithTag("WaveConfig");
+        waveConfig = null;
+        waveConfigurations.Clear();
+        Debug.Log("do I have wave config selector??? " + waveConfigSelector?.name);
 
         if (waveConfigSelector != null)
         {
@@ -173,12 +176,17 @@ public class GameEnemyManager : MonoBehaviour
 
         // wave starting indicator delay
         yield return new WaitForSeconds(2f);
-        string text;
+        string text = null;
         if (currentWave + 1 < waveConfigurations.Count)
+        {
             text = "Wave " + (currentWave + 1) + " Starting!";
-        else
+        }
+        else if (waveConfigurations.Count != 1)
+        {
             text = "Final Wave Starting!";
-        GM.WaveStartingAnimation(text);
+        }
+        if (text != null)
+            GM.WaveStartingAnimation(text);
 
         // spawn wave
         yield return new WaitForSeconds(SpawnDelay);

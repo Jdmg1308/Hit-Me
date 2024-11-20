@@ -2048,22 +2048,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 5.67
       objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[0]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[1]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5376063832109763254, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
-      propertyPath: waveConfigurations.Array.data[2]
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5376063832384337725, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
       propertyPath: m_LocalPosition.x
       value: 27.14
