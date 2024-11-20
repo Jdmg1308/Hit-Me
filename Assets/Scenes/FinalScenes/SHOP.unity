@@ -2073,22 +2073,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e9f115ebb184f945bf04844ae488b41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allPurchasableCards:
-  - {fileID: 11400000, guid: 41f9978462fb3be4e95f498d989e148d, type: 2}
-  - {fileID: 11400000, guid: 9b7413b00f6125947adb9ae2da49fab3, type: 2}
-  - {fileID: 11400000, guid: 06cb70c2e41a5f348bbab43c56eb9a72, type: 2}
-  - {fileID: 11400000, guid: ef851a1b386f187428fc8d182ea61ff7, type: 2}
-  - {fileID: 11400000, guid: db28ca9d2804f6f47913d52d043edb37, type: 2}
-  - {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
-  - {fileID: 11400000, guid: 31f9a894542870042a78ac643cefdd51, type: 2}
-  - {fileID: 11400000, guid: 81a36af26ba46e644b3f581e0313d239, type: 2}
-  - {fileID: 11400000, guid: b30e46c36192dd7418db70621740063f, type: 2}
-  - {fileID: 11400000, guid: ce388740fce6c3443816867af0a1c4b0, type: 2}
-  - {fileID: 11400000, guid: 46d490d6c51770841b5aceba1e87ffde, type: 2}
-  - {fileID: 11400000, guid: affabd4ccdb85db4385084f851672666, type: 2}
-  - {fileID: 11400000, guid: fcd31f575bb878a43ba3a09f5a298e40, type: 2}
-  - {fileID: 11400000, guid: 083bb11e1ad66a74f90b25cc77498650, type: 2}
-  - {fileID: 11400000, guid: 3f05113ee504720469a02a6a29dcd6fb, type: 2}
   deleteSign: {fileID: 1723388589}
   destroyButton: {fileID: 2004945781}
   Options: {fileID: 674788286}
@@ -2098,6 +2082,8 @@ MonoBehaviour:
   levelSceneNames:
   - ALLEYWAY_1
   - ALLEYWAY_2
+  - SEWER_1
+  - SEWER_2
 --- !u!4 &1972235113
 Transform:
   m_ObjectHideFlags: 0

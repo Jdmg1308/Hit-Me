@@ -296,6 +296,7 @@ public class GameManager : MonoBehaviour
             if (PauseScreen)
             {
                 //AssignButton(PauseScreen.transform, "Menu", OpenShop);
+                PauseScreen.transform.Find("Menu")?.GetComponent<Button>().onClick.AddListener(() => LoadNextScene("MENU")); 
                 AssignButton(PauseScreen.transform, "Resume", Pause);
                 deckDisplayPanel = PauseScreen.transform.Find("DeckDisplayPanel")?.gameObject;
 
@@ -585,6 +586,7 @@ public class GameManager : MonoBehaviour
         playerController.resetPlayerDamage();
         healthMax = baseHealth;
         healthCurrent = healthMax;
+
     }
 
     public void freeze(bool status)
@@ -761,6 +763,8 @@ public class GameManager : MonoBehaviour
         DeathScreen.SetActive(true);
         TextMeshProUGUI ScoreText = DeathScreen.GetComponentInChildren<TextMeshProUGUI>();
         ScoreText.text = "Final Payout: " + Money.ToString();
+        Money = 500;
+           
     }
 
     public void Win()
@@ -899,7 +903,7 @@ public class GameManager : MonoBehaviour
         {
             DarkOverlayImage.gameObject.SetActive(true);
             // Fade to black
-            yield return StartCoroutine(FadeScreen(0f, 1f, 1f));
+            yield return StartCoroutine(FadeScreen(0f, 1f, 0.5f));
         }
 
         // Actually load the next scene
