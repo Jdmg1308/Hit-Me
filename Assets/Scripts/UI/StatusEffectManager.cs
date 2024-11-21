@@ -16,7 +16,9 @@ public class StatusEffectManager : MonoBehaviour
 
     private void Awake()
     {
-        GM = GameManager.instance;
+        GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        if (GM == null)
+            GM = GameManager.instance;
     }
 
     public void AddEffectPermanently(Card card)

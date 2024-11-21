@@ -16,7 +16,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        p.GM = GameManager.instance;
+        p.GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        if (p.GM == null)
+            p.GM = GameManager.instance;
         p.spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         p.playerChargeMeter = GameObject.Find("Player Charge Meter");
         p.playerExtendedChargeMeter = GameObject.Find("Player Extended Charge Meter");

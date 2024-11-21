@@ -63,7 +63,9 @@ public class GrapplingGun : MonoBehaviour
         m_camera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         grappleTargetIndicator = Canvas.transform.Find("GrappleIndicator").gameObject;
         grappleTargetIndicatorImg = grappleTargetIndicator.GetComponent<Image>();
-        GM = GameManager.instance;
+        p.GM = GameObject.FindGameObjectWithTag("GameManager")?.GetComponent<GameManager>();
+        if (p.GM == null)
+            p.GM = GameManager.instance;
     }
 
     private void Start()
@@ -82,7 +84,8 @@ public class GrapplingGun : MonoBehaviour
         {
             if (grappledObject != null && grappledObject.layer == LayerMask.NameToLayer("Enemy")) 
             {
-                GM.ChecklistScript.UpdateChecklistItem("GE", true);
+                if (GM && GM.ChecklistScript)
+                    GM.ChecklistScript.UpdateChecklistItem("GE", true);
                 grapplePoint = grappledObject.transform.position;
             }
             if (grappledObject == null)

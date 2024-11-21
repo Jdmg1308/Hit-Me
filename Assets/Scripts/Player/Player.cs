@@ -8,7 +8,7 @@ using UnityEngine.Tilemaps;
 public class Player
 {
     // Game Manager
-    public GameManager GM;
+    public GameManager GM = null;
     public SpriteRenderer spriteRenderer;
 
     [Header("Controls")]

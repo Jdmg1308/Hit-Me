@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Cards")]
     public DeckController deckController;
-    protected float cardCDTime = 5.0f, cardCDTimer = 0;
+    protected float cardCDTime = 10.0f, cardCDTimer = 0;
     protected bool cardIsOnCD = false;
     public Card statusCard;
     public bool statusApplied = false;
