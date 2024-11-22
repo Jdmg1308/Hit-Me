@@ -470,9 +470,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 81a36af26ba46e644b3f581e0313d239, type: 2}
   currentDeck:
     deck:
-    - {fileID: 11400000, guid: db28ca9d2804f6f47913d52d043edb37, type: 2}
     - {fileID: 11400000, guid: f59239c54d8dece49b69bac936703fa1, type: 2}
-    - {fileID: 11400000, guid: 1bd8293b951a05b498b9d06aab31c544, type: 2}
+    - {fileID: 11400000, guid: 083bb11e1ad66a74f90b25cc77498650, type: 2}
+    - {fileID: 11400000, guid: be266677513c03f4c996bcb45f78f074, type: 2}
     drawPile: []
     hand: []
     discardPile: []
