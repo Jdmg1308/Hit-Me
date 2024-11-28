@@ -41,13 +41,15 @@ public class AudioManager : MonoBehaviour
             {"Combat_MORERANGED", alleywayMusic },
             {"ALLEYWAY_1", alleywayMusic },
             {"ALLEYWAY_2", alleywayMusic },
+            {"ALLEYWAY_3", alleywayMusic },
             {"SHOP", shopMusic },
             {"MENU", titleScreenMusic },
             {"CARDS", tutorialMusic },
             {"GRAPPLE", tutorialMusic },
             {"MOVEMENT_COMBAT", tutorialMusic },
             {"SEWER_1", sewerMusic },
-            {"SEWER_2", sewerMusic }
+            {"SEWER_2", sewerMusic },
+            {"SEWER_3", sewerMusic }
         };
     }
 

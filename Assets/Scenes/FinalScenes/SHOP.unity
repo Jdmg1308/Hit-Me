@@ -2084,6 +2084,7 @@ MonoBehaviour:
   - ALLEYWAY_2
   - SEWER_1
   - SEWER_2
+  - ALLEYWAY_3
 --- !u!4 &1972235113
 Transform:
   m_ObjectHideFlags: 0
