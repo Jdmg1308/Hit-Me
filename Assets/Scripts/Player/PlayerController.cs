@@ -11,7 +11,6 @@ public class PlayerController : MonoBehaviour
     public Player p;
     public HashSet<IDamageable> iDamageableSet = new HashSet<IDamageable>();
     public bool shouldBeDamaging { get; private set; } = false;
-
     AudioManager audioManager;
 
     private void Awake()
@@ -654,7 +653,7 @@ public class PlayerController : MonoBehaviour
         Material originalMat = p.spriteRenderer.material;
 
         p.isHit = true;
-        p.spriteRenderer.material = p.dullColor;
+        //p.spriteRenderer.material = p.dullColor;
         yield return new WaitForSeconds(p.iFramesTime + extraTime);
         p.isHit = false;
         p.spriteRenderer.material = originalMat;
