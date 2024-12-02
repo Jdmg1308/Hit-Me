@@ -177,6 +177,11 @@ MonoBehaviour:
     dullColor: {fileID: 0}
   playerController: {fileID: 0}
   ChecklistScript: {fileID: 0}
+  levelSceneNames:
+  - ALLEYWAY_1
+  - ALLEYWAY_2
+  - SEWER_1
+  - SEWER_2
   InHitStop: 0
   Curve:
     serializedVersion: 2

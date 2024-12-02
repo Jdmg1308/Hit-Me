@@ -23,8 +23,6 @@ public class ShopManager : TheSceneManager
 
     AudioManager audioManager;
 
-    [SerializeField]
-    private List<string> levelSceneNames;
 
     private void Awake()
     {
@@ -42,7 +40,7 @@ public class ShopManager : TheSceneManager
         {
             ShopScreen = Canvas.transform.Find("Shop Screen")?.gameObject;
             NextLevelButton = ShopScreen.transform.Find("NextLevel")?.GetComponent<Button>();
-            if (NextLevelButton) NextLevelButton.onClick.AddListener(ContinueToRandomLevel);
+            if (NextLevelButton) NextLevelButton.onClick.AddListener(GM.ContinueToRandomLevel);
         }
     }
 
@@ -157,18 +155,4 @@ public class ShopManager : TheSceneManager
         }
     }
 
-    public void ContinueToRandomLevel()
-    {
-        if (levelSceneNames == null || levelSceneNames.Count == 0)
-        {
-            Debug.LogError("No levels specified in the levelSceneNames list!");
-            return;
-        }
-
-        // Pick a random scene name from the list
-        string randomScene = levelSceneNames[Random.Range(0, levelSceneNames.Count)];
-
-        // Load the randomly chosen scene
-        GM.LoadNextScene(randomScene);
-    }
 }
