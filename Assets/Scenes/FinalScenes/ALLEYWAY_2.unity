@@ -6947,6 +6947,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1307742591820266859, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3290832914162406412, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
       propertyPath: xMax
       value: 25.5
