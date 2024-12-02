@@ -1,37 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class PostProcessingController : MonoBehaviour
 {
-    public PostProcessVolume postProcessVolume; // Assign in the Inspector
-    // Wavy Wobble Effect
-    public WiggleWobble wiggleWobble; // Reference to the wigglinig script
-    private ColorGrading colorGrading;
+    public Volume volume; // Assign this in the Inspector
+    private ColorAdjustments colorAdjustments;
 
     // LSD effect parameters
     public bool rainbowEnabled;
-    public float rainbowCycleSpeed = 1.0f; // Speed of the rainbow cycle
+    public float rainbowCycleSpeed = 1.0f;
 
     // High (weed) effect parameters
     public bool greenEnabled;
-    public float greenPulseSpeed = 1.5f; // Speed of the green pulse
+    public float greenPulseSpeed = 1.5f;
     private float pulseTime;
 
     // Drunk effect parameters
     public bool isDrunk;
-    public float wobbleAmount = 0.1f; // Amount of wobble
-    public float wobbleSpeed = 2f; // Speed of wobble
+    public WiggleWobble wiggleWobble; // Reference to your wobble script
+    public float wobbleAmount = 0.1f;
+    public float wobbleSpeed = 2f;
 
     void Start()
     {
-        postProcessVolume.profile.TryGetSettings(out colorGrading);
-        
-        // Start with effects disabled
+        // Access Color Adjustments in URP
+        volume.profile.TryGet(out colorAdjustments);
+
+        // Initialize all effects as disabled
         rainbowEnabled = false;
         greenEnabled = false;
         isDrunk = false;
+
         if (wiggleWobble != null)
         {
             wiggleWobble.enabled = false; // Disable wobble effect initially
@@ -41,47 +41,42 @@ public class PostProcessingController : MonoBehaviour
     void Update()
     {
         // Handle color grading effects
-        if (colorGrading != null)
+        if (colorAdjustments != null)
         {
             if (rainbowEnabled)
             {
-                // Cycle through colors using a hue shift
                 float hue = Mathf.PingPong(Time.time * rainbowCycleSpeed, 1.0f);
                 Color rainbowColor = Color.HSVToRGB(hue, 1.0f, 1.0f);
-                colorGrading.colorFilter.value = rainbowColor;
-            } 
+                colorAdjustments.colorFilter.value = rainbowColor;
+            }
             else if (greenEnabled)
             {
-                // Pulsating green effect
                 pulseTime += Time.deltaTime * greenPulseSpeed;
                 float intensity = Mathf.Abs(Mathf.Sin(pulseTime));
-                colorGrading.colorFilter.value = Color.Lerp(Color.white, Color.green, intensity);
+                colorAdjustments.colorFilter.value = Color.Lerp(Color.white, Color.green, intensity);
             }
             else
             {
-                colorGrading.colorFilter.value = Color.white; // Reset to white
+                colorAdjustments.colorFilter.value = Color.white;
             }
         }
 
-        // Handle drunk effect
+        // Handle the drunk wobble effect
         if (wiggleWobble != null)
         {
             wiggleWobble.enabled = isDrunk;
+
+            if (isDrunk)
+            {
+                wiggleWobble.waveStrength = wobbleAmount;
+                wiggleWobble.waveSpeed = wobbleSpeed;
+            }
         }
     }
 
-    public void ToggleGreenEffect(bool isEnabled)
-    {
-        greenEnabled = isEnabled;
-    }
+    public void ToggleGreenEffect(bool isEnabled) => greenEnabled = isEnabled;
 
-    public void ToggleRainbowEffect(bool isEnabled)
-    {
-        rainbowEnabled = isEnabled;
-    }
+    public void ToggleRainbowEffect(bool isEnabled) => rainbowEnabled = isEnabled;
 
-    public void ToggleDrunkEffect(bool isEnabled)
-    {
-        isDrunk = isEnabled;
-    }
+    public void ToggleDrunkEffect(bool isEnabled) => isDrunk = isEnabled;
 }
