@@ -4,19 +4,28 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class DeckSelection : ShopManager
+public class DeckSelection : MonoBehaviour
 {
-
+    public List<Card> deck1cards;
+    public List<Card> deck2cards;
+    public List<Card> deck3cards;
     private GameManager GM;
     private GameObject DeckSelectionScreen;
     private Button ContinueButton;
+    private GameObject deckPanel;
+    private List<Card> current;
 
     private void Awake()
     {
         AssignReferences();
 
         ContinueButton = DeckSelectionScreen.transform.Find("Continue")?.GetComponent<Button>();
-        if (ContinueButton) ContinueButton.onClick.AddListener(ContinueToRandomLevel);
+        deckPanel = DeckSelectionScreen.transform.Find("DeckDisplayPanel")?.transform.gameObject;
+        if (ContinueButton) ContinueButton.onClick.AddListener(ChooseAndContinue);
+
+
+        SetUpChoices(1);
+        SetUpButtons();
     }
 
 
@@ -39,41 +48,67 @@ public class DeckSelection : ShopManager
 
     }
 
-    void Start()
-    {
-        SetUpChoices();
-
-    }
 
     /*
      * Sets up the cards in the shop to be random & configures the button sprites & listeners
      * to be called whenever a level is beaten.
      */
-    public void SetUpChoices()
+    public void SetUpButtons()
     {
-        //int[] _randCards = new int[3];
-        //for (int i = 0; i < 3; i++)
-        //{
-        //    _randCards[i] = Random.Range(0, allPurchasableCards.Count);
-        //}
+        Button deck1 = DeckSelectionScreen.transform.Find("Deck1")?.gameObject.GetComponent<Button>();
+        deck1.onClick.AddListener(() => SetUpChoices(1));
 
-        //GameObject displayPanel = Options.transform.Find("ShopDisplayPanel").gameObject;
-        //// Using _randCards[i] instead of 0, 1, 2
-        //GameObject child0 = GM.showCard(allPurchasableCards[_randCards[0]], displayPanel);
-        //child0.GetComponentInChildren<Button>().onClick.AddListener(() => PurchaseCard(_randCards[0], child0));
+        Button deck2 = DeckSelectionScreen.transform.Find("Deck2")?.gameObject.GetComponent<Button>();
+        deck2.onClick.AddListener(() => SetUpChoices(2));
 
-        //GameObject child1 = GM.showCard(allPurchasableCards[_randCards[1]], displayPanel);
-        //child1.GetComponentInChildren<Button>().onClick.AddListener(() => PurchaseCard(_randCards[1], child1));
-
-        //GameObject child2 = GM.showCard(allPurchasableCards[_randCards[2]], displayPanel);
-        //child2.GetComponentInChildren<Button>().onClick.AddListener(() => PurchaseCard(_randCards[2], child2));
-
-
+        Button deck3 = DeckSelectionScreen.transform.Find("Deck3")?.gameObject.GetComponent<Button>();
+        deck3.onClick.AddListener(() => SetUpChoices(3));
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetUpChoices(int deckNumber)
     {
-        
+        List<Card> deck;
+        switch (deckNumber)
+        {
+            case 1:
+                deck = deck1cards;
+                break;
+            case 2:
+                deck = deck2cards;
+                break;
+            case 3:
+                deck = deck3cards;
+                break;
+            default:
+                deck = deck1cards;
+                break;
+        }
+
+        current = deck;
+        // Clear previous buttons
+        foreach (Transform child in deckPanel.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (Card card in deck)
+        {
+            GM.showCard(card, deckPanel);
+        }
+    }
+
+    public void ChooseAndContinue()
+    {
+        // Choose
+        Deck newDeck = new Deck();
+        foreach (Card card in current)
+        {
+            GM.deckController.DeckAdd(card, newDeck);
+        }
+        GM.deckController.currentDeck = newDeck;
+
+        // Continue
+        GM.ContinueToRandomLevel();
+
     }
 }

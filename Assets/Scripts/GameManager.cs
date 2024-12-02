@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -129,6 +130,9 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public ChecklistScreen ChecklistScript;
+
+    [SerializeField]
+    private List<string> levelSceneNames;
 
     protected bool paused = false;
 
@@ -927,5 +931,20 @@ public class GameManager : MonoBehaviour
         // Ensure the final alpha value is set
         overlayColor.a = endAlpha;
         DarkOverlayImage.color = overlayColor;
+    }
+
+    public void ContinueToRandomLevel()
+    {
+        if (levelSceneNames == null || levelSceneNames.Count == 0)
+        {
+            Debug.LogError("No levels specified in the levelSceneNames list!");
+            return;
+        }
+
+        // Pick a random scene name from the list
+        string randomScene = levelSceneNames[UnityEngine.Random.Range(0, levelSceneNames.Count)];
+
+        // Load the randomly chosen scene
+        LoadNextScene(randomScene);
     }
 }

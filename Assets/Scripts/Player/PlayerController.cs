@@ -547,6 +547,10 @@ public class PlayerController : MonoBehaviour
             p.GM.audioSource.Play();
             p.anim.SetBool("inAirCombo", false);
         } 
+        else if (partOfCombo == TypeOfPunch.DownSlam)
+        {
+            p.anim.SetBool("inAirCombo", false);
+        }
         else if (iDamageableSet.Count > 0 && !p.isGrounded)
         {
             p.anim.SetBool("inAirCombo", true);
