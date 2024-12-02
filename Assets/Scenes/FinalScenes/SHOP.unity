@@ -733,6 +733,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5376063830636673451, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
+      propertyPath: levelSceneNames.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a39fc854e38d49f4a88f3915e30d9739, type: 3}
 --- !u!1 &518934447
@@ -2079,12 +2083,6 @@ MonoBehaviour:
   deckDisplayPanel: {fileID: 7844422403224942832}
   dupPrice: 100
   destPrice: 100
-  levelSceneNames:
-  - ALLEYWAY_1
-  - ALLEYWAY_2
-  - SEWER_1
-  - SEWER_2
-  - ALLEYWAY_3
 --- !u!4 &1972235113
 Transform:
   m_ObjectHideFlags: 0
