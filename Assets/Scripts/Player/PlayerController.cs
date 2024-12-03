@@ -141,8 +141,8 @@ public class PlayerController : MonoBehaviour
         // if in air/grappling, maintain prev x for momentum (else add ground friction), add directed movement with air control restrictions
         float xVelocity = (p.rb.velocity.x * (!p.isGrounded || p.grapplingGun.isGrappling ? 1 : p.friction))
             + (p.moveDirection * p.moveSpeed * adjustAirControl);
-        p.rb.velocity = new Vector2(Mathf.Clamp(xVelocity, -p.XMaxSpeed, p.XMaxSpeed),
-            Mathf.Min(p.rb.velocity.y, p.YMaxSpeed));
+        if (p.rb.bodyType == RigidbodyType2D.Dynamic)
+            p.rb.velocity = new Vector2(Mathf.Clamp(xVelocity, -p.XMaxSpeed, p.XMaxSpeed), Mathf.Min(p.rb.velocity.y, p.YMaxSpeed));
 
         if (p.isGrounded)
         {

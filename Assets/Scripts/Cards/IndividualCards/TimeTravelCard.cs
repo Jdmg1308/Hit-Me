@@ -14,6 +14,7 @@ public class TimeTravelCard : Card
     private Coroutine recordRoutine;
     public Color TimeTravelColor;
     public float rewindSpeedMultiplier = 2f; // Higher = faster rewind
+    private int playerHealthBeforeRewind;
 
     public override void use(GameManager GM)
     {
@@ -38,6 +39,7 @@ public class TimeTravelCard : Card
 
     private IEnumerator RecordPlayerState(GameManager GM)
     {
+        playerHealthBeforeRewind = GM.healthCurrent;
         SpriteRenderer playerSpriteRenderer = GM.playerController.GetComponent<SpriteRenderer>();
 
         while (true)
@@ -102,6 +104,8 @@ public class TimeTravelCard : Card
             // Snap to the final target position for this step
             GM.playerController.transform.position = targetPosition;
         }
+
+        GM.healthCurrent = playerHealthBeforeRewind;
 
         GM.playerController.p.anim.SetBool("midJump", false);
         GM.playerController.SetControls(true);

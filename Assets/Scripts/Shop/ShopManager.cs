@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class ShopManager : TheSceneManager
@@ -16,6 +17,7 @@ public class ShopManager : TheSceneManager
     private Button NextLevelButton; // Prefab to create buttons for each card in the deck
     public float dupPrice;
     public float destPrice;
+    public TextMeshProUGUI uiText;
 
     private bool destroyMode = false;
 
@@ -84,16 +86,28 @@ public class ShopManager : TheSceneManager
         {
             // Feedback for insufficient funds (e.g., play a sound or display a message)
             Debug.Log("Player doesn't have enough money to buy this card!, MONEY: " + GM.Money);
+            StartCoroutine(FadeText("Not enough money to buy this card!", 1f));
             return;
         }
         else
         {
-            // Player buys the card
-            audioManager.PlaySFX(audioManager.buyCard);
-            GM.Money -= (int) selectedCard.price;
-            GM.deckController.DeckAdd(selectedCard, GM.deckController.currentDeck);
-            Destroy(buttonCard);
-            GM.updateDeckPanel();
+
+            if (GM.deckController.currentDeck.deck.Count + 1 <= GM.deckController.deckLimit)
+            {
+                // Player buys the card
+                audioManager.PlaySFX(audioManager.buyCard);
+                GM.Money -= (int)selectedCard.price;
+                GM.deckController.DeckAdd(selectedCard, GM.deckController.currentDeck);
+                Destroy(buttonCard);
+                GM.updateDeckPanel();
+            }
+            else
+            {
+                //shopScript = ShopManager.GetComponent<ShopManager>();
+                StartCoroutine(FadeText("Deck limit reached! Max of 8 cards", 1f));
+                Debug.Log("DECK LIMIT REACHED, 8 of cards:");
+
+            }
         }
     }
 
@@ -144,6 +158,7 @@ public class ShopManager : TheSceneManager
         if (GM.Money < destPrice)
         {
             Debug.Log("Not enough money to destroy this card!");
+            StartCoroutine(FadeText("Not enough money to destroy this card!", 1f));
             return;
         }
         else
@@ -153,6 +168,29 @@ public class ShopManager : TheSceneManager
             GM.deckController.DeckRemove(card, GM.deckController.currentDeck); // Correcting to remove the card
             GM.updateDeckPanel();
         }
+    }
+
+    private IEnumerator FadeText(string message, float duration)
+    {
+        uiText.text = message;
+        uiText.color = new Color(1, 0, 0, 1); // Fully opaque red
+        uiText.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(duration);
+
+        float fadeDuration = 1f; // Duration of the fade-out
+        float elapsedTime = 0f;
+        Color startColor = uiText.color;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(1, 0, elapsedTime / fadeDuration); // Interpolate alpha
+            uiText.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
+            yield return null;
+        }
+
+        uiText.gameObject.SetActive(false); // Hide the text after fading
     }
 
 }
