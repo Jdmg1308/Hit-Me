@@ -7,6 +7,8 @@ public class TimeTravelCard : Card
 {
     public override CardType cardType { get { return CardType.StatusEffect; } }
 
+    public Material effectMaterial;
+
     // A stack to store the player's positions over time
     private Stack<Vector3> positionHistory = new Stack<Vector3>();
     private List<GameObject> spriteMarkers = new List<GameObject>();
@@ -41,7 +43,7 @@ public class TimeTravelCard : Card
     {
         playerHealthBeforeRewind = GM.healthCurrent;
         SpriteRenderer playerSpriteRenderer = GM.playerController.GetComponent<SpriteRenderer>();
-
+    
         while (true)
         {
             Vector3 currentPosition = GM.playerController.transform.position;
@@ -73,6 +75,7 @@ public class TimeTravelCard : Card
     private IEnumerator RewindPlayerState(GameManager GM)
     {
         GM.playerController.p.anim.SetBool("midJump", true);
+        FullscreenEffectRendererFeature.instance?.SetEffectMaterial(effectMaterial);
         BoxCollider2D playerCollider = GM.playerController.gameObject.GetComponent<BoxCollider2D>();
         Rigidbody2D playerRigidbody = GM.playerController.GetComponent<Rigidbody2D>();
         if (playerCollider != null)
@@ -113,5 +116,8 @@ public class TimeTravelCard : Card
             playerCollider.enabled = true;
         if (playerRigidbody != null)
             playerRigidbody.bodyType = RigidbodyType2D.Dynamic;
+        
+        GM.updateHealth();
+        FullscreenEffectRendererFeature.instance?.SetEffectMaterial(null);
     }
 }

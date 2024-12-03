@@ -7,6 +7,7 @@ public class Alcohol : Card
 {
     public override CardType cardType{get{return CardType.StatusEffect;}}
 
+    public Material effectMaterial;
     /* 
      * somebody had too much to drink,,,,
      * drunk camera wiggling effect & player does less damage 
@@ -19,16 +20,7 @@ public class Alcohol : Card
             GM.playerController.p.kickDamage -= effectValue;
             GM.playerController.p.punchDamage -= effectValue;
             GM.playerController.p.uppercutDamage -= effectValue;
-
-            var postProcessingController = GM.Camera.GetComponent<PostProcessingController>();
-            if (postProcessingController != null)
-            {
-                postProcessingController.ToggleDrunkEffect(true);
-            }
-            else
-            {
-                Debug.LogError("PostProcessingController not found on the Camera GameObject.");
-            }
+            FullscreenEffectRendererFeature.instance?.SetEffectMaterial(effectMaterial);
         } 
         else 
         {
@@ -36,16 +28,7 @@ public class Alcohol : Card
             GM.playerController.p.kickDamage += effectValue;
             GM.playerController.p.punchDamage += effectValue;
             GM.playerController.p.uppercutDamage += effectValue;
-
-            var postProcessingController = GM.Camera.GetComponent<PostProcessingController>();
-            if (postProcessingController != null)
-            {
-                postProcessingController.ToggleDrunkEffect(false);
-            }
-            else
-            {
-                Debug.LogError("PostProcessingController not found on the Camera GameObject.");
-            }
+            FullscreenEffectRendererFeature.instance?.SetEffectMaterial(null);
         }
     }
 }

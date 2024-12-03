@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c264c0d8db397443aca498da742a9fc, type: 3}
   m_Name: FixedHeal
   m_EditorClassIdentifier: 
-  cardName: Fixed Heal 15
+  cardName: Heal 15
   cardDescription: Heals the player for 15 HP
   cardImage: {fileID: 21300000, guid: be5318f4ce56f704190299e86dec13b7, type: 3}
   effectImage: {fileID: 21300000, guid: 4a8d82505d3234349bd2a144f863182c, type: 3}
   effectValue: 15
   id: 0
   cardUserAnim: 
+  color: 0
   price: 100
   points: 50

@@ -22,3 +22,4 @@ MonoBehaviour:
   color: 2
   price: 100
   points: 75
+  effectMaterial: {fileID: 2100000, guid: 4a8ef7134d84690428ef4203698881bf, type: 2}

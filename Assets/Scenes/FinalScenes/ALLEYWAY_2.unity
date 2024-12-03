@@ -6947,8 +6947,28 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1242952122852315721, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307742591820266859, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: m_RendererIndex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307742591820266859, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1307742591820266859, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
       propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307742591820266859, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: m_Cameras.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1307742591820266859, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: m_RequiresOpaqueTextureOption
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3290832914162406412, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
