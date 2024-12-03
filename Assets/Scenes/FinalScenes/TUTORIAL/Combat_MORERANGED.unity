@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 199608024}
   m_Layer: 0
-  m_Name: SHOP
+  m_Name: DECKSELECTION
   m_TagString: nextLevelLoad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

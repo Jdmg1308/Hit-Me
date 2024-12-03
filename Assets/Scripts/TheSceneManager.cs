@@ -60,6 +60,11 @@ public class TheSceneManager : MonoBehaviour
         SceneManager.LoadScene("SEWER_2");
     }
 
+    public void DeckSelection()
+    {
+        SceneManager.LoadScene("DECKSELECTION");
+    }
+
     public void FinalLvl()
     {
         SceneManager.LoadScene("FINALE");

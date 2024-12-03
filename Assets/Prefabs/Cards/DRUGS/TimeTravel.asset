@@ -22,3 +22,5 @@ MonoBehaviour:
   color: 2
   price: 100
   points: 75
+  TimeTravelColor: {r: 0.3411765, g: 1, b: 0.6640599, a: 0.50980395}
+  rewindSpeedMultiplier: 2

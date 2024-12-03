@@ -9,6 +9,9 @@ public class DeckSelection : MonoBehaviour
     public List<Card> deck1cards;
     public List<Card> deck2cards;
     public List<Card> deck3cards;
+    private GameObject deck1;
+    private GameObject deck2;
+    private GameObject deck3;
     private GameManager GM;
     private GameObject DeckSelectionScreen;
     private Button ContinueButton;
@@ -23,9 +26,8 @@ public class DeckSelection : MonoBehaviour
         deckPanel = DeckSelectionScreen.transform.Find("DeckDisplayPanel")?.transform.gameObject;
         if (ContinueButton) ContinueButton.onClick.AddListener(ChooseAndContinue);
 
-
-        SetUpChoices(1);
         SetUpButtons();
+        SetUpChoices(1);
     }
 
 
@@ -55,29 +57,36 @@ public class DeckSelection : MonoBehaviour
      */
     public void SetUpButtons()
     {
-        Button deck1 = DeckSelectionScreen.transform.Find("Deck1")?.gameObject.GetComponent<Button>();
-        deck1.onClick.AddListener(() => SetUpChoices(1));
+        deck1 = DeckSelectionScreen.transform.Find("Deck1")?.gameObject;
+        deck1.GetComponent<Button>().onClick.AddListener(() => SetUpChoices(1));
 
-        Button deck2 = DeckSelectionScreen.transform.Find("Deck2")?.gameObject.GetComponent<Button>();
-        deck2.onClick.AddListener(() => SetUpChoices(2));
+        deck2 = DeckSelectionScreen.transform.Find("Deck2")?.gameObject;
+        deck2.GetComponent<Button>().onClick.AddListener(() => SetUpChoices(2));
 
-        Button deck3 = DeckSelectionScreen.transform.Find("Deck3")?.gameObject.GetComponent<Button>();
-        deck3.onClick.AddListener(() => SetUpChoices(3));
+        deck3 = DeckSelectionScreen.transform.Find("Deck3")?.gameObject;
+        deck3.GetComponent<Button>().onClick.AddListener(() => SetUpChoices(3));
     }
 
     public void SetUpChoices(int deckNumber)
     {
+        deck1.transform.Find("selected")?.gameObject.SetActive(false);
+        deck2.transform.Find("selected")?.gameObject.SetActive(false);
+        deck3.transform.Find("selected")?.gameObject.SetActive(false);
+
         List<Card> deck;
         switch (deckNumber)
         {
             case 1:
                 deck = deck1cards;
+                deck1.transform.Find("selected")?.gameObject.SetActive(true);
                 break;
             case 2:
                 deck = deck2cards;
+                deck2.transform.Find("selected")?.gameObject.SetActive(true);
                 break;
             case 3:
                 deck = deck3cards;
+                deck3.transform.Find("selected")?.gameObject.SetActive(true);
                 break;
             default:
                 deck = deck1cards;

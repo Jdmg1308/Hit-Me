@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/Scenes/FinalScenes/TUTORIAL/Combat_MORERANGED.unity
     guid: fadc1b834c80ad2449bed9e21ad539bc
   - enabled: 1
+    path: Assets/Scenes/FinalScenes/DECKSELECTION.unity
+    guid: 0a7c52f006432ce429081c8283bf03de
+  - enabled: 1
     path: Assets/Scenes/FinalScenes/SHOP.unity
     guid: 8615d7074364cb94eae12d85cbcf4c91
   - enabled: 1
