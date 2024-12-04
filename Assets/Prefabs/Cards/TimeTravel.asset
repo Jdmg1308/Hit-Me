@@ -24,4 +24,4 @@ MonoBehaviour:
   points: 75
   effectMaterial: {fileID: 2100000, guid: 7e9e1fdec0dfe514988f454d55a05c54, type: 2}
   TimeTravelColor: {r: 0.3411765, g: 1, b: 0.6640599, a: 0.50980395}
-  rewindSpeedMultiplier: 2
+  rewindSpeedMultiplier: 8
