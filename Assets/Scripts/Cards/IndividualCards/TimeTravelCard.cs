@@ -15,7 +15,7 @@ public class TimeTravelCard : Card
     private float recordInterval = 0.01f; // How often to record positions
     private Coroutine recordRoutine;
     public Color TimeTravelColor;
-    public float rewindSpeedMultiplier = 2f; // Higher = faster rewind
+    public float rewindSpeedMultiplier = 10f; // Higher = faster rewind
     private int playerHealthBeforeRewind;
 
     public override void use(GameManager GM)

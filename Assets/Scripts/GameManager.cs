@@ -232,9 +232,12 @@ public class GameManager : MonoBehaviour
         if (PlayScreen)
         {
             // in the shop
-            money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
-            if (money_text)
-                money_text.text = " " + Money.ToString();
+            if (SceneManager.GetActiveScene().name == "SHOP")
+            {
+                money_text = PlayScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
+                if (money_text)
+                    money_text.text = " " + Money.ToString();
+            }
 
 
             CardUIDeck = PlayScreen.transform.Find("CardUIDeck")?.gameObject;
@@ -295,7 +298,15 @@ public class GameManager : MonoBehaviour
                     button.onClick.AddListener(() => LoadNextScene("SHOP"));
                 }
                 statsText = WinScreen.transform.Find("Stats")?.GetComponentInChildren<TextMeshProUGUI>();
-            } 
+
+                GameObject money_component = WinScreen.transform.Find("Money")?.gameObject;
+
+                if (money_component)
+                    money_component.transform.SetParent(PauseScreen.transform);
+                //money_text = WinScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
+                //if (money_text)
+                //    money_text.text = " " + Money.ToString();
+            }
 
             if (PauseScreen)
             {
@@ -703,6 +714,9 @@ public class GameManager : MonoBehaviour
         else
             stepAmount = Mathf.CeilToInt((newValue - prevValue) / (CountFPS * Duration)); // newValue = 20, previousValue = 0. CountFPS = 30, and Duration = 1; (20- 0) / (30*1) // 0.66667 (floortoint)-> 0
 
+        if (stepAmount == 0)
+            stepAmount = (newValue > prevValue) ? 1 : -1;
+
         while (prevValue != newValue)
         {
             prevValue += stepAmount;
@@ -710,6 +724,7 @@ public class GameManager : MonoBehaviour
             // Clamp value to ensure it doesn't overshoot the target
             if ((stepAmount > 0 && prevValue > newValue) || (stepAmount < 0 && prevValue < newValue))
                 prevValue = newValue;
+
 
             text.SetText(prevValue.ToString());
             yield return wait;
@@ -772,27 +787,25 @@ public class GameManager : MonoBehaviour
 
     public void Win()
     {
-        // playerController.SetControls(false);
-
-        statsText.text = "CARDS DRAWN: \nBlue: " + BlueCardsDrawn + " Red: " + RedCardsDrawn + " Green: "  + GreenCardsDrawn + " \nENEMIES KILLED: " + EnemiesKilled;
-
-        money_text = WinScreen.transform.Find("Money")?.gameObject.GetComponent<TextMeshProUGUI>();
-        if (money_text)
-           money_text.text = " " + Money.ToString();
-
         // animate win here (gangnam style)
         WinScreen.SetActive(true);
 
-        // Add points To Money
-        Debug.Log("IF YOU FUCKING DARE SAY NULL " + money_text);
-        Money += Points; // pointsToMoneyConversionRate (int) (Points)
+        GameObject money_component = PauseScreen.transform.Find("Money")?.gameObject;
+        if (money_component)
+            money_component.transform.SetParent(WinScreen.transform);
+
+        statsText.text = "CARDS DRAWN: \nBlue: " + BlueCardsDrawn + " Red: " + RedCardsDrawn + " Green: "  + GreenCardsDrawn + " \nENEMIES KILLED: " + EnemiesKilled;
+
+        // Add points To Money\
+        Money = Money + Points; // pointsToMoneyConversionRate (int) (Points)
+        CountingCoroutine = StartCoroutine(CountText(Money + Points, _money, money_text));
 
         // Make Points zero
         Points = 0;
         if (updatePointsRoutine != null)
             StopCoroutine(updatePointsRoutine);
-        updatePointsRoutine = StartCoroutine(updatePointsSlider());
 
+        updatePointsRoutine = StartCoroutine(updatePointsSlider());
 
         CheatWin = false;
         hasWon = true;
