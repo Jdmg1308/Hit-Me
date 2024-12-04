@@ -1634,7 +1634,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3250423069671238399, guid: daa432e8a5ba5d1408dc026a294016db, type: 3}
       propertyPath: minForce
-      value: 20
+      value: 18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: daa432e8a5ba5d1408dc026a294016db, type: 3}
