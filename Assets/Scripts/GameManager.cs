@@ -27,6 +27,9 @@ public class GameManager : MonoBehaviour
     public AudioClip GoodPullAudio;
     public AudioClip BadPullAudio;
     public AudioClip DeckShuffle;
+    public AudioClip LevelPayout;
+    public AudioClip GameOver;
+    public AudioClip MeterUp;
 
     [Header("Cards")]
     public DeckController deckController;
@@ -636,6 +639,7 @@ public class GameManager : MonoBehaviour
 
         if (healthCurrent <= 0)
             Death();
+
     }
 
     public void updatePoints(int numPoints)
@@ -782,13 +786,17 @@ public class GameManager : MonoBehaviour
         DeathScreen.SetActive(true);
         TextMeshProUGUI ScoreText = DeathScreen.GetComponentInChildren<TextMeshProUGUI>();
         ScoreText.text = "Final Payout: " + Money.ToString();
-        Money = 500;   
+        Money = 500;
+        audioSource.clip = GameOver;
+        audioSource.Play();
+
     }
 
     public void Win()
     {
         // animate win here (gangnam style)
         WinScreen.SetActive(true);
+
 
         GameObject money_component = PauseScreen.transform.Find("Money")?.gameObject;
         if (money_component)
@@ -809,6 +817,8 @@ public class GameManager : MonoBehaviour
 
         CheatWin = false;
         hasWon = true;
+        audioSource.PlayOneShot(LevelPayout);
+
     }
     #endregion
 

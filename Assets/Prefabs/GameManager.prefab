@@ -61,6 +61,9 @@ MonoBehaviour:
   GoodPullAudio: {fileID: 8300000, guid: 8cbe3aa4478e5dd4293f5a00e5862f6e, type: 3}
   BadPullAudio: {fileID: 8300000, guid: 93e66970dea988a48b790a371ec086a4, type: 3}
   DeckShuffle: {fileID: 8300000, guid: 8557bd154fdbcf0459775d05282aed72, type: 3}
+  LevelPayout: {fileID: 8300000, guid: 5f561f3d36115ee4e902cba314045a47, type: 3}
+  GameOver: {fileID: 8300000, guid: 1fe6e745f1932a047b54992f36a651ee, type: 3}
+  MeterUp: {fileID: 8300000, guid: 57ca876ebea03be40bd9fb315b7d2fce, type: 3}
   deckController: {fileID: 5376063832437897329}
   statusCard: {fileID: 0}
   statusApplied: 0
