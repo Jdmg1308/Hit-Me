@@ -125,6 +125,7 @@ public class ShopManager : TheSceneManager
             Options.SetActive(true);
             deleteSign.SetActive(false);
             deckDisplayPanel.GetComponent<Image>().color = Color.white;
+            GM.updateDeckPanel();
         }
         
     }
