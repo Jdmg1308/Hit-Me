@@ -2290,6 +2290,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3001837314880984111, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: m_ShowToolkit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3001837314880984111, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
+      propertyPath: m_ShowCustomSorter
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3290832914162406412, guid: 0b771a194cba83143a23f85b007851b6, type: 3}
       propertyPath: xMax
       value: 107
